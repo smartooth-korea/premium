@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.smartooth.premium.mapper.AuthMapper">
+
+
+	<!-- 아이디와 비밀번호로 존재 여부 확인 :: true = 1, false = 0 -->
+    <select id="loginChkByIdPwd" parameterType="String" resultType="Integer">
+
+        SELECT COUNT(*)
+        FROM ST_USER
+		WHERE 1=1
+		AND USER_ID = #{userId}
+		AND USER_PWD = TO_BASE64(HEX(AES_ENCRYPT(#{userPwd}, '${securityKey}')))
+		     
+    </select>
+
+
+
+
+
+	<!-- 	아이디 존재 여부 확인 :: true = 1, false = 0 -->
+    <select id="isIdExist" parameterType="co.smartooth.premium.vo.AuthVO" resultType="Integer">
+        
+        SELECT COUNT(*)
+        FROM ST_USER
+		WHERE 1=1
+	    AND USER_ID = #{userId}
+	    
+    </select>
+
+
+
+
+
+	<!-- 아이디가 소속 되어있는 유치원, 어린이집 코드와 맞는지 비교 -->
+    <select id="loginChkByIdOrganCd" parameterType="String" resultType="Integer">
+        
+        SELECT COUNT(*) 
+		FROM ST_USER SU
+		LEFT OUTER JOIN ST_STUDENT_USER_DETAIL SSUD
+		ON SU.USER_ID = SSUD.USER_ID
+		LEFT OUTER JOIN ST_CLASS_INFO SCI
+		ON SSUD.TEACHER_ID = SCI.CLASS_CODE
+		WHERE 1=1
+		AND SU.USER_ID = #{userId}
+		AND SCI.SCHOOL_CODE = #{organCd}
+	    
+    </select>
+
+
+
+
+
+</mapper>

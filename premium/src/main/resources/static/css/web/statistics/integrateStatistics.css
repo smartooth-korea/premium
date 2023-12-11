@@ -1,0 +1,790 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'NanumSquareR';
+	src: url(/fonts/NanumSquareR.ttf) format('truetype');
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+	font-family: 'NanumSquareR';
+	background: linear-gradient(to top right, #318CDD 0%, #1d466c 100%);
+	font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    min-height: 100vh;
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 800px;
+    min-width: 800px;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+	max-width: 800px;
+    max-width: 800px;
+}
+
+.input-form {
+	min-width: 800px;
+	max-width: 800px;
+	min-height: 93vh;
+	margin-top: 35px;
+	padding: 5px;
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+}
+
+.ml-auto, .mx-auto {
+    margin-left: auto!important;
+    margin-right: auto!important;
+}
+
+.col-md-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+input[type=checkbox], input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.custom-control-input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.tab-wrap{
+    width: 790px;
+    height: 152px;
+    margin-left: 0px;
+    margin-right: 0;
+    margin-top: -10px;
+    margin-bottom: 2px;
+}
+
+ul.tabs {
+	width: 80%;
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+.organMeasureDt{
+	margin-top : 8px;
+}
+
+.logout{
+	padding-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+    width: 32px;
+    font-size: 24px;
+    align-items: center;
+    margin-left: 8px;
+}
+
+.logout:hover{
+	cursor:pointer;
+}
+
+.logout-icon{
+	color: #333333;
+}
+
+ul.tabs li {
+	background: none;
+	color: #222;
+	display: table-cell;
+	/*display: inline-block;*/
+	padding: 10px 15px;
+    border-radius: 15px 15px 0px 0px;
+	text-align: center;
+	cursor: pointer;
+}
+
+ul.tabs li.current {
+	background: #ededed;
+	color: #1d3357;
+	font-weight: bold;
+}
+
+.tab-content {
+	display: none;
+	background: #ededed;
+    padding-left: 15px;
+    padding-right: 0px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 0px 0px 0px 15px;
+    text-align: center;
+    overflow-y: scroll;
+    height: 108px;
+}
+
+.tab-content::-webkit-scrollbar {
+    width: 10px;
+  }
+ .tab-content::-webkit-scrollbar-thumb {
+    background-color: #BDBDBD;
+  }
+
+.tab-content.current {
+	display: inherit;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #ffffff;
+    vertical-align: middle;
+    user-select: none;
+    background-color: #959595;
+    border: 1px solid #959595;
+    padding: 0.375rem 0.72rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.6rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    margin-bottom: 10px;
+    
+}
+
+.btn:hover{
+	cursor: pointer;
+	color: #ffffff;
+	font-weight: bold;
+	background-color: #1d3357;
+    border-color: #1d3357;
+}
+
+.abled{
+	color: #ffffff;
+	font-weight: bold;
+    background-color: #1d3357;
+    border-color: #1d3357;
+}
+
+.graph_wrap_top{
+	background-color: #EBEBEB;
+	width: 100%;
+	height: 85vh;
+}
+
+.graph_wrap{
+	background-color: #ffffff;
+	border-radius: 15px;
+	/*하단 버튼 공간 필요할 시 95%*/
+	/*height: 95%;*/
+}
+
+.schoolName_title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.graph_legend_wrap{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: center;
+	height: 2%;
+}
+
+.graph_legend{
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+	width: 50%;
+}
+
+.img_legend{
+	vertical-align: middle;
+    width: 10px;
+}
+
+.userName_legend{
+	display: flex;
+    align-items: flex-end;
+    margin-left: 3%;
+    margin-bottom: -5px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #5c5c5c;
+    height: 30px;
+}
+
+.userName_legend_left{
+	display: flex;
+    align-items: flex-end;
+    height: 50%;
+    width: 85%;
+}
+
+.userName_legend_right{
+	display: flex;
+    align-items: flex-end;
+    height: 50%;
+    width: 18%;
+}
+
+div.graph{
+    display: flex;
+    justify-content: center;
+}
+
+canvas#graph{
+	display: block;
+	box-sizing: border-box;
+	height:900px;
+}
+
+.nav-ul{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.organMeasuerDt{
+	width: 18%;
+    padding-top: 5px;
+}
+
+#organMeasuerDtList{
+	height: 30px;
+	font-size : 18px;
+}
+
+.integrateStatistics{
+	display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 78vh;
+}
+
+div.statistics.graph-y{
+    border: 1px solid #E1E1E1;
+	border-radius: 15px 0px 0px 15px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 50%;
+}
+
+div.statistics.graph-y::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+div.statistics.graph-y::-webkit-scrollbar-thumb {
+    background-color: #BDBDBD;
+}
+
+
+div.statistics.diagnosis-y{
+background-image: url(/imgs/layout/statistics/diagnosis/diagnosis_main1.png);
+    background-size: 100% 1012px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    border-radius: 25px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 410px;
+    background-attachment: local;
+    margin: 0;
+}
+
+div.statistics.diagnosis-y::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+div.statistics.diagnosis-y::-webkit-scrollbar-thumb {
+    background-color: #BDBDBD;
+}
+  
+/* div.statistics.diagnosis-y::-webkit-scrollbar-track { */
+/*     background-color: grey; */
+/* } */
+
+.diagnosis_wrap {
+	height: 100%;
+}
+
+.diagnosis_userInfo{
+    display: flex;
+    height: 102px;
+    align-items: center;
+}
+
+.userName {
+    width: 65%;
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 15%;
+}
+
+.measuredt_wrap{
+    width: 40%;
+    text-align: center;
+    margin-right: 3%;
+}
+	
+.measuredt-title{
+    font-size: 13px;
+    color: #878787;
+}
+
+.measuredt {
+   float: left;
+    width: 100%;
+    font-size: 18px;
+}
+
+.contentsWrap {
+    display: flex;
+    padding-left: 24px;
+    padding-right: 25px;
+    width: 100%;
+    height: 497px;
+}
+
+.tooth {
+/*     width: 646px; */
+/*    	height: 414px; */
+	width: 646px;
+    height: 455px;
+}
+
+.teeth{
+	width:100%;
+	height:100%;
+}
+
+.toothMaxillary{
+	position: relative;
+    width: 100%;
+    height: 59%;
+}
+
+.toothMandibular{
+	position: relative;
+    width: 100%;
+    height: 50.3%;
+}
+
+
+#t11{
+	position: absolute;
+    top: 24px;
+    left: 62px;
+    width: 40px;
+    height: 44px;
+}
+
+#t12{
+	position: absolute;
+    top: 39px;
+    left: 35px;
+    width: 35px;
+    height: 37px;
+}
+
+#t21{
+	position: absolute;
+    top: 24px;
+    left: 102px;
+    width: 39px;
+    height: 44px;
+}
+
+#t22{
+	position: absolute;
+    top: 39px;
+    left: 133px;
+    width: 36px;
+    height: 38px;
+}
+
+#t51 {
+	position: absolute;
+    top: 80px;
+    left: 67px;
+    width: 34px;
+    height: 25px;
+}
+	
+#t52 {
+	position: absolute;
+    top: 89px;
+    left: 43px;
+    height: 29px;
+    width: 26px;
+}
+
+#t53 {
+	position: absolute;
+    top: 112px;
+    left: 25px;
+    width: 27px;
+    height: 32px;
+}
+
+#t54 {
+	position: absolute;
+    top: 141px;
+    left: 11px;
+    width: 38px;
+    height: 39px;	
+}
+
+#t55 {
+    position: absolute;
+    top: 178px;
+    left: 2px;
+    width: 39px;
+    height: 48px;
+}
+
+/* 영구치 */
+#t16{
+    position: absolute;
+    top: 224px;
+    left: -1px;
+    width: 41px;
+    height: 39px;
+}
+
+
+#t61 {
+    position: absolute;
+    top: 80px;
+    left: 101px;
+    width: 34px;
+    height: 24px;
+}
+
+#t62 {
+	position: absolute;
+    top: 90px;
+    left: 132px;
+    width: 25px;
+    height: 28px;
+}
+
+#t63 {
+	position: absolute;
+    top: 111px;
+    left: 149px;
+    width: 26px;
+    height: 33px;
+}
+
+#t64 {
+	position: absolute;
+    top: 140px;
+    left: 153px;
+    width: 38px;
+    height: 42px;
+}
+
+#t65 {
+	position: absolute;
+    top: 178px;
+    left: 160px;
+    width: 39px;
+    height: 47px;
+}
+
+/* 영구치 */
+#t26{
+	position: absolute;
+    top: 224px;
+    left: 162px;
+    width: 41px;
+    height: 38px;
+}
+
+/* 영구치 */
+#t36{
+	position: absolute;
+    top: 0px;
+    left: 160px;
+    width: 42px;
+    height: 45px;
+}
+
+
+#t71 {
+	position: absolute;
+    top: 137px;
+    left: 100px;
+    width: 21px;
+    height: 18px;
+}
+
+#t72 {
+    position: absolute;
+    top: 131px;
+    left: 119px;
+    width: 20px;
+    height: 21px;
+}
+
+#t73 {
+    position: absolute;
+    top: 112px;
+    left: 133px;
+    width: 26px;
+    height: 30px;
+}
+
+#t74 {
+	position: absolute;
+    top: 82px;
+    left: 147px;
+    width: 34px;
+    height: 38px;
+}
+
+#t75 {
+	position: absolute;
+    top: 43px;
+    left: 158px;
+    width: 38px;
+    height: 43px;
+}
+
+#t81 {
+	position: absolute;
+    top: 136px;
+    left: 80px;
+    width: 20px;
+    height: 18px;
+}
+
+#t82 {
+	position: absolute;
+    top: 131px;
+    left: 62px;
+    width: 20px;
+    height: 22px;
+}
+
+#t83 {
+	position: absolute;
+    top: 113px;
+    left: 43px;
+    width: 26px;
+    height: 29px;
+}
+
+#t84 {
+    position: absolute;
+    top: 82px;
+    left: 20px;
+    width: 35px;
+    height: 37px;
+}
+
+#t85 {
+	position: absolute;
+    top: 44px;
+    left: 6px;
+    width: 37px;
+    height: 43px;
+}
+
+/* 영구치 */
+#t46{
+	position: absolute;
+    top: 0px;
+    left: -2px;
+    width: 42px;
+    height: 46px;
+}
+
+
+#t31{
+    position: absolute;
+    top: 172px;
+    left: 100px;
+    width: 23px;
+    height: 36px;
+}
+
+#t32{
+	position: absolute;
+    top: 167px;
+    left: 120px;
+    width: 26px;
+    height: 36px;
+}
+
+#t41{
+	position: absolute;
+    top: 172px;
+    left: 78px;
+    width: 23px;
+    height: 36px;
+}
+
+#t42{
+	position: absolute;
+    top: 167px;
+    left: 57px;
+    width: 26px;
+    height: 35px;
+}
+
+
+.cavityAmount {
+    margin-left: 0%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+	width: 375px;
+/*     height: 350px; */
+	height: 392px;
+}
+
+.cavityValue-danger-title {
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    color: #E95050;
+}
+
+.cavityValue-caution-title {
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    color: #E99C00;
+}
+
+.cavityValue-normal-title {
+    width: 100%;
+    height: 25px;
+    text-align: center;
+    color: #68AE00;
+}
+
+.cavityValueHeight-top{
+    width: 100%;
+    height: 80px;
+}
+
+.cavityValueHeight-middle{
+	width: 100%;
+   	height: 40px;
+}
+
+.cavityValueHeight-bottom{
+	width: 100%;
+   	height: 40px;
+}
+
+.cavityValue{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    font-weight: bold;
+    width: 100%;
+	height: 40px;
+}
+
+.comment{
+    width: 100%;
+/*     height: 388px; */
+    height: 429px;
+}
+
+.comment-top {
+    margin-left: 30px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    width: 190px;
+    height: 43px;
+    padding-top: 10px;
+}
+
+.comment-title{
+    display: flex;
+/*     height: 51px; */
+	height: 53px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.diagDescript{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 15px;
+    width: 100%;
+/*     height: 225px; */
+	height: 247px;
+}
+
+/* .diagDescript::-webkit-scrollbar { */
+/*     width: 10px; */
+/* } */
+.diagDescript::-webkit-scrollbar-thumb {
+    background-color: #BDBDBD;
+}
+
+/* .diagDescript::-webkit-scrollbar-track { */
+/* 	background-color: grey; */
+/* } */
+
+.contents-bottom-div{
+	padding-top: 11px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 29px;
+    font-size: 12px;
+/*     height: 70px; */
+    height: 82px;
+}
+
+.smartooth-footer{
+    line-height: 20px;
+	text-align: center!important;
+	margin-bottom: 1rem!important;
+	margin-top: 1rem!important;
+	font-weight: bold;
+	color: #ffffff;
+	
+}
+
+

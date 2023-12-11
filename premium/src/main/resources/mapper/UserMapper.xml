@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.smartooth.premium.mapper.UserMapper">
+
+	
+	<!-- 공통 기능 -->
+	<!-- 사용자 정보 조회 -->
+    <select id="selectUserInfo" parameterType="String" resultType="co.smartooth.premium.vo.UserVO">
+    
+         SELECT
+         	USER_NO
+			,USER_ID
+			,USER_TYPE
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(USER_NAME)), '${securityKey}') AS CHAR)			AS USER_NAME
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(USER_EMAIL)), '${securityKey}') AS CHAR)			AS USER_EMAIL
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(USER_BIRTHDAY)), '${securityKey}') AS CHAR)		AS USER_BIRTHDAY
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(USER_TEL_NO)), '${securityKey}') AS CHAR)		AS USER_TEL_NO
+			,USER_SEX
+			,USER_RGST_DT
+			,PUSH_TOKEN
+			,LOGIN_DT
+			,USER_DELETE_YN
+			,USER_DELETE_DT
+			,LOGIN_CK
+			,COUNTRY_NM
+			,STATE_NM
+			,SIDO_NM
+			,SIGUNGU_NM
+			,EUPMYEONDONG_NM
+			,ADDR_DETAIL
+			,ORGAN_CD
+			,AUTH_STATUS
+			,AUTH_KEY
+			,AUTH_EMAIL
+			,TEETH_TYPE
+		FROM ST_USER 
+		WHERE 1=1
+		<if test="userId != null and userId != '' ">
+		AND USER_ID = #{userId}
+   		</if>
+   		
+    </select>
+    
+    
+    
+    
+    
+	<!-- 계정 비밀번호 변경 -->
+    <update id="updateUserPwd" parameterType="co.smartooth.premium.vo.UserVO">
+		UPDATE ST_USER
+		SET  
+			USER_PWD = TO_BASE64(HEX(AES_ENCRYPT(#{userPwd}, '${securityKey}')))
+		WHERE 1=1
+		AND USER_ID = #{userId}
+    </update>
+    
+    
+    
+    
+    
+    <!-- 계정 정보 수정(업데이트) -->
+    <update id="updateUserInfo" parameterType="co.smartooth.premium.vo.UserVO">
+    
+		UPDATE ST_USER
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="userName != null and userName != '' ">
+				USER_NAME = TO_BASE64(HEX(AES_ENCRYPT(#{userName}, '${securityKey}'))),
+	   		</if>	
+			<if test="userBirthday != null and userBirthday != '' ">
+				USER_BIRTHDAY = TO_BASE64(HEX(AES_ENCRYPT(#{userBirthday}, '${securityKey}'))),
+	   		</if>	
+			<if test="userTelNo != null and userTelNo != '' ">
+				 USER_TEL_NO = TO_BASE64(HEX(AES_ENCRYPT(#{userTelNo}, '${securityKey}'))),
+	   		</if>	
+			<if test="userSex != null and userSex != '' ">
+				 USER_SEX = #{userSex},
+	   		</if>	
+   		</trim>
+		WHERE 1=1
+		AND USER_ID = #{userId}
+    
+    </update>
+    
+    
+    
+    
+    
+	<!-- 계정 정보 삭제 (삭제할 것인지 업데이트할 것인지 결정해야함) -->
+	<delete id="deleteUserInfo" parameterType="String">
+
+		DELETE FROM ST_USER
+		WHERE 1=1 
+		AND USER_ID=#{userId}
+	
+	</delete>  
+	
+    
+    
+    
+    
+    <!-- 푸시토큰 업데이트(수정) -->
+    <update id="updatePushToken" parameterType="String">
+    
+		UPDATE ST_USER
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="pushToken != null and pushToken != '' ">
+				PUSH_TOKEN = #{pushToken},
+	   		</if>
+   		</trim>
+		WHERE 1=1
+		AND USER_ID = #{userId}
+		
+    </update>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	<!-- 유치원, 어린이집  -->
+	<!-- 아이디 중복 체크 -->
+    <select id="duplicateChkId" resultType="Integer" parameterType="String">
+        SELECT COUNT(*)
+		  FROM ST_USER
+	    WHERE 1=1
+		AND USER_ID = #{userId}
+    </select>
+
+
+
+
+	
+	<!-- 계정 등록 -->
+    <insert id="insertUserInfo" parameterType="co.smartooth.premium.vo.UserVO">
+    	
+    	INSERT INTO ST_USER
+		(
+			USER_NO
+            ,USER_ID
+            ,USER_PWD
+            ,USER_TYPE
+            ,USER_NAME
+            ,USER_EMAIL
+            ,USER_BIRTHDAY
+            ,USER_COUNTRY
+            ,USER_STATE
+            ,USER_ADDRESS
+            ,USER_TEL_NO
+            ,USER_SEX
+            ,USER_RGST_DT
+            ,PUSH_TOKEN
+            ,LOGIN_DT
+            ,USER_DELETE_YN
+            ,USER_DELETE_DT
+            ,LOGIN_CK
+            ,COUNTRY_NM
+            ,STATE_NM
+            ,SIDO_NM
+            ,SIGUNGU_NM
+            ,EUPMYEONDONG_NM
+            ,ADDR_DETAIL
+            ,ORGAN_CD
+            ,AUTH_STATUS
+            ,AUTH_KEY
+            ,AUTH_EMAIL
+            ,TEETH_TYPE
+		)
+		VALUES
+		(	
+			NULL
+		    ,#{userId}
+		    ,TO_BASE64(HEX(AES_ENCRYPT(#{userPwd}, '${securityKey}')))
+		    ,#{userType}
+		    ,TO_BASE64(HEX(AES_ENCRYPT(#{userName}, '${securityKey}')))
+		    ,TO_BASE64(HEX(AES_ENCRYPT(#{userEmail}, '${securityKey}')))
+		    ,TO_BASE64(HEX(AES_ENCRYPT(#{userBirthday}, '${securityKey}')))
+		    ,NULL
+		    ,NULL
+		    ,NULL
+		    ,TO_BASE64(HEX(AES_ENCRYPT(#{userTelNo}, '${securityKey}')))
+		    ,#{userSex}
+		    ,SYSDATE()
+		    ,NULL
+		    ,NULL
+		    ,'N'
+		    ,NULL
+		    ,0
+		    ,#{countryNm}
+		    ,NULL
+		    ,#{sidoNm}
+		    ,#{sigunguNm}
+		    ,#{eupmyeondongNm}
+		    ,NULL
+		    ,''
+		    ,'N'
+		    ,NULL
+		    ,NULL
+		    ,#{teethType}
+	    ) 
+    	
+    </insert>
+	
+	
+	
+	
+	
+	<!--  계정(피측정자-원아) 상세 정보 등록  -->
+	<insert id="insertStudentUserDetail" parameterType="String">
+	
+		INSERT INTO ST_STUDENT_USER_DETAIL 
+			(
+				USER_ID
+				,SCHOOL_TYPE
+				,IS_MEASURING
+				,TEACHER_ID
+				,AGRE_YN
+			) 
+		VALUES
+			(
+				#{userId}
+				,#{schoolType}
+				,'N'
+				,#{classCode}
+				,'Y'
+			)
+	
+	</insert>
+
+
+
+    
+	
+	<!-- 계정(법정대리인) 상세 정보 등록 -->
+	<insert id="insertParentUserDetail" parameterType="String">
+
+		INSERT INTO ST_PARENT_USER_DETAIL
+			(
+				USER_ID
+				,CHILD_ID
+				,AUTH_EMAIL
+				,AUTH_STATUS
+				,AUTH_KEY
+			)
+		VALUES
+			(
+				#{userId}
+				,#{childId}
+				,NULL
+				,'N'
+				,NULL
+			)
+	
+	</insert>    
+    
+    
+    
+    
+    
+    <!-- 법정대리인 계정 정보로 자녀 계정 정보 조회 -->
+    <select id="selectStudentUserInfoByParentUserId" parameterType="String" resultType="co.smartooth.premium.vo.UserVO">
+    
+		SELECT 
+			SPUD.USER_ID 																												AS USER_ID
+			,SPUD.CHILD_ID 																												AS CHILD_ID
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_NAME)), '${securityKey}') AS CHAR)			AS USER_NAME
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_BIRTHDAY)), '${securityKey}') AS CHAR)		AS USER_BIRTHDAY
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_TEL_NO)), '${securityKey}') AS CHAR)			AS USER_TEL_NO
+			,SU.USER_SEX
+			,SCI.SCHOOL_CODE
+			,SSI.SCHOOL_NAME
+			,SCI.CLASS_CODE
+			,SCI.CLASS_NAME
+		FROM ST_PARENT_USER_DETAIL SPUD
+		LEFT OUTER JOIN ST_USER SU
+		ON SPUD.CHILD_ID = SU.USER_ID
+		LEFT OUTER JOIN ST_STUDENT_USER_DETAIL SSUD
+		ON SU.USER_ID = SSUD.USER_ID
+		LEFT OUTER JOIN ST_CLASS_INFO SCI
+		ON SSUD.TEACHER_ID = SCI.CLASS_CODE
+		LEFT OUTER JOIN ST_SCHOOL_INFO SSI
+		ON SCI.SCHOOL_CODE = SSI.SCHOOL_CODE
+		WHERE 1=1
+		AND CHILD_ID NOT LIKE CONCAT('%','-CH-','%')
+		AND SPUD.USER_ID = #{userId}
+    
+    </select>
+    
+    
+    
+    
+    
+    <!-- 법정대리인 계정 정보로 자녀 계정 정보 조회 (MAP) -->
+    <select id="selectStudentUserInfoByParentUserIdForMap" parameterType="String" resultType="hashmap">
+    
+		SELECT 
+			SPUD.USER_ID 																												AS userId
+			,SPUD.CHILD_ID 																												AS childId
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_NAME)), '${securityKey}') AS CHAR)			AS userName
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_BIRTHDAY)), '${securityKey}') AS CHAR)		AS userBirthday
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_TEL_NO)), '${securityKey}') AS CHAR)			AS userTelNo
+			,SU.USER_SEX																													AS userSex
+			,SCI.SCHOOL_CODE																											AS schoolCode
+			,SSI.SCHOOL_NAME																											AS schoolName
+			,SCI.CLASS_CODE																											AS classCode
+			,SCI.CLASS_NAME																											AS className
+		FROM ST_PARENT_USER_DETAIL SPUD
+		LEFT OUTER JOIN ST_USER SU
+		ON SPUD.CHILD_ID = SU.USER_ID
+		LEFT OUTER JOIN ST_STUDENT_USER_DETAIL SSUD
+		ON SU.USER_ID = SSUD.USER_ID
+		LEFT OUTER JOIN ST_CLASS_INFO SCI
+		ON SSUD.TEACHER_ID = SCI.CLASS_CODE
+		LEFT OUTER JOIN ST_SCHOOL_INFO SSI
+		ON SCI.SCHOOL_CODE = SSI.SCHOOL_CODE
+		WHERE 1=1
+		AND CHILD_ID NOT LIKE CONCAT('%','-CH-','%')
+		AND SPUD.USER_ID = #{userId}
+    
+    </select>
+    
+    
+    
+    
+    
+    <!-- 법정대리인과 피측정자의 연결고리 삭제 -->
+   	<delete id="deleteParentUserDetailInfo" parameterType="String">
+   		
+   		DELETE FROM ST_PARENT_USER_DETAIL
+   		WHERE 1=1
+   		AND USER_ID = #{userId}
+   		AND CHILD_ID = #{childId}
+   	
+   	</delete>
+   	
+   	
+   	
+   	
+   	
+   	<!-- 피측정자와 유치원, 어린이집 반의 연결고리 삭제 -->
+	<delete id="deleteStudentUserDetailInfo" parameterType="String">
+
+		DELETE FROM ST_STUDENT_USER_DETAIL
+		WHERE 1=1 
+		AND USER_ID=#{userId}
+	
+	</delete>  
+    
+    
+    
+    
+    
+    <!-- 유치원, 어린이집 내 피측정자 목록 조회 -->
+	<select id="selectDepartUserList" parameterType="String" resultType="hashmap">
+		
+		SELECT 
+			SSUD.TEACHER_ID																										AS CLASS_NAME
+			,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_NAME)), '${securityKey}') AS CHAR)		AS USER_NAME
+			,SU.USER_ID																												AS USER_ID
+			,DATE_FORMAT(STM.MEASURE_DT, '%Y-%m-%d')																AS MEASURE_DT
+		FROM ST_TEETH_MEASURE STM
+		LEFT OUTER JOIN ST_STUDENT_USER_DETAIL SSUD
+		ON STM.USER_ID = SSUD.USER_ID
+		LEFT OUTER JOIN ST_USER SU
+		ON SSUD.USER_ID = SU.USER_ID
+		WHERE 1=1
+		AND TEACHER_ID = #{classCode}
+		AND DATE_FORMAT(MEASURE_DT, '%Y-%m-%d') = #{measureDt}
+		ORDER BY SU.USER_NAME
+		    
+	</select>
+    
+    
+    
+    
+</mapper>

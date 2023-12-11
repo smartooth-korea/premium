@@ -1,0 +1,479 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'NanumSquareR';
+	src: url(/fonts/NanumSquareR.ttf) format('truetype');
+}
+
+body {
+	/* background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%); */
+	/* background: #92b5db; */
+	background-image: url(/imgs/layout/statistics/diagnosis_background.jpg);
+    background-size: 3840px 2160px;
+    background-repeat: no-repeat;
+    font-family: 'NanumSquareR';
+    display: flex;
+    justify-content: center;
+}
+
+div{
+	font-family: 'NanumSquareR';
+}
+
+.row{
+	margin-top: 20px;	
+}
+
+.container {
+    min-width: 375px;
+    max-width: 375px;
+    margin-left: auto;
+    margin-right: auto;
+	width: 100%;
+}
+
+.input-form {
+    background: #ffffff;
+    padding-right: 0px;
+    padding-left: 0px;
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    min-width: 375px;
+    max-width: 375px;
+    border-radius: 20px;
+    height: 870px;
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    height: 38px;
+}
+
+.menu_btn{
+    display: flex;
+    border-top: 1px solid #EBEBEB;
+    border-left: 1px solid #EBEBEB;
+    border-right: 1px solid #EBEBEB;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-collapse: collapse;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+	width: 170px;
+    height: 100%;
+}
+
+#diagnosis_graph_btn{
+	color: #707070;
+	font-size: 13px;
+}
+
+#diagnosis_data_btn{
+	background-color: #EBEBEB;
+	font-weight: bold;
+    font-size: 16px;
+}
+
+.menu_btn:hover{
+	cursor: pointer;
+}
+
+#logout{
+	display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 9%;
+}
+
+#logout:hover{
+	cursor: pointer;
+}
+
+#logout_btn{
+    width: 30px;
+}
+
+.background{
+	background-image: url(/imgs/layout/statistics/diagnosis/diagnosis_main.png);
+    background-size: 376px 832px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 832px;
+}
+
+
+/** 결과지 회원 정보 및 측정일 */
+.container-top {
+    height: 90px;
+}
+
+.container-margin{
+	height: 22px;
+}
+
+.userName {
+    float: left;
+    margin-left: 61px;
+    margin-top: 9px;
+    font-size: 26px;
+    font-weight: bold;
+    width: 163px;
+}
+
+.measureDt-title{
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    color: #878787;
+    font-size: 13px;
+}
+
+#measureDtList{
+	font-family: 'NanumSquareR';
+	font-size: 16px;
+    text-align: center;
+}
+
+.measureDt {
+    display: flex;
+    justify-content: center;
+    float: left;
+    width: 144px;
+}
+
+.contentsWrap {
+	display: flex;
+    width: 100%;
+    height: 375px;
+}
+
+.toothwrap{
+	position: relative;
+}
+
+.toothCondition {
+    width: 191px;
+   	height: 375px;
+}
+
+.teeth{
+	width: 100%;
+	height: 100%;
+}
+
+#t51 {
+    position: absolute;
+    top: 32px;
+    left: 63px;
+    width: 33px;
+    height: 23px;
+}
+
+#t52 {
+	position: absolute;
+    top: 41px;
+    left: 40px;
+    width: 25px;
+    height: 26px;
+}
+
+#t53 {
+    position: absolute;
+    top: 61px;
+    left: 23px;
+    width: 26px;
+    height: 29px;
+}
+
+#t54 {
+	position: absolute;
+    top: 87px;
+    left: 9px;
+    width: 37px;
+    height: 37px;
+}
+
+#t55 {
+	position: absolute;
+    top: 121px;
+    left: 0px;
+    width: 38px;
+    height: 43px;
+}
+
+#t56{
+	position: absolute;
+    top: 163px;
+    left: 0px;
+    width: 34px;
+    height: 35px;
+}
+
+
+#t61 {
+    position: absolute;
+    top: 32px;
+    left: 96px;
+    width: 32px;
+    height: 23px;
+}
+
+#t62 {
+	position: absolute;
+    top: 41px;
+    left: 127px;
+    width: 24px;
+    height: 26px;
+}
+
+#t63 {
+    position: absolute;
+    top: 62px;
+    left: 142px;
+    width: 26px;
+    height: 29px;
+}
+
+#t64 {
+	position: absolute;
+    top: 88px;
+    left: 146px;
+    width: 37px;
+    height: 35px;
+}
+
+#t65 {
+    position: absolute;
+    top: 120px;
+    left: 154px;
+    width: 37px;
+    height: 43px;
+}
+
+#t66{
+    position: absolute;
+    top: 163px;
+    left: 155.5px;
+    width: 34.5px;
+    height: 35px;
+}
+
+#t71 {
+    position: absolute;
+    top: 328.5px;
+    left: 95.5px;
+    width: 19px;
+    height: 16px;
+}
+
+#t72 {
+    position: absolute;
+    top: 322px;
+    left: 113.5px;
+    width: 20px;
+    height: 18.5px;
+}
+
+#t73 {
+    position: absolute;
+    top: 302.5px;
+    left: 127px;
+    width: 25px;
+    height: 27px;
+}
+
+#t74 {
+    position: absolute;
+    top: 276px;
+    left: 141px;
+    width: 31.5px;
+    height: 34px;
+}
+
+#t75 {
+    position: absolute;
+    top: 241.5px;
+    left: 150px;
+    width: 37.5px;
+    height: 39px;
+}
+
+#t76{
+    position: absolute;
+    top: 208px;
+    left: 155.5px;
+    width: 35px;
+    height: 34px;
+}
+
+#t81 {
+    position: absolute;
+    top: 328px;
+    left: 76px;
+    width: 20px;
+    height: 16px;
+}
+
+#t82 {
+    position: absolute;
+    top: 322px;
+    left: 57.5px;
+    width: 20.5px;
+    height: 19px;
+}
+
+#t83 {
+	position: absolute;
+    top: 303px;
+    left: 39px;
+    width: 24.5px;
+    height: 27px;
+}
+
+#t84 {
+    position: absolute;
+    top: 276px;
+    left: 19px;
+    width: 31px;
+    height: 34px;
+}
+
+#t85 {
+	position: absolute;
+    top: 242px;
+    left: 4px;
+    width: 37px;
+    height: 38px;
+}
+
+#t86{
+    position: absolute;
+    top: 208px;
+    left: 0px;
+    width: 34.5px;
+    height: 34px;
+}
+
+
+.cavityAmount{
+	width: 113px
+}
+
+.cavityValue-danger-title {
+    width: 113px;
+    height: 35px;
+    text-align: center;
+    color: #E95050;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cavityValue-caution-title {
+    width: 113px;
+    height: 35px;
+    text-align: center;
+    color: #E99C00;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cavityValue-normal-title {
+    width: 113px;
+    height: 20px;
+    text-align: center;
+    color: #68AE00;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.cavityValueHeight-top{
+    width: 113px;
+    height: 65px;
+}
+
+.cavityValueHeight-middle{
+	width: 113px;
+    height: 35px;
+}
+
+.cavityValueHeight-bottom{
+	width: 113px;
+   	height: 40px;
+}
+
+.cavityValue{
+	height: 25px;
+    margin-right: 7px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    width: 113px;
+    margin-top: 4px;
+}
+
+.comment {
+	width: 375px;
+}
+
+.comment-top {
+	height: 54px;
+    color: #ffffff;
+    font-size: 18px;
+    width: 55px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+	width: 375px;
+	padding-top: 18px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.contents{
+
+}
+
+#diagDescript{
+    overflow-y: scroll;
+    margin: 15px 0px 0px 20px;
+    padding-right: 9px;
+    color: #000000;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 23px;
+    height: 190px;
+    width: 335px;
+}
+
+#textarea_diagDescript{
+    width: 349px;
+   	height: 242px;
+	margin-left: 10px;
+	padding-top: 20px;
+}
+
+.contents-bottom-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: 12px;
+    color: #7A7A7A;
+    height: 55px;
+    margin-top: 8px;
+}
+
+footer{
+	text-align: center;
+	font-size: 12px;
+}

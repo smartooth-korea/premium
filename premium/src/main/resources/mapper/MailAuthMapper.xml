@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.smartooth.premium.mapper.MailAuthMapper">
+	
+	
+	
+	
+	<!-- 인증 메일 클릭 시 인증 상태를 'Y' 로 업데이트 -->
+	<update id="updateAuthStatusY" parameterType="String">
+       UPDATE ST_USER
+            SET AUTH_STATUS = 'Y'
+		WHERE 1=1
+		AND USER_ID = #{userId}
+    </update>
+	
+	
+	
+	
+	
+	<!-- 인증 메일 요청 시 인증 상태를 'N' 로 업데이트 -->
+	<update id="updateAuthStatusN" parameterType="String">
+       UPDATE ST_USER
+            SET AUTH_STATUS = 'N'
+            	  ,AUTH_KEY = NULL
+		WHERE USER_ID = #{userId}
+    </update>
+    
+    
+    
+    
+    
+    <!-- 계정 메일 인증 여부 확인 -->
+    <select id="isEmailAuthEnabled" parameterType="String" resultType="String">
+        SELECT AUTH_STATUS
+        FROM ST_USER
+        WHERE USER_ID = #{userId}
+    </select>
+    
+    
+    
+	
+	
+	<!-- 계정 메일 인증 키 업데이트 -->
+	<update id="updateAuthKeyById" parameterType="String">
+       UPDATE ST_USER
+            SET AUTH_KEY = #{authKey}
+            	  ,AUTH_EMAIL = #{authEmail}
+		WHERE USER_ID = #{userId}
+    </update>
+    
+	
+	
+	
+	
+	<!-- 메일 인증 번호 검증  -->
+    <select id="isAuthKeyMatch" parameterType="String" resultType="Integer">
+        
+        SELECT
+        	COUNT(*)
+        FROM ST_USER
+        WHERE 1=1 
+        AND USER_ID = #{userId}
+        AND AUTH_KEY = #{authKey}
+        
+    </select>    
+    
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.smartooth.premium.mapper.LocationMapper">
+
+
+	<!-- 국가 코드 및 정보 조회 -->
+	<select id="selectNationalInfo" parameterType="String" resultType="co.smartooth.premium.vo.LocationVO">
+	
+		SELECT 
+			 ISO_ALPHA2
+			,ISO_ALPHA3
+			,ISO_NUMERIC
+			,CONTINENT_CODE
+			,NATIONAL_NAME_KOR
+			,NATIONAL_NAME_ENG
+			,GMT
+		FROM ST_NATIONAL_INFO
+		WHERE 1=1
+		AND ISO_ALPHA2 = #{isoAlpha2}
+			
+	</select>
+	
+	
+	
+	
+	
+<!-- 위치(loacation) 정보 조회 -->
+<!--     <select id="selectLocationInfo" parameterType="String" resultType="co.smartooth.web.vo.WebLocationVO"> -->
+		
+<!-- 		SELECT  -->
+<!-- 			SIDO_CD -->
+<!-- 			,SGGEMD_CD -->
+<!-- 			,SIGUNGU_NM -->
+<!-- 			,EUPMYEONDONG_NM  -->
+<!-- 		FROM ST_ADDR_DEPT2 -->
+<!-- 		WHERE 1=1 -->
+<!-- 		AND SIDO_CD = #{sidoCd} -->
+<!-- 		AND SGGEMD_CD = #{sggemdCd} -->
+		
+<!--     </select> -->
+    
+    
+    
+    
+    
+<!--     <select id="selectLocationCd" parameterType="String" resultType="co.smartooth.web.vo.WebLocationVO"> -->
+		
+<!-- 		SELECT  -->
+<!-- 			SIDO_CD -->
+<!-- 			,SGGEMD_CD -->
+<!-- 			,SIGUNGU_NM -->
+<!-- 			,EUPMYEONDONG_NM  -->
+<!-- 		FROM ST_ADDR_DEPT2 -->
+<!-- 		WHERE 1=1 -->
+<!-- 		AND ${searchType} LIKE CONCAT('%',#{ searchData},'%') -->
+<!-- 		LIMIT 1 -->
+		
+<!--     </select> -->
+
+
+
+
+
+<!--     <select id="selectSidoInfoList" resultType="co.smartooth.web.vo.WebLocationVO"> -->
+		
+<!-- 		SELECT  -->
+<!-- 			SIDO_CD -->
+<!-- 			,SIDO_NM -->
+<!-- 		FROM ST_ADDR_DEPT1 -->
+		
+<!--     </select> -->
+    
+    
+    
+    
+    
+<!--     <select id="selectSigunguEupmyeondongInfoList" parameterType="String" resultType="co.smartooth.web.vo.WebLocationVO"> -->
+		
+<!-- 		SELECT  -->
+<!-- 			SIDO_CD -->
+<!-- 			,SGGEMD_CD -->
+<!-- 			,SIGUNGU_NM -->
+<!-- 			,EUPMYEONDONG_NM -->
+<!-- 			,OG_SEQ_NO -->
+<!-- 		FROM ST_ADDR_DEPT2 -->
+<!--  		WHERE 1=1  -->
+<!--  		<if test="locationType ==  'SIDO_CD'"> -->
+<!--  		AND ${locationType} = #{locationCd} -->
+<!--  		AND NULLIF(EUPMYEONDONG_NM,'') IS NULL -->
+<!--  		</if> -->
+<!--  		<if test="locationType ==  'SGGEMD_CD'"> -->
+<!--  		AND ${locationType} LIKE CONCAT(#{ locationCd},'%') -->
+<!--  		</if> -->
+<!--  		LIMIT 1, 1000 -->
+		
+<!--     </select> -->
+	    
+    
+    
+    
+    
+<!-- 지역별 기관 SEQ_NO 업데이트 (증가) -->
+<!--     <update id="updateOgSeqNo" parameterType="co.smartooth.web.vo.WebLocationVO"> -->
+<!-- 		UPDATE ST_ADDR_DEPT2 -->
+<!--   			 SET  OG_SEQ_NO= #{ogSeqNo} -->
+<!-- 	    WHERE  1=1 -->
+<!-- 	    AND SGGEMD_CD = #{sggemdCd} -->
+<!--     </update> -->
+
+
+
+
+
+</mapper>

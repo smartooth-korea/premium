@@ -1,0 +1,560 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'NanumSquareR';
+	src: url(/fonts/NanumSquareR.ttf) format('truetype');
+}
+
+body {
+	/* background: linear-gradient(to top right, #92b5db 0%, #1d466c 100%); */
+	/* background: #92b5db; */
+	background-image: url(/imgs/layout/statistics/diagnosis_background.jpg);
+    background-size: 3840px 2160px;
+    background-repeat: no-repeat;
+    font-family: 'NanumSquareR';
+    display: flex;
+    justify-content: center;
+}
+
+div{
+	font-family: 'NanumSquareR';
+}
+
+.row{
+	margin-top: 20px;	
+}
+
+.container {
+    min-width: 375px;
+    max-width: 375px;
+    margin-left: auto;
+    margin-right: auto;
+	width: 100%;
+}
+
+.input-form {
+    background: #ffffff;
+    padding-right: 0px;
+    padding-left: 0px;
+    box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+    min-width: 375px;
+    max-width: 375px;
+    border-radius: 20px;
+    height: 908px;
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    height: 38px;
+}
+
+.menu_btn{
+    display: flex;
+    border-top: 1px solid #EBEBEB;
+    border-left: 1px solid #EBEBEB;
+    border-right: 1px solid #EBEBEB;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-collapse: collapse;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+	width: 170px;
+    height: 100%;
+}
+
+#diagnosis_graph_btn{
+	color: #707070;
+	font-size: 13px;
+}
+
+#diagnosis_data_btn{
+	background-color: #EBEBEB;
+	font-weight: bold;
+    font-size: 16px;
+}
+
+.menu_btn:hover{
+	cursor: pointer;
+}
+
+#logout{
+	display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 9%;
+}
+
+#logout:hover{
+	cursor: pointer;
+}
+
+#logout_btn{
+    width: 30px;
+}
+
+.background {
+    background-image: url(/imgs/layout/statistics/diagnosis/diagnosis_main1.png);
+    background-size: 375px 870px;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 870px;
+}
+
+
+/** 결과지 회원 정보 및 측정일 */
+.container-top {
+    height: 90px;
+}
+
+.container-margin{
+	height: 22px;
+}
+
+.userName {
+    float: left;
+    margin-left: 61px;
+    margin-top: 9px;
+    font-size: 26px;
+    font-weight: bold;
+    width: 163px;
+}
+
+.measureDt-title{
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+    color: #878787;
+    font-size: 13px;
+}
+
+#measureDtList{
+	font-family: 'NanumSquareR';
+	font-size: 16px;
+    text-align: center;
+}
+
+.measureDt {
+    display: flex;
+    justify-content: center;
+    float: left;
+    width: 144px;
+}
+
+.contentsWrap {
+	display: flex;
+    width: 100%;
+    height: 427px;
+}
+
+.toothwrap{
+	position: relative;
+}
+
+.toothCondition {
+    width: 191px;
+   	height: 427px;
+}
+
+.teeth{
+	width: 100%;
+	height: 100%;
+}
+
+
+
+#t11{
+    position: absolute;
+    top: 17px;
+    left: 60px;
+    width: 39px;
+    height: 38px;
+}
+
+#t12{
+	position: absolute;
+    top: 31px;
+    left: 35px;
+    width: 33px;
+    height: 32px;
+}
+
+#t21{
+	position: absolute;
+    top: 17px;
+    left: 98px;
+    width: 39px;
+    height: 38px;
+}
+
+#t22{
+    position: absolute;
+    top: 30px;
+    left: 129px;
+    width: 34px;
+    height: 33px;
+}
+
+
+
+#t51 {
+	position: absolute;
+    top: 65px;
+    left: 66px;
+    width: 32px;
+    height: 22px;
+}
+
+#t52 {
+	position: absolute;
+    top: 75px;
+    left: 43px;
+    width: 24px;
+    height: 25px;
+}
+
+#t53 {
+    position: absolute;
+    top: 93px;
+    left: 26px;
+    width: 25px;
+    height: 28px;
+}
+
+#t54 {
+	position: absolute;
+    top: 118px;
+    left: 11px;
+    width: 37px;
+    height: 34px;
+}
+
+#t55 {
+	position: absolute;
+    top: 149px;
+    left: 3px;
+    width: 38px;
+    height: 42px;
+}
+
+/* 영구치 */
+#t16{
+    position: absolute;
+    top: 190px;
+    left: 1px;
+    width: 38px;
+    height: 33px;
+}
+
+
+#t61 {
+    position: absolute;
+    top: 66px;
+    left: 97px;
+    width: 33px;
+    height: 22px;
+}
+
+#t62 {
+    position: absolute;
+    top: 75px;
+    left: 128px;
+    width: 24px;
+    height: 24px;
+}
+
+#t63 {
+    position: absolute;
+    top: 93px;
+    left: 144px;
+    width: 25px;
+    height: 28px;
+}
+
+#t64 {
+	position: absolute;
+    top: 118px;
+    left: 147px;
+    width: 37px;
+    height: 34px;
+}
+
+#t65 {
+    position: absolute;
+    top: 149px;
+    left: 155px;
+    width: 37px;
+    height: 42px;
+}
+
+/* 영구치 */
+#t26{
+	position: absolute;
+    top: 190px;
+    left: 156px;
+    width: 38px;
+    height: 32px;
+}
+
+/* 영구치 */
+#t36{
+    position: absolute;
+    top: 228px;
+    left: 154px;
+    width: 41px;
+    height: 39px;
+}
+
+#t71 {
+	position: absolute;
+    top: 349px;
+    left: 98px;
+    width: 19px;
+    height: 16px;
+}
+
+#t72 {
+    position: absolute;
+    top: 343px;
+    left: 115px;
+    width: 20px;
+    height: 18px;
+}
+
+#t73 {
+	position: absolute;
+    top: 324px;
+    left: 128px;
+    width: 25px;
+    height: 27px;
+}
+
+#t74 {
+	position: absolute;
+    top: 298px;
+    left: 142px;
+    width: 32px;
+    height: 34px;
+}
+
+#t75 {
+    position: absolute;
+    top: 266px;
+    left: 152px;
+    width: 37px;
+    height: 37px;
+}
+
+
+#t81 {
+    position: absolute;
+    top: 349px;
+    left: 78px;
+    width: 20px;
+    height: 16px;
+}
+
+#t82 {
+    position: absolute;
+    top: 342px;
+    left: 60px;
+    width: 20px;
+    height: 19px;
+}
+
+#t83 {
+    position: absolute;
+    top: 324px;
+    left: 42px;
+    width: 24px;
+    height: 27px;
+}
+
+#t84 {
+    position: absolute;
+    top: 298px;
+    left: 21px;
+    width: 32px;
+    height: 34px;
+}
+
+#t85 {
+	position: absolute;
+    top: 267px;
+    left: 7px;
+    width: 37px;
+    height: 36px;
+}
+
+/* 영구치 */
+#t46{
+    position: absolute;
+    top: 228px;
+    left: -1px;
+    width: 39px;
+    height: 40px;
+}
+
+
+#t31{
+    position: absolute;
+    top: 377px;
+    left: 97px;
+    width: 23px;
+    height: 30px;
+}
+
+#t32{
+position: absolute;
+    top: 372px;
+    left: 115px;
+    width: 26px;
+    height: 31px;
+}
+
+#t41{
+	position: absolute;
+    top: 376px;
+    left: 75px;
+    width: 24px;
+    height: 31px;
+}
+
+#t42{
+	position: absolute;
+    top: 372px;
+    left: 55px;
+    width: 25px;
+    height: 31px;
+}
+
+
+.cavityAmount{
+	width: 113px
+}
+
+.cavityValue-danger-title {
+    width: 113px;
+    height: 25px;
+    text-align: center;
+    color: #E95050;
+}
+
+.cavityValue-caution-title {
+    width: 113px;
+    height: 25px;
+    text-align: center;
+    color: #E99C00;
+}
+
+.cavityValue-normal-title {
+  	width: 113px;
+    height: 25px;
+    text-align: center;
+    color: #68AE00;
+}
+
+.cavityValueHeight-top{
+	width: 113px;
+	height: 90px;
+}
+
+.cavityValueHeight-middle{
+	width: 113px;
+   	height: 40px;
+}
+
+.cavityValueHeight-bottom{
+	width: 113px;
+   	height: 40px;
+}
+
+.cavityValue{
+	height: 25px;
+    margin-right: 7px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+    width: 113px;
+    margin-top: 4px;
+}
+
+.comment {
+	width: 375px;
+}
+
+.comment-top {
+    height: 37px;
+    color: #ffffff;
+    font-size: 18px;
+    width: 55px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+	display: flex;
+    width: 375px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    height: 43px;
+    align-items: center;
+    justify-content: center;
+}
+
+.contents{
+
+}
+
+#diagDescript{
+/*     overflow-y: scroll; */
+/*     margin: 15px 0px 0px 20px; */
+/*     padding-right: 9px; */
+/*     color: #000000; */
+/*     font-size: 14px; */
+/*     font-weight: normal; */
+/*     line-height: 23px; */
+/*     height: 190px; */
+/*     width: 335px; */
+    overflow-y: scroll;
+    padding-left: 5px;
+    margin: 9px 0px 0px 20px;
+    padding-right: 9px;
+    color: #000000;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 23px;
+    height: 195px;
+    width: 330px;
+}
+
+#textarea_diagDescript{
+    width: 349px;
+   	height: 242px;
+	margin-left: 10px;
+	padding-top: 20px;
+}
+
+.contents-bottom-div{
+display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: 12px;
+    color: #7A7A7A;
+    height: 45px;
+    margin-top: 9px;
+}
+
+footer{
+	text-align: center;
+	font-size: 12px;
+}

@@ -1,0 +1,45 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'NanumSquareR';
+	src: url(/fonts/NanumSquareR.ttf) format('truetype');
+}
+
+ul{
+	font-family: 'NanumSquareR';
+}
+
+.sidebar-heading{
+    font-size: 14px;
+}
+
+.fas{
+	margin-left: 5px;
+}
+
+.collapse-item{
+	padding-left: 28px;
+	font-size: 12px; font-weight: normal;	
+}
+
+.collapse-header{
+	color: #318CDD;
+	text-shadow: 0px 0px 0px #318CDD;
+}
+
+a.menu-link{
+	font-size: 12px;
+}
+
+a.menu-link:hover{
+	font-size: 14px;
+	color: #318CDD;
+	text-decoration: none;
+}
+
+h6{
+	color: #318CDD;
+}
+
+.notice{
+	padding-left: 6px;
+}

@@ -1,0 +1,449 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'NanumSquareR';
+	src: url(/fonts/NanumSquareR.ttf) format('truetype');
+/* 	font-family: 'AppleSDGothicNeoB'; */
+/* 	src: url(/fonts/AppleSDGothicNeoB.ttf) format('truetype'); */
+}
+
+
+.teeth{
+	width:100%;
+	height:100%;
+}
+
+.menu-btn:hover{
+	cursor: pointer;
+}
+
+@media all and (min-width:375px) {
+	
+	body {
+		font-family: NanumSquareR;
+	    margin: 0px 0px 0px 0px;
+	    height: 1215px;
+	}
+	
+	hr{
+	    margin: 11px 0px 0px 15px;
+	    width: 318px;
+	    color: #4b4b4b;
+	    overflow: auto;
+	}
+	
+	button{
+		font-family: NanumSquareR;
+		height: 36px;
+	    width: 58px;
+	    margin-left: 5px;
+	}
+	
+	input{
+        width: 265px;
+	    height: 30px;
+	    font-size: 14px;
+	    margin-top: 5px;
+	    margin-left: 10px;
+	    font-family: NanumSquareR;
+	}
+	
+	textarea{
+		height: 220px;
+    	width: 337px;
+    	margin-left: 10px;
+		font-family: NanumSquareR;
+	}
+	
+	.menu{
+		height: 38px;
+	    text-align: center;
+	}
+	
+	.container {
+		background-image: url(/imgs/layout/main/test/statistics_main_bg.png);
+	    background-size: 375px 566px;
+	    background-repeat: no-repeat;
+	    background-position-x: center;
+		height: 855px;
+    	width: 375px;
+	}
+	
+	.container-top {
+	    height: 90px;
+	}
+	
+	.userName {
+	    float: left;
+	    width: 126px;
+	    margin-left: 16%;
+	    margin-top: 6px;
+	    font-size: 26px;
+	    font-weight: bold;
+	}
+	
+	.measureDt {
+	    float: left;
+		width: 42%;
+	    margin-right: 8%;
+	    padding-top: 2px;
+	    margin-top: 5px;
+	    text-align: right;
+	    font-size: 17px;
+	}
+	
+	.measureDt-title{
+        margin-left: 272px;
+	    font-size: 13px;
+	    color: #878787;
+	}
+	
+	.container-margin{
+		height: 27px;
+	}
+	
+	.contentsWrap {
+		display: flex;
+	    width: 100%;
+	    height: 377px;
+	}
+	
+	.toothCondition {
+	    width: 646px;
+    	height: 378px;
+	}
+	
+	.cavityAmount {
+	    width: 375px;
+	    margin-left: 0%;
+	    height: 378px;
+	}
+	
+	
+	#t51 {
+	    position: absolute;
+	    top: 161px;
+	    left: 85px;
+	    width: 34px;
+	    height: 24px;
+	}
+	
+	#t52 {
+        position: absolute;
+	    top: 170px;
+	    left: 63px;
+	    width: 25px;
+	    height: 27px;
+	}
+	
+	#t53 {
+        position: absolute;
+	    top: 191px;
+	    left: 46px;
+	    width: 26px;
+	    height: 29px;
+	}
+	
+	#t54 {
+	    position: absolute;
+	    top: 216px;
+	    left: 32px;
+	    width: 36px;
+	    height: 37px;
+	}
+	
+	#t55 {
+		position: absolute;
+	    top: 250px;
+	    left: 23px;
+	    width: 38px;
+	    height: 43px;
+	}
+	
+	
+	#t61 {
+	    position: absolute;
+	    top: 161px;
+	    left: 119px;
+	    width: 32px;
+	    height: 23px;
+	}
+	
+	#t62 {
+		position: absolute;
+	    top: 171px;
+	    left: 149px;
+	    width: 24px;
+	    height: 25px;
+	}
+	
+	#t63 {
+        position: absolute;
+	    top: 191px;
+	    left: 165px;
+	    width: 26px;
+	    height: 29px;
+	}
+	
+	#t64 {
+        position: absolute;
+	    top: 216px;
+	    left: 169px;
+	    width: 36px;
+	    height: 37px;
+	}
+	
+	#t65 {
+		position: absolute;
+	    top: 249px;
+	    left: 176px;
+	    width: 38px;
+	    height: 44px;
+	}
+	
+	
+	#t71 {
+        position: absolute;
+	    top: 459px;
+	    left: 119px;
+	    width: 19px;
+	    height: 17px;
+	}
+	
+	#t72 {
+        position: absolute;
+	    top: 452px;
+	    left: 136px;
+	    width: 21px;
+	    height: 20px;
+	}
+	
+	#t73 {
+		position: absolute;
+	    top: 434px;
+	    left: 150px;
+	    width: 25px;
+	    height: 28px;
+	}
+	
+	#t74 {
+	    position: absolute;
+	    top: 407px;
+	    left: 163px;
+	    width: 32px;
+	    height: 34px;
+	}
+	
+	#t75 {
+        position: absolute;
+	    top: 372px;
+	    left: 173px;
+	    width: 37px;
+	    height: 39px;
+	}
+	
+	#t81 {
+        position: absolute;
+	    top: 460px;
+	    left: 99px;
+	    width: 20px;
+	    height: 16px;
+	}
+	
+	#t82 {
+	    position: absolute;
+	    top: 453px;
+	    left: 80px;
+	    width: 21px;
+	    height: 20px;
+	}
+	
+	#t83 {
+		position: absolute;
+	    top: 434px;
+	    left: 62px;
+	    width: 25px;
+	    height: 28px;
+	}
+	
+	#t84 {
+	    position: absolute;
+	    top: 407px;
+	    left: 41px;
+	    width: 33px;
+	    height: 34px;
+	}
+	
+	#t85 {
+	    position: absolute;
+	    top: 372px;
+	    left: 27px;
+	    width: 36px;
+	    height: 39px;
+	}
+	
+	
+	
+	
+	
+/**영구치만 별도**/
+
+	#t56 {
+	   position: absolute;
+	   top: 294px;
+	   left: 22px;
+	   width: 35px;
+	   height: 34px;
+	}
+	
+	#t66 {
+		position: absolute;
+	    top: 292px;
+	    left: 178px;
+	    width: 35px;
+	    height: 36px;
+	}
+	
+	#t76 {
+		position: absolute;
+	    top: 338px;
+	    left: 178px;
+	    width: 35px;
+	    height: 35px;
+	}
+	
+	#t86 {
+	    position: absolute;
+	    top: 338px;
+	    left: 22px;
+	    width: 35px;
+	    height: 35px;
+	}
+	
+	
+	.cavityValue-danger-title {
+	    width: 115px;
+	    height: 25px;
+	    text-align: center;
+	    color: #E95050;
+	}
+	
+	.cavityValue-caution-title {
+	    width: 115px;
+	    height: 25px;
+	    text-align: center;
+	    color: #E99C00;
+	}
+
+	.cavityValue-normal-title {
+	    width: 115px;
+	    height: 25px;
+	    text-align: center;
+	    color: #68AE00;
+	}
+	
+	.cavityValueHeight-top{
+		width: 115px;
+		height: 72px;
+	}
+	
+	.cavityValueHeight-middle{
+		width: 115px;
+    	height: 40px;
+	}
+	
+	.cavityValueHeight-bottom{
+		width: 115px;
+    	height: 40px;
+	}
+
+	.cavityValue{
+		height: 25px;
+	    margin-right: 7px;
+	    font-size: 25px;
+	    font-weight: bold;
+	    text-align: center;
+	    width: 115px;
+	    margin-top: 4px;
+	}
+	
+	
+/* 코멘트 부분 */
+	.comment-top {
+		height: 34px;
+	    color: #ffffff;
+	    font-size: 18px;
+	    margin-top: 18px;
+	    margin-left: 18px;
+	    width: 190px;
+	    margin-left: 30px;
+	}
+	
+	.commonWidth125Height25 {
+		width: 120px;
+		height: 25px;
+	}
+	
+	.commonWidthAutoHeight8 {
+		width: auto;
+	    height: 8px;
+	}
+	
+	.title {
+		width: 375px;
+		padding-top: 18px;
+	    font-size: 14px;
+	    text-align: center;
+	    font-weight: bold;
+	}
+	
+	.contents{
+		border-left: 11.9px solid #959595;
+	    border-right: 11px solid #959595;
+	    width: 352px;
+	    height: 265px;
+	}
+	
+	#diagDescript{
+		line-height: 18px;
+		margin: 0px 0px 0px 17px;
+	    width: 325px;
+	    font-weight: normal;
+	    font-size: 14.5px;
+	    color: #000000;
+	    padding-right: 12px;
+        padding-top: 20px;
+	}
+	
+	.comment {
+		width: 375px;
+		height: 330px;
+	}
+	
+	#textarea_diagDescript{
+	    width: 349px;
+    	height: 242px;
+		margin-left: 10px;
+		padding-top: 20px;
+	}
+	
+	.contents-bottom-div{
+		background-image: url(/imgs/layout/main/test/statistics_main_bg-bottom.png);
+	    background-size: 375px 55px;
+	    background-repeat: no-repeat;
+	    /* background-position-x: center; */
+	    height: 100px;
+	    width: 375px;
+	}
+	
+	.contents-bottom{
+		line-height: 18px;
+	    margin-left: 37px;
+	    margin-right: 0px;
+	    font-size: 12.5px;
+	    font-weight: normal;
+	    color: #414141;
+	    width: 315px;
+	    padding-top: 5px;
+	
+	}
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.smartooth.premium.mapper.LogMapper">
+
+
+    <!-- 로그인 기록 등록 -->
+	<insert id="insertUserLoginHistory" parameterType="co.smartooth.premium.vo.AuthVO">
+		
+		INSERT INTO ST_USER_LOGIN_HISTORY
+			(	
+				USER_NO
+				,USER_ID
+				,USER_TYPE
+				,LOGIN_DT
+				,LOGIN_RESULT_CODE
+				,LOGIN_IP
+			)
+		VALUES
+			(
+				#{userNo}
+				,#{userId}
+				,#{userType}
+				,SYSDATE()
+				,#{loginResult}
+				,#{loginIp}
+			)
+			
+	</insert>
+
+
+
+
+
+    <!-- 접속일 업데이트 -->
+    <update id="updateLoginDt" parameterType="co.smartooth.premium.vo.AuthVO">
+		
+		UPDATE ST_USER
+  			SET  LOGIN_DT = #{loginDt}
+	    WHERE  1=1
+	    AND USER_ID = #{userId}
+	     
+    </update>
+    
+    
+	
+	
+	
+    <!-- 로그인 횟수 증가 -->
+    <update id="updateLoginCount" parameterType="co.smartooth.premium.vo.AuthVO">
+		
+		UPDATE ST_USER
+  			SET  LOGIN_CK = LOGIN_CK + 1
+	    WHERE  1=1
+	    AND USER_ID = #{userId}
+	     
+    </update>
+
+
+
+
+
+</mapper>

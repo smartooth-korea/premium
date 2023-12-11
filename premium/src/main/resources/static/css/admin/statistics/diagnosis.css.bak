@@ -1,0 +1,437 @@
+@charset "UTF-8";
+@font-face {
+	font-family: 'AppleSDGothicNeoB';
+	src: url(/fonts/AppleSDGothicNeoB.ttf) format('truetype');
+}
+
+
+.teeth{
+	width:100%;
+	height:100%;
+}
+
+.menu-btn:hover{
+	cursor: pointer;
+}
+
+@media all and (min-width:375px) {
+	
+	body {
+		font-family: AppleSDGothicNeoB;
+	    margin: 0px 0px 0px 0px;
+	    height: 1215px;
+	}
+	
+	hr{
+	    margin: 11px 0px 0px 15px;
+	    width: 318px;
+	    color: #4b4b4b;
+	    overflow: auto;
+	}
+	
+	button{
+		font-family: AppleSDGothicNeoB;
+		height: 36px;
+	    width: 58px;
+	    margin-left: 5px;
+	}
+	
+	input{
+        width: 265px;
+	    height: 30px;
+	    font-size: 14px;
+	    margin-top: 5px;
+	    margin-left: 10px;
+	    font-family: AppleSDGothicNeoB;
+	}
+	
+	textarea{
+		height: 220px;
+    	width: 337px;
+    	margin-left: 10px;
+		font-family: AppleSDGothicNeoB;
+	}
+	
+	.menu{
+		height: 38px;
+	    text-align: center;
+	}
+	
+	.container {
+		background-image: url(/imgs/layout/main/statistics_main_bg.png);
+/* 		background-image: url(/imgs/layout/main/statistics_main_bg_bak.png); */
+	    background-size: 415px 837px;
+	    background-repeat: no-repeat;
+	    background-position-x: center;
+	    height: 837px;
+    	width: 415px;
+	}
+	
+	.container-top {
+	    height: 90px;
+	}
+	
+	.userName {
+	    width: 140px;
+	    float: left;
+	    margin-left: 16%;
+	    margin-top: 4px;
+	    font-size: 27px;
+	}
+	
+	.measureDt {
+		width: 40%;
+	    float: left;
+	    margin-right: 8%;
+	    padding-top: 2px;
+	    text-align: right;
+	    font-size: 17px;
+	}
+	
+	.measureDt-title{
+        margin-left: 305px;
+	    font-size: 13px;
+	    color: #878787;
+	}
+	
+	.container-margin{
+		height: 27px;
+	}
+	
+	.contentsWrap {
+		display: flex;
+	    width: 100%;
+	    height: 377px;
+	}
+	
+	.toothCondition {
+	    width: 646px;
+    	height: 378px;
+	}
+	
+	.cavityAmount {
+	    width: 375px;
+	    margin-left: 0%;
+	    height: 378px;
+	}
+	
+	
+	#t51 {
+	    position: absolute;
+	    top: 161px;
+	    left: 95px;
+	    width: 35px;
+	    height: 23px;
+	}
+	
+	#t52 {
+        position: absolute;
+	    top: 170px;
+	    left: 70px;
+	    width: 27px;
+	    height: 26px;
+	}
+	
+	#t53 {
+        position: absolute;
+	    top: 190px;
+	    left: 50px;
+	    width: 29px;
+	    height: 30px;
+	}
+	
+	#t54 {
+	    position: absolute;
+	    top: 216px;
+	    left: 36px;
+	    width: 39px;
+	    height: 37px;
+	}
+	
+	#t55 {
+		position: absolute;
+	    top: 250px;
+	    left: 26px;
+	    width: 41px;
+	    height: 44px;
+	}
+	
+	
+	#t61 {
+		position: absolute;
+	    top: 161px;
+	    left: 131px;
+	    width: 35px;
+	    height: 23px;
+	}
+	
+	#t62 {
+		position: absolute;
+	    top: 169px;
+	    left: 165px;
+	    width: 27px;
+	    height: 28px;
+	}
+	
+	#t63 {
+        position: absolute;
+	    top: 191px;
+	    left: 183px;
+	    width: 28px;
+	    height: 29px;
+	}
+	
+	#t64 {
+        position: absolute;
+	    top: 216px;
+	    left: 187px;
+	    width: 39px;
+	    height: 37px;
+	}
+	
+	#t65 {
+		position: absolute;
+	    top: 249px;
+	    left: 194px;
+	    width: 42px;
+	    height: 44px;
+	}
+	
+	
+	#t71 {
+	    position: absolute;
+	    top: 458px;
+	    left: 130px;
+	    width: 21px;
+	    height: 17px;
+	}
+	
+	#t72 {
+        position: absolute;
+	    top: 452px;
+	    left: 151px;
+	    width: 21px;
+	    height: 20px;
+	}
+	
+	#t73 {
+		position: absolute;
+	    top: 432px;
+	    left: 166px;
+	    width: 26px;
+	    height: 28px;
+	}
+	
+	#t74 {
+	    position: absolute;
+	    top: 406px;
+	    left: 180px;
+	    width: 36px;
+	    height: 34px;
+	}
+	
+	#t75 {
+        position: absolute;
+	    top: 372px;
+	    left: 191px;
+	    width: 41px;
+	    height: 39px;
+	}
+	
+	#t81 {
+        position: absolute;
+	    top: 459px;
+	    left: 109px;
+	    width: 20px;
+	    height: 16px;
+	}
+	
+	#t82 {
+	    position: absolute;
+	    top: 452px;
+	    left: 89px;
+	    width: 22px;
+	    height: 20px;
+	}
+	
+	#t83 {
+		position: absolute;
+	    top: 433px;
+	    left: 68px;
+	    width: 28px;
+	    height: 28px;
+	}
+	
+	#t84 {
+	    position: absolute;
+	    top: 406px;
+	    left: 45px;
+	    width: 36px;
+	    height: 34px;
+	}
+	
+	#t85 {
+	    position: absolute;
+	    top: 372px;
+	    left: 29px;
+	    width: 41px;
+	    height: 38px;
+	}
+	
+	
+	
+	
+	
+/**영구치만 별도**/
+
+	#t56 {
+	   position: absolute;
+	   top: 292px;
+	   left: 25px;
+	   width: 38px;
+	   height: 36px;
+	}
+	
+	#t66 {
+		position: absolute;
+	    top: 292px;
+	    left: 197px;
+	    width: 38px;
+	    height: 36px;
+	}
+	
+	#t76 {
+		position: absolute;
+	    top: 337px;
+	    left: 197px;
+	    width: 37px;
+	    height: 35px;
+	}
+	
+	#t86 {
+	    position: absolute;
+	    top: 337px;
+	    left: 25px;
+	    width: 38px;
+	    height: 35px;
+	}
+	
+	
+	.cavityValue-danger-title {
+	    width: 125px;
+	    height: 25px;
+	    text-align: center;
+	    color: #E95050;
+	}
+	
+	.cavityValue-caution-title {
+	    width: 125px;
+	    height: 25px;
+	    text-align: center;
+	    color: #E99C00;
+	}
+
+	.cavityValue-normal-title {
+	    width: 125px;
+	    height: 25px;
+	    text-align: center;
+	    color: #68AE00;
+	}
+	
+	.cavityValueHeight-top{
+		width: 125px;
+		height: 72px;
+	}
+	
+	.cavityValueHeight-middle{
+		width: 125px;
+    	height: 40px;
+	}
+	
+	.cavityValueHeight-bottom{
+		width: 125px;
+    	height: 40px;
+	}
+
+	.cavityValue{
+		height: 25px;
+	    margin-right: 7px;
+	    font-size: 25px;
+	    font-weight: bold;
+	    text-align: center;
+	    width: 125px;
+	}
+	
+	
+/* 코멘트 부분 */
+	.comment-top {
+		width: auto;
+	    height: 34px;
+	    color: #ffffff;
+	    font-size: 18px;
+	    margin-top: 18px;
+	    margin-left: 18px;
+	}
+	
+	.commonWidth125Height25 {
+		width: 120px;
+		height: 25px;
+	}
+	
+	.commonWidthAutoHeight8 {
+		width: auto;
+	    height: 8px;
+	}
+	
+	.title {
+	    padding-top: 16px;
+	    height: 40px;
+	    width: 390px;
+	    font-size: 13.5px;
+	    text-align: center;
+	    font-family: Malgun Gothic;
+	    font-weight: bold;
+	}
+	
+	.contents{
+       height: 198px;
+    	width: 352px;
+	}
+	
+	#diagDescript{
+		margin: 5px 0px 0px 25px;
+	    height: 195px;
+	    height: 180px;
+	    width: 360px;
+	    overflow: auto;
+	    font-weight: normal;
+	    font-size: 14.5px;
+	    color: #000000;
+	    padding-right: 12px;
+	    font-family: Malgun Gothic;
+	    font-weight: bold;
+	}
+	
+	.comment {
+		width: 390px;
+	    margin-left: 12px;
+        height: 330px;
+	}
+	
+	#textarea_diagDescript{
+	    width: 349px;
+    	height: 242px;
+		margin-left: 10px;
+	}
+	
+	.contents-bottom{
+	    margin-top: 5px;
+	    margin-left: 22px;
+	    margin-right: 0px;
+	    font-size: 12.5px;
+	    font-weight: normal;
+	    color: #414141;
+	    width: 350px;
+	
+	}
+}

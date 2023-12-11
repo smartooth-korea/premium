@@ -1,0 +1,50 @@
+#스마투프 프리미엄 운영 서버 - 유치원, 어린이집 측정 앱
+#지역 : KR (한국 - 서울)
+spring:
+    profiles:
+        active: school
+
+    datasource:
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        db-url: jdbc:log4jdbc:mariadb://smartooth-premium-dev.cdx8q9adtw2b.ap-northeast-2.rds.amazonaws.com/smartooth_premium
+        db-username: smartooth
+        db-password: smartooth509#
+        
+    loginUrl: 13.209.156.47:8091
+
+        
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+        static-path-pattern : /static/**
+
+        
+    mailsendername: Smartooth KOREA
+    mailusername: contact@smartooth.co
+    mailpassword: lKX7ucWCMADB
+  
+  
+    mybatis:
+        configuration:
+            map-underscore-to-camel-case: 'true'
+
+
+    jwt:
+        secretKey: tmakxntmzhfldk
+        
+        
+    web:
+        resources:
+            static-locations : classpath:/static-location/
+
+server:
+    ip: 13.209.156.47
+    port: 8091
+
+            
+#---
+#spring:
+#    web:
+#        resources:
+#            add-mappings: 'true'
