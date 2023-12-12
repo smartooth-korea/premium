@@ -774,7 +774,7 @@ public class UserController {
 //		if(validation) {
 //		    return "/user/resetUserPwd";
 //		}else {
-//			return "/status/500_mailAuth";
+//			return "/common/status/500_mailAuth";
 //		}
 //	  }
 //	

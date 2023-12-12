@@ -48,15 +48,12 @@ public class InterceptorController {
 		if(sessionVO == null) {
 			
 			if(serverPort == 8094) {
-				//return "/web/login/loginForm";
 				return "/web/login/schoolLoginForm";
 			}else {
-				//return "/web/login/loginForm";
 				return "/web/login/schoolLoginForm";
 			}
 			
 		}else {
-			// return "redirect:/web/statistics/diagnosis.do";
 			return "redirect:/web/statistics/general/diagnosis.do";
 		}
 	}
@@ -121,49 +118,7 @@ public class InterceptorController {
 		return "redirect:/web/statistics/general/graph.do";
 		
 	}
-	
-	
-	
-//	/**
-//	 * WEB
-//	 * 기능 : 그래프 호출 - 학교,유치원,어린이집
-//	 * 작성자 : 정주현
-//	 * 작성일 : 2023. 11. 24
-//	 */
-//	@GetMapping(value = { "/web/statistics/diagnosis" })
-//	public String webDiagnosis(HttpServletRequest request, HttpSession session) throws Exception {
-//
-//		// 세션 값
-//		UserVO sessionVO = (UserVO) session.getAttribute("userInfo");
-//		if (sessionVO == null) {
-//			return "/web/login/loginForm";
-//		}
-//		return "redirect:/web/statistics/diagnosis.do";
-//		
-//	}
-	
-	
-	
-//	/**
-//	 * WEB
-//	 * 기능 : 그래프 호출 - 학교,유치원,어린이집
-//	 * 작성자 : 정주현
-//	 * 작성일 : 2023. 11. 24
-//	 */
-//	@GetMapping(value = { "/web/statistics/graph" })
-//	public String webGraph(HttpServletRequest request, HttpSession session) throws Exception {
-//
-//		// 세션 값
-//		UserVO sessionVO = (UserVO) session.getAttribute("userInfo");
-//		if (sessionVO == null) {
-//			return "/web/login/loginForm";
-//		}
-//		return "redirect:/web/statistics/graph.do";
-//		
-//	}
-	
-	
-	
+
 	
 	
 }

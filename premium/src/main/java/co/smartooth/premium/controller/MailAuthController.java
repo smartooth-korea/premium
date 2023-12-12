@@ -60,14 +60,14 @@ public class MailAuthController {
 		decId = aes256Util.aesDecode(userId);
 		
 		if(decAuthKey.contains("false")) {
-			return "/status/403";
+			return "/common/status/403";
 		}
 		// 인증 메일 상태 'Y'로 변경
 		mailAuthService.updateAuthStatusY(decId);
 
 		// authSatus의 상태를 JSON으로 return
 		hm.put("msg", "메일 인증 성공");
-		return "/status/200";
+		return "/common/status/200";
 
 	}
 	
