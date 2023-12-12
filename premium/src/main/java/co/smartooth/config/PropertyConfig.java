@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * 작성자 : 정주현 
- * 작성일 : 2022. 4. 28 ~
+ * 작성일 : 2023. 11. 09
  */
 @Configuration
 public class PropertyConfig {

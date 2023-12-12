@@ -30,7 +30,6 @@ public class JwtTokenUtil{
         claims.put("userId", userId);  //아이디
         // claims.put("roles", new Object() );  //객체도 가능합니다 ^^
         Date now = new Date();
-        
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) 
                 .setClaims(claims) // 데이터를 넣어 줍니다
@@ -50,6 +49,7 @@ public class JwtTokenUtil{
             return false;
         }
     }
+    
     
     // Jwt Token에서 데이터를 전달 합니다.
     public Claims getInformation(String token) {

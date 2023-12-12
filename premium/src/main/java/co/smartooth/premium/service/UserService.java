@@ -39,10 +39,6 @@ public interface UserService {
 	
 	
 	
-	
-	
-	
-	
 	/** 유치원, 어린이집 **/
 	// 아이디 중복 체크
 	public int duplicateChkId(@Param("userId") String userId) throws Exception;
@@ -52,7 +48,7 @@ public interface UserService {
 	public void insertUserInfo(UserVO userVO) throws Exception;
 	
 	
-	//  계정(피측정자-원아) 상세 정보 등록 
+	// 계정(피측정자-원아) 상세 정보 등록 
 	public void insertStudentUserDetail(@Param("userId") String userId, @Param("schoolType") String schoolType, @Param("classCode") String classCode) throws Exception;
 		
 		

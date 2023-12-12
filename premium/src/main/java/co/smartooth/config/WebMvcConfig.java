@@ -6,9 +6,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
- * 작성일 : 2022-07-18
- * 작성자 : 정주현
  * 기능 : Resources Path Mapping
+ * 작성일 : 2023. 11. 09
+ * 작성자 : 정주현
  * */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{

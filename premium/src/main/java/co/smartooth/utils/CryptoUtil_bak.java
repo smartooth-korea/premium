@@ -27,9 +27,7 @@ public class CryptoUtil_bak {
 		SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
 		IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
 		cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
-		
 		byte[] encrypted = cipher.doFinal(text.getBytes("UTF-8"));
-		
 		return java.util.Base64.getEncoder().encodeToString(encrypted);
 		
 	}
@@ -45,7 +43,6 @@ public class CryptoUtil_bak {
 			SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
 			IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
-		
 			decodedBytes = java.util.Base64.getDecoder().decode(cipherText);
 			decrypted = cipher.doFinal(decodedBytes);
 			return new String(decrypted, "UTF-8");

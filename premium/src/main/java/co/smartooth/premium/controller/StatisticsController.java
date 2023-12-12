@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import co.smartooth.premium.service.AuthService;
 import co.smartooth.premium.service.DiagnosisService;
-import co.smartooth.premium.service.LogService;
-import co.smartooth.premium.service.MailAuthService;
 import co.smartooth.premium.service.OrganService;
 import co.smartooth.premium.service.TeethService;
 import co.smartooth.premium.service.UserService;
@@ -54,14 +51,14 @@ public class StatisticsController {
 	private OrganService organService;
 	
 	
-
 	
 	// 사용자 인증 토큰 검증
 	private static boolean tokenValidation = false;
 	
 	
+	
 	/**
-	 * APP
+	 * APP (유치원, 어린이집 조회)
 	 * 기능 : 앱 내 결과지 조회
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 14
@@ -403,7 +400,7 @@ public class StatisticsController {
 	
 	
 	/**
-	 * APP
+	 * APP (유치원, 어린이집 조회)
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 14
 	 * 기능 : 앱 내 그래프 생성
@@ -414,8 +411,6 @@ public class StatisticsController {
 
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		
-		// 그래프 통계 계산 여부
-		int isGraphStatisticsCalculation = 0;
 		// 자녀(피측정자) 아이디
 		String studentUserId = (String)paramMap.get("studentUserId");
 		// 측정일
@@ -429,7 +424,6 @@ public class StatisticsController {
 		// 악화지수 최대 값
 		double deteriorateMaxScore = 0;
 
-		TeethMeasureVO webTeethMeasureVO = new TeethMeasureVO();
 		List<HashMap<String, Object>> dataList = new ArrayList<HashMap<String, Object>>();
 		List<Double> deteriorateScoreList = new ArrayList<Double>();
 		List<Integer> cavityCntList = new ArrayList<Integer>();
@@ -437,8 +431,6 @@ public class StatisticsController {
 		List<Double> userFearScoreList = new ArrayList<Double>();
 		
 		try {
-			// 통계작업이 끝나지 않은 경우 return
-//			 if(isGraphStatisticsCalculation > 0) {
 				// 유치원,어린이집 소속 자녀(피측정자) 측정 값 목록
 				dataList = teethService.selectUserMeasureStatisticsList(schoolCode, measureDt);
 	
@@ -455,9 +447,7 @@ public class StatisticsController {
 					long monthcount = (long) dataList.get(i).get("MONTH_COUNT");
 	
 					// 유치 및 영구치 >>  주의(caution) 치아 및 충치(danger) 치아 개수
-					int cavityCautionCnt = Integer.parseInt(dataList.get(i).get("CAVITY_CAUTION").toString());
 					int cavityDangerCnt = Integer.parseInt(dataList.get(i).get("CAVITY_DANGER").toString());
-					int permCavityCautionCnt = Integer.parseInt(dataList.get(i).get("PERM_CAVITY_CAUTION").toString());
 					int permCavityDangerCnt = Integer.parseInt(dataList.get(i).get("PERM_CAVITY_DANGER").toString());
 	
 					// 악화지수
@@ -521,11 +511,7 @@ public class StatisticsController {
 				hm.put("msg", "조회 성공");
 				hm.put("code", "000");
 				return hm;
-//			}else {
-//				hm.put("code", "410");
-//				hm.put("msg", "통계 계산이 완료되지 않았습니다.");
-//				return hm;
-//			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			hm.put("code", "500");
@@ -537,7 +523,7 @@ public class StatisticsController {
 	
 	
 	/**
-	 * WEB
+	 * WEB (유치원, 어린이집 조회)
 	 * 기능 : 결과 진단지 로직 - 학교,유치원,어린이집
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 30
@@ -1259,8 +1245,8 @@ public class StatisticsController {
 	
 	
 	/**
-	 * WEB
-	 * 기능 : 그래프 생성 - 학교,유치원,어린이집
+	 * WEB (유치원, 어린이집 조회)
+	 * 기능 : 그래프 조회 - 학교,유치원,어린이집
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 24
 	 */
@@ -1278,10 +1264,8 @@ public class StatisticsController {
 		 
 		try {
 
-			String paUserId = null;
 			String userId = null;
 			String userName = null;
-			String userType = sessionVO.getUserType();
 			String schoolCode = sessionVO.getSchoolCode();
 			
 			userId = sessionVO.getUserId();
@@ -1415,7 +1399,7 @@ public class StatisticsController {
 	
 	
 	/**
-	 * WEB
+	 * WEB (유치원, 어린이집 조회)
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 30
 	 * 기능 : 그래프 조회 - selectbox (파라미터 : 측정일)
@@ -1481,16 +1465,16 @@ public class StatisticsController {
 					deteriorateMaxScore = deteriorateScore;
 				}
 
-//				if(selectUserType != null && !selectUserType.equals("")) {
-//					stUserName = stUserName + "(" + monthcount + ")";
-//				}else {
+				//if(selectUserType != null && !selectUserType.equals("")) {
+				//stUserName = stUserName + "(" + monthcount + ")";
+				//}else {
 					// 진단지 조회한 회원과 이름리스트의 이름이 일치하지 않을 경우 = 001~999로 표기
 					if (!userName.equals(studentUserName)) {
 						studentUserName = String.format("%03d", i + 1) + "(" + monthcount + ")";
 					} else {
 						studentUserName = studentUserName + "(" + monthcount + ")";
 					}
-//				}
+				//}
 				
 				// 두려움에 대한 처리 (하드코딩)
 				if (deteriorateScore > 0 && diagCd.contains("E:001:1")) {
@@ -1556,7 +1540,8 @@ public class StatisticsController {
 	
 	
 	/**
-	 * 기능 : 로그인 >> 진단지 & 그래프 (기관장용)
+	 * WEB (유치원, 어린이집 조회)
+	 * 기능 : 기관장용 - 진단지 & 그래프 통합
 	 * 작성자 : 정주현
 	 * 작성일 : 2022. 12. 07
 	 */
@@ -1622,7 +1607,6 @@ public class StatisticsController {
 				}
 			}
 			
-			
 			// 부서 목록
 			departmentList = organService.selectClassList(schoolCode);
 			// 부서 이름
@@ -1679,8 +1663,8 @@ public class StatisticsController {
 	
 	
 	/**
-	 * WEB - 기관장용
-	 * 기능 : 결과지 조회 (측정일 선택 시 작동)
+	 * WEB (유치원, 어린이집 조회)
+	 * 기능 : 기관장용 - 결과지 조회 (측정일 선택 시 작동)
 	 * 작성자 : 정주현
 	 * 작성일 : 2022. 11. 28
 	 * 수정일 : 2023. 08. 03
@@ -2025,10 +2009,10 @@ public class StatisticsController {
 	
 	
 	/**
-	 * WEB - 기관장용
+	 * WEB (유치원, 어린이집 조회)
+	 * 기능 : 기관장용 - 그래프 조회 - selectbox (파라미터 : 측정일)
 	 * 작성자 : 정주현
 	 * 작성일 : 2023. 11. 30
-	 * 기능 : 그래프 조회 - selectbox (파라미터 : 측정일)
 	 */
 	@SuppressWarnings("unused")
 	@PostMapping(value = { "/web/statistics/director/ajaxGraph"})
@@ -2059,9 +2043,6 @@ public class StatisticsController {
 			List<String> userNameList = new ArrayList<String>();
 			List<Double> userFearScoreList = new ArrayList<Double>();
 			
-			// 법정대리인 아이디로 자녀(피측정자) 이름 조회
-			// userName = userService.selectChUserName(userId);
-			// 기관 내 자녀(피측정자) 데이터 통계 작업 후 조회
 			dataList = teethService.selectUserMeasureStatisticsList(schoolCode, measureDt);
 
 			for (int i = 0; i < dataList.size(); i++) {
@@ -2091,16 +2072,16 @@ public class StatisticsController {
 					deteriorateMaxScore = deteriorateScore;
 				}
 
-//				if(selectUserType != null && !selectUserType.equals("")) {
-//					stUserName = stUserName + "(" + monthcount + ")";
-//				}else {
+				//if(selectUserType != null && !selectUserType.equals("")) {
+				//stUserName = stUserName + "(" + monthcount + ")";
+				//}else {
 					// 진단지 조회한 회원과 이름리스트의 이름이 일치하지 않을 경우 = 001~999로 표기
 					if (!userName.equals(studentUserName)) {
 						studentUserName = String.format("%03d", i + 1) + "(" + monthcount + ")";
 					} else {
 						studentUserName = studentUserName + "(" + monthcount + ")";
 					}
-//				}
+				//}
 				
 				// 두려움에 대한 처리 (하드코딩)
 				if (deteriorateScore > 0 && diagCd.contains("E:001:1")) {

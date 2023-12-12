@@ -21,7 +21,7 @@ public class InterceptorController {
 	
 	
 	/**
-	 * Web
+	 * WEB
 	 * 기능 : 개인정보 동의서 화면
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 15

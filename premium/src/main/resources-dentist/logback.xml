@@ -28,7 +28,7 @@
             <!-- Local Log Location -->
 <!--             <fileNamePattern>C:\logs\logback-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern> -->
             <!-- Server Log Location -->
-            <fileNamePattern>/home/ubuntu/logs/premium/smartooth-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/logs/dentist/smartooth-dentist-log-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- or whenever the file size reaches 100MB -->
                 <maxFileSize>25MB</maxFileSize>
@@ -45,19 +45,24 @@
     </appender>
     
     <!-- Loggers -->
-    <logger name="org.apache.catalina" level="ERROR">
+<!--     <logger name="org.apache.catalina" level="ERROR"> -->
+    <logger name="org.apache.catalina" level="DEBUG">
     </logger>
     
-    <logger name="org.apache.commons.*" level="ERROR">
+<!--     <logger name="org.apache.commons.*" level="ERROR"> -->
+    <logger name="org.apache.commons.*" level="DEBUG">
     </logger>
 
-    <logger name="org.springframework" level="ERROR" >
+<!--     <logger name="org.springframework" level="ERROR" > -->
+    <logger name="org.springframework" level="DEBUG" >
     </logger>
     
-    <logger name="egovframework.*" level="ERROR">
+<!--     <logger name="egovframework.*" level="ERROR"> -->
+    <logger name="egovframework.*" level="DEBUG">
     </logger>
     
-    <logger name="org.mybatis.spring" level="ERROR">
+<!--     <logger name="org.mybatis.spring" level="ERROR"> -->
+    <logger name="org.mybatis.spring" level="DEBUG">
     </logger>
     
     

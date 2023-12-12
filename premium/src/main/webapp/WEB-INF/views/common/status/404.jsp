@@ -39,7 +39,9 @@
                     <!-- 404 Error Text -->
                     <div class="text-center">
                         <div class="error">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
+                        <p class="lead text-gray-800 mb-5">HTTP 404 오류</p>
+                        <br/>
+                        <p class="lead text-gray-800 mb-5">요청한 페이지가 존재하지 않습니다. 관리자에게 문의하시거나 페이지 주소가 정확한지 확인해보시기 바랍니다.</p>
                     </div>
 
                 </div>
@@ -52,7 +54,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Smartooth KOREA</span>
+                        <span>Copyright &copy; 스마투스코리아</span>
                     </div>
                 </div>
             </footer>

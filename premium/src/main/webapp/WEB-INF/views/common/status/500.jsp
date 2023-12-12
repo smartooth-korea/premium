@@ -39,7 +39,9 @@
                     <!-- 404 Error Text -->
                     <div class="text-center">
                         <div class="error">500</div>
-                        <p class="lead text-gray-800 mb-5">Server Error</p>
+                        <p class="lead text-gray-800 mb-5">HTTP 500 오류</p>
+                        <br/>
+                        <p class="lead text-gray-800 mb-5">관리자에게 문의해주시기 바랍니다.</p>
                     </div>
 
                 </div>
@@ -52,7 +54,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Smartooth KOREA</span>
+                        <span>Copyright &copy; 스마투스코리아</span>
                     </div>
                 </div>
             </footer>

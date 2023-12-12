@@ -14,6 +14,7 @@ public class MailUtil {
     private MimeMessage message;
     private MimeMessageHelper messageHelper;
 
+    
     public MailUtil(JavaMailSender mailSender) throws MessagingException {
         this.mailSender = mailSender;
         messageHelper = new MimeMessageHelper(message, true, "UTF-8");

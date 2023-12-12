@@ -14,7 +14,9 @@ import co.smartooth.premium.vo.DiagnosisVO;
 @Mapper
 public interface DiagnosisMapper {
 	
-	
+
+	/** 유치원, 어린이집 **/
+	/** WEB **/
 	// 중위 진단 정보 조회 
 	public List<DiagnosisVO> selectDiagDept2List() throws Exception;
 
@@ -29,7 +31,6 @@ public interface DiagnosisMapper {
 	
 	// 진단 키워드 별 태그 변환
 	public String changeSalesKewordHtmlTag(@Param("keyword") String keyword) throws Exception;
-	
 	
 	
 }

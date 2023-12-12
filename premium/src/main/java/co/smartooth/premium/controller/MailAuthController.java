@@ -2,11 +2,7 @@ package co.smartooth.premium.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,32 +10,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import co.smartooth.premium.service.MailAuthService;
-import co.smartooth.premium.service.UserService;
 import co.smartooth.utils.AES256Util;
 
 /**
  * 작성자 : 정주현 
- * 작성일 : 2023. 11. 10
+ * 작성일 : 2023. 11. 09
  */
 @Controller
 public class MailAuthController {
 
 	
-	Logger logger = LoggerFactory.getLogger(getClass());
-	
-	
 	@Autowired(required = false)
 	private MailAuthService mailAuthService;
 	
-	@Autowired(required = false)
-	private UserService userService;
-
-	
 	
 	/**
-	 * 유치원, 어린이집 조회 앱 APP 
+	 * APP (유치원, 어린이집 조회) 
 	 * 기능   : 인증 확인 - 인증 상태 업데이트
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
@@ -54,7 +41,7 @@ public class MailAuthController {
 		String decId = "";
 		String decAuthKey = "";
 		
-		// 아이디와 인증번호 복호화
+		// 아이디와 인증번호 복호화 (해당 암호화의 경우 DB의 암호화랑 다름)
 		AES256Util aes256Util = new AES256Util();
 		decAuthKey = aes256Util.aesDecode(authKey);
 		decId = aes256Util.aesDecode(userId);
@@ -74,7 +61,7 @@ public class MailAuthController {
 	
 	
 	/**
-	 * 유치원, 어린이집 조회 앱 APP
+	 * APP (유치원, 어린이집 조회)
 	 * 기능   : 앱에서 메일 인증 여부 확인
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
@@ -114,14 +101,8 @@ public class MailAuthController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
 	/**
-	 * 유치원 어린이집 조회 웹 WEB
+	 * WEB (유치원, 어린이집 조회)
 	 * 기능   : 인증 메일 발송
 	 * 작성자 : 정주현 
 	 * 작성일 : 2022. 04. 27
@@ -155,6 +136,7 @@ public class MailAuthController {
 	
 	
 	/**
+	 * WEB (유치원, 어린이집 조회)
 	 * 기능   : 메일 인증 번호 검증
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 12. 01
@@ -192,5 +174,7 @@ public class MailAuthController {
 		}
 		return hm;
 	}
+	
+	
 	
 }

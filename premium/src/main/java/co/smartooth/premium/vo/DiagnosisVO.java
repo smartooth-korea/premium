@@ -18,7 +18,6 @@ public class DiagnosisVO {
 	private String diagDescript;
 	
 	
-	
 	public String getDiagCd() {
 		return diagCd;
 	}

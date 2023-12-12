@@ -5,7 +5,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * 작성자 : 정주현 
- * 작성일 : 2022. 04. 28
+ * 작성일 : 2023. 11. 09
  */
 public class ServletInitializer extends SpringBootServletInitializer {
 

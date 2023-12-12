@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 작성자 : 정주현 
- * 작성일 : 2022. 04. 28
+ * 작성일 : 2023. 11. 09
  */
 @SpringBootApplication
 @ComponentScan(basePackages = { "co.smartooth" })

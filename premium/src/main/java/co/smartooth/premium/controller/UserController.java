@@ -23,7 +23,6 @@ import co.smartooth.premium.service.TeethService;
 import co.smartooth.premium.service.UserService;
 import co.smartooth.premium.vo.LocationVO;
 import co.smartooth.premium.vo.OrganVO;
-import co.smartooth.premium.vo.TeethInfoVO;
 import co.smartooth.premium.vo.UserVO;
 import co.smartooth.utils.JwtTokenUtil;
 
@@ -57,11 +56,11 @@ public class UserController {
 	private MailAuthService mailAuthService;
 	
 	
+	
 	// 사용자 인증 여부
 	private static boolean tokenValidation = false;
-	
-	
 
+	
 	
 	/**
 	 * 기능   : 아이디(이메일) 중복 확인
@@ -249,6 +248,7 @@ public class UserController {
 	
 	
 	/**
+	 * APP (유치원, 어린이집 조회)
 	 * 기능   : 비밀번호 재설정(찾기) - 인증 메일 발송
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
@@ -481,7 +481,98 @@ public class UserController {
 
 	
 	
+	/**
+	 * 기능   : 앱 내 자녀 계정 등록
+	 * 사용처 : 유치원, 어린이집 조회 앱
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 11. 13
+	 * 비고 : 유치원, 어린이집 코드와 반코드를 전달 받아서 생성
+	 */
+	@PostMapping(value = {"/user/insertStudentUserInfo.do"})
+	@ResponseBody
+	@Transactional
+	public HashMap<String,Object> insertStudentUserInfo(HttpServletRequest request, @RequestBody HashMap<String, Object> paramMap) throws Exception{
+		
+		// API 요청 port
+		int serverPort = request.getServerPort();
+		// 접속자의 지역 정보
+		Locale locale = request.getLocale();
+		
+		//법정대리인 아이디(이메일)
+		String parentUserId = (String)paramMap.get("userId");
+		// 유치원, 어린이집 코드 :: KRKG1120068001 >> KR+KG+11200680+01
+		                           // KRST1120068001/001
+		// 자녀(피측정자) 이름
+		String studentUserName = (String)paramMap.get("studentUserName");
+		// 자녀(피측정자) 비밀번호
+		String studentUserPwd = "0000";
+		// 자녀(피측정자) 생년월일
+		String studentUserBirthday = (String)paramMap.get("studentUserBirthday");
+		// 자녀(피측정자) 성별
+		String studentUserSex = (String)paramMap.get("studentUserSex");
+		
+		String schoolCode = (String)paramMap.get("schoolCode");
+		// 유치원, 어린이집 소속 반 코드
+		String classCode = (String)paramMap.get("classCode");
+		
+		UserVO studentUserVO = new UserVO();
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		try {		
+			// 나라 코드
+			String countryCd = locale.getCountry();
+			String addr2Cd = schoolCode.substring(4, schoolCode.length());
+			// 기관 유형 (유치원, 어린이집, 초등학교, 중학교, 고등학교, 대학교)
+			String organType = schoolCode.substring(2,4);
+			// 유치원, 어린이집 정보
+			OrganVO organVO = organService.selectSchoolInfo(schoolCode);		
+			// 유치원, 어린이집 시퀀스 번호
+			int userSeqNo = organVO.getUserSeqNo();
+			// 자녀(피측정자) 아이디 생성 - 해당 
+			// 여기 잘못됨
+			String studentUserId = countryCd+"ST"+addr2Cd+String.format("%03d", userSeqNo);
+			// 유치원, 어린이집 명수 추가
+			userSeqNo++;
+			
+			// 피측정자 회원 정보 VO
+			studentUserVO.setUserId(studentUserId);
+			studentUserVO.setUserName(studentUserName);
+			studentUserVO.setUserPwd(studentUserPwd);
+			studentUserVO.setUserEmail(parentUserId);
+			studentUserVO.setUserType("ST");
+			studentUserVO.setUserBirthday(studentUserBirthday);
+			studentUserVO.setUserCountry(countryCd);
+			studentUserVO.setUserSex(studentUserSex);
+			studentUserVO.setTeethType("M");
+			
+			// 기관 정보 VO
+			organVO.setUserSeqNo(userSeqNo);
+			organVO.setSchoolCode(schoolCode);
+			
+			// 계정 상세 정보 등록 (법정대리인) - ST_PARENT_USER_DETAIL
+			userService.insertParentUserDetail(parentUserId, studentUserId);
 	
+			// 계정 등록 (피측정자 회원) - ST_USER
+			userService.insertUserInfo(studentUserVO);
+			
+			// 계정 상세 정보 등록 (피측정자 - 학생) - ST_STUDENT_USER_DETAL
+			userService.insertStudentUserDetail(studentUserId, organType, classCode);
+			
+			// 치아 상태
+			teethService.insertUserTeethInfo(studentUserId);
+			
+			//  피측정자 증가에 따른 기관 회원 시퀀스 증가 
+			organService.updateSchoolUserSeqNo(organVO);
+
+			hm.put("code", "000");
+			hm.put("msg", "자녀 등록이 완료되었습니다.");
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "계정 등록에 실패하였습니다.\n관리자에게 문의해주시기 바랍니다.");
+			e.printStackTrace();
+		}
+		return hm;
+	}
 	
 	
 	
@@ -637,596 +728,7 @@ public class UserController {
 		return "redirect:/web/statistics/login/statisticsLoginForm";
 
 	}
-	
-	
-	
-	/**
-	 * 기능   : 앱 내 자녀 계정 등록
-	 * 사용처 : 유치원, 어린이집 조회 앱
-	 * 작성자 : 정주현 
-	 * 작성일 : 2023. 11. 13
-	 * 비고 : 유치원, 어린이집 코드와 반코드를 전달 받아서 생성
-	 */
-	@PostMapping(value = {"/user/insertStudentUserInfo.do"})
-	@ResponseBody
-	@Transactional
-	public HashMap<String,Object> insertStudentUserInfo(HttpServletRequest request, @RequestBody HashMap<String, Object> paramMap) throws Exception{
-		
-		// API 요청 port
-		int serverPort = request.getServerPort();
-		// 접속자의 지역 정보
-		Locale locale = request.getLocale();
-		
-		//법정대리인 아이디(이메일)
-		String parentUserId = (String)paramMap.get("userId");
-		// 유치원, 어린이집 코드 :: KRKG1120068001 >> KR+KG+11200680+01
-		                           // KRST1120068001/001
-		// 자녀(피측정자) 이름
-		String studentUserName = (String)paramMap.get("studentUserName");
-		// 자녀(피측정자) 비밀번호
-		String studentUserPwd = "0000";
-		// 자녀(피측정자) 생년월일
-		String studentUserBirthday = (String)paramMap.get("studentUserBirthday");
-		// 자녀(피측정자) 성별
-		String studentUserSex = (String)paramMap.get("studentUserSex");
-		
-		String schoolCode = (String)paramMap.get("schoolCode");
-		// 유치원, 어린이집 소속 반 코드
-		String classCode = (String)paramMap.get("classCode");
-		
-		UserVO studentUserVO = new UserVO();
-		HashMap<String,Object> hm = new HashMap<String,Object>();
-		
-		try {		
-			// 나라 코드
-			String countryCd = locale.getCountry();
-			String addr2Cd = schoolCode.substring(4, schoolCode.length());
-			// 기관 유형 (유치원, 어린이집, 초등학교, 중학교, 고등학교, 대학교)
-			String organType = schoolCode.substring(2,4);
-			// 유치원, 어린이집 정보
-			OrganVO organVO = organService.selectSchoolInfo(schoolCode);		
-			// 유치원, 어린이집 시퀀스 번호
-			int userSeqNo = organVO.getUserSeqNo();
-			// 자녀(피측정자) 아이디 생성 - 해당 
-			// 여기 잘못됨
-			String studentUserId = countryCd+"ST"+addr2Cd+String.format("%03d", userSeqNo);
-			// 유치원, 어린이집 명수 추가
-			userSeqNo++;
-			
-			// 피측정자 회원 정보 VO
-			studentUserVO.setUserId(studentUserId);
-			studentUserVO.setUserName(studentUserName);
-			studentUserVO.setUserPwd(studentUserPwd);
-			studentUserVO.setUserEmail(parentUserId);
-			studentUserVO.setUserType("ST");
-			studentUserVO.setUserBirthday(studentUserBirthday);
-			studentUserVO.setUserCountry(countryCd);
-			studentUserVO.setUserSex(studentUserSex);
-			studentUserVO.setTeethType("M");
-			
-			// 기관 정보 VO
-			organVO.setUserSeqNo(userSeqNo);
-			organVO.setSchoolCode(schoolCode);
-			
-			// 계정 상세 정보 등록 (법정대리인) - ST_PARENT_USER_DETAIL
-			userService.insertParentUserDetail(parentUserId, studentUserId);
-	
-			// 계정 등록 (피측정자 회원) - ST_USER
-			userService.insertUserInfo(studentUserVO);
-			
-			// 계정 상세 정보 등록 (피측정자 - 학생) - ST_STUDENT_USER_DETAL
-			userService.insertStudentUserDetail(studentUserId, organType, classCode);
-			
-			// 치아 상태
-			teethService.insertUserTeethInfo(studentUserId);
-			
-			//  피측정자 증가에 따른 기관 회원 시퀀스 증가 
-			organService.updateSchoolUserSeqNo(organVO);
 
-			hm.put("code", "000");
-			hm.put("msg", "자녀 등록이 완료되었습니다.");
-		} catch (Exception e) {
-			hm.put("code", "500");
-			hm.put("msg", "계정 등록에 실패하였습니다.\n관리자에게 문의해주시기 바랍니다.");
-			e.printStackTrace();
-		}
-		return hm;
-	}
+
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	/**
-//	 * 기능   : 비밀번호 재설정 메일 인증
-//	 * 작성자 : 정주현 
-//	 * 작성일 : 2023. 11. 08
-//	 */
-//	@GetMapping(value = {"/user/resetUserPwd.do"})
-//	  public String userList(HttpServletRequest request, Model model) throws Exception {
-//		
-//		boolean validation = false;
-//		String userId = null;
-//		String emailAuthKey = null;
-//		
-//		userId = request.getParameter("userId");
-//		emailAuthKey = request.getParameter("emailAuthKey");
-//		
-//		// 복호화
-//		AES256Util aes256Util = new AES256Util();
-//		userId = aes256Util.aesDecode(userId);
-//		
-//		// 토큰 검증
-//		JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-//		validation = jwtTokenUtil.validateToken(emailAuthKey);
-//		model.addAttribute("userId", userId);
-//		
-//		if(validation) {
-//		    return "/user/resetUserPwd";
-//		}else {
-//			return "/common/status/500_mailAuth";
-//		}
-//	  }
-//	
-//	
-//
-//	/**
-//	 * 기능   : 조회 앱을 통한 회원가입 API
-//	 * 작성자 : 정주현 
-//	 * 작성일 : 2023. 06. 28
-//	 */
-//	@PostMapping(value = { "/customer/user/register.do" })
-//	@ResponseBody
-//	public HashMap<String,Object> register(@RequestBody HashMap<String, Object> paramMap) throws Exception{
-//		
-//		
-//		logger.debug("========== CustomerUserCountroller ========== /customer/user/register.do ==========");
-//		logger.debug("========== CustomerUserCountroller ========== /customer/user/register.do ==========");
-//		logger.debug("========== CustomerUserCountroller ========== /customer/user/register.do ==========");
-//		logger.debug("========== CustomerUserCountroller ========== /customer/user/register.do ==========");
-//		
-//		
-//		//회원 아이디 - email
-//		String userId = null;
-//		// 회원 비밀번호
-//		String userPwd = null;
-//		// 회원 타입
-//		String userType = null;
-//		// 회원 이름
-//		String userName = null;
-//		// 회원 이메일
-//		String userEmail = null;
-//		
-//		// 회원 생일
-//		String userBirthday = null;
-//		// 회원 거주 - 국
-//		String userCountry = null;
-//		// 회원 거주 - 주
-//		String userState = null;
-//		// 회원 전화번호
-//		String userTelNo = null;
-//		// 회원 성별
-//		String userSex = null;
-//		// 푸쉬토큰
-//		String pushToken = null;
-//		// 회원 치아 상태
-//		String teethStatus = null;
-//		
-//		// 암호화 된 아이디
-//		//String encodeUserId = null;
-//		// 암호화 된 비밀번호
-//		//String encodeUserPwd = null;
-//		// 암호화 된 이름
-//		//String encodeUserName = null;
-//
-//		// 회원 정보 VO
-//		CustomerUserVO customerUserVO = new CustomerUserVO();
-//		// 치아 정보 VO
-//		CustomerTeethInfoVO customerTeethInfoVO = new CustomerTeethInfoVO();
-//		// 고객 맵핑 정보 VO
-//		//CustomerMappingInfoVO customerMappingInfoVO = new CustomerMappingInfoVO();  
-//		// return 값
-//		HashMap<String,Object> hm = new HashMap<String,Object>();
-//		
-//		
-//		try {
-//			
-//			// 암호화 메소드
-//			AES256Util aes256Util = new AES256Util();
-//
-//			// 아이디 암호화
-//			userId = (String)paramMap.get("userId");
-//			//userId = aes256Util.aesEncode(userId);
-//			
-//			// 회원 이메일
-//			userEmail = userId;
-//			
-//			// 비밀번호 암호화
-//			userPwd = (String)paramMap.get("userPwd");
-//			userPwd = aes256Util.aesEncode(userPwd);
-//			
-//			// 이름 암호화
-//			userName = (String)paramMap.get("userName");
-//			//userName = aes256Util.aesEncode(userName);
-//			
-//			// 회원 종류
-//			userType = (String)paramMap.get("userType");
-//			if(userType == null || "".equals(userType)) {
-//				userType = "PA";
-//			}
-//			
-//			// 회원 거주 국
-//			userCountry = (String)paramMap.get("userCountry");
-//			if(userCountry == null || "".equals(userCountry)) {
-//				userCountry = "KR";
-//			}
-//			
-//			// 회원 거주 주
-//			userState = (String)paramMap.get("userState");
-//			if(userState == null || "".equals(userState)) {
-//				userState = "";
-//			}
-//			
-//			// 정확히 정해야 하는 부분 GR은 일반인데, 현재 일반앱에서도 GR을 사용중
-//			// KRPA__________-jhjung@smartooth.co
-//			// 밑줄은 10개
-//			userId = userCountry+userType+"__________01-"+userEmail;		
-//			
-//			
-//			// 회원 생일
-//			userBirthday = (String)paramMap.get("userBirthday");
-//			// 회원 전화번호
-//			userTelNo = (String)paramMap.get("userTelNo");
-//			// 회원 성별
-//			userSex = (String)paramMap.get("userSex");
-//			// 푸쉬토큰
-//			pushToken = (String)paramMap.get("pushToken");
-//			// 치아 상태
-//			teethStatus = (String)paramMap.get("teethStatus");
-//			if(teethStatus == null || "".equals(teethStatus)) {
-//				teethStatus = "100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100";
-//			}
-//			
-//			/** 회원 - 14세미만 일 경우 상세 정보 입력 **/
-//			String prUserName = (String)paramMap.get("pUserName");
-//			String prUserTelNo = (String)paramMap.get("prUserTelNo");
-//			String prUserEmail = (String)paramMap.get("prUserTelNo");
-//			
-//			// 동의 여부
-//			String agreYn = null;
-//			
-//			// 회원 가입 시 부모 이름 및 부모의 번호가 있을 경우 동의 한 것으로 처리 : Y 
-//			if(prUserName!=null && !prUserName.equals("") || prUserTelNo!=null &&!prUserTelNo.equals("")) {
-//				agreYn = "Y";
-//			}
-//			
-//			// 회원 정보 등록
-//			customerUserVO.setUserId(userId);
-//			customerUserVO.setUserEmail(userId);
-//			customerUserVO.setUserPwd(userPwd);
-//			customerUserVO.setUserName(userName);
-//			customerUserVO.setUserType(userType);
-//			customerUserVO.setUserBirthday(userBirthday);
-//			customerUserVO.setUserCountry(userCountry);
-//			customerUserVO.setUserState(userState);
-//			customerUserVO.setUserTelNo(userTelNo);
-//			customerUserVO.setUserSex(userSex);
-//			customerUserVO.setPushToken(pushToken);
-//			customerUserVO.setUserEmail(userEmail);
-//			
-//			// 법정대리인 보호자 정보
-//			customerUserVO.setPrUserName(prUserName);
-//			customerUserVO.setPrUserTelNo(prUserTelNo);
-//			customerUserVO.setPrUserEmail(prUserEmail);
-//			
-//			// 동의 여부
-//			customerUserVO.setAgreYn(agreYn);
-//			
-//			// 치아 정보 등록
-//			customerTeethInfoVO.setUserId(userId);
-//			customerTeethInfoVO.setTeethStatus(teethStatus); 
-//			
-//			// 조회 앱 회원 등록 (회원가입)
-//			customerUserService.insertUserInfo(customerUserVO);
-//			// 조회 앱 회원 상세 정보 등록
-//			customerUserService.insertCustomerUserDetail(customerUserVO);
-//			// 조회 앱 회원 치아 상태 등록
-//			customerTeethService.insertUserTeethInfo(customerTeethInfoVO);
-//			
-//		} catch (Exception e) {
-//			
-//			hm.put("code", "500");
-//			hm.put("msg", "서버 에러가 발생했습니다.\n관리자에게 문의해주시기 바랍니다.");
-//			e.printStackTrace();
-//			
-//		}
-//		
-//		hm.put("code", "000");
-//		hm.put("msg", "회원 등록이 완료되었습니다.");
-//		
-//		return hm;
-//	}
-//
-//	
-//	
-//	
-//
-//	
-//	/**
-//	 * 작성자 : 정주현
-//	 * 작성일 : 2022. 03. 16
-//	 * 기능 : 개인정보 동의서로 회원가입
-//	 */
-//	@PostMapping(value = { "/web/user/insertUserInfo.do" })
-//	public String insertUserInfo(@RequestParam Map<String, String> paramMap, HttpServletRequest request, HttpSession session, Model model, RedirectAttributes redirectAttributes) throws Exception {
-//		
-//		
-//		// 법정대리인
-//		String paUserId = null;
-//		String paUserName = null;
-//		String paUserPwd = null;
-//		String paUserTelNo = null;
-//		String paUserTelNo1 = null;
-//		String paUserTelNo2 = null;
-//		String paUserTelNo3 = null;
-//		
-//		// 피측정자
-//		String userId = null;
-//		String userPwd = null;
-//		String userName = null;
-//		String userTelNo = null;
-//		String userTelNo1 = null;
-//		String userTelNo2 = null;
-//		String userTelNo3 = null;
-//		String userBritday = null;
-//		String userSex = null;
-//		String strBirthday = null;
-//		int userSeqNo = 0;
-//		
-//		// 기관 및 부서 정보
-//		String schoolCode = null;
-//		String classCode = null;
-//		
-//		// 주소 정보
-//		String countryNm = null;
-//		String countryCd = null;
-//		String organType = null;
-//		
-//		// 기관 주소
-//		String organSidoNm = null;
-//		String organSigunguNm = null;
-//		String organEupmyeondongNm = null;
-//		String addressDetail = null;
-//		
-//		// 치아 정보 (하드코딩) - 모든 치아 정상
-//		//String userTeethStatus = "100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100";
-//		
-//		String userTeethStatus = "100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100|100";
-//		
-//		// 피측정자
-//		UserVO webStUserVO = new UserVO();
-//		// 법정대리인
-//		UserVO webPaUserVO = new UserVO();
-//		// 기관 정보
-//		WebOrganVO webOrganVO = new WebOrganVO();
-//		// 지역 정보 (나라)
-//		WebLocationVO webLocationVO = new WebLocationVO();
-//		// 치아 상태 정보
-//		CustomerTeethInfoVO webTeethInfoVO = new CustomerTeethInfoVO();
-//
-//		// 암호화 클래스
-//		AES256Util aes256Util = new AES256Util();
-//		
-//		
-//		String userType = paramMap.get("userType");
-//		String isOverourteetn = paramMap.get("userAgeCheck");
-//		
-//		// 만 14세 미만일 경우 : 법정 대리인, 자녀의 정보 입력
-//		if(userType.equals("ST")) {
-//			
-//			// 피측정자 파라미터
-//			userName = paramMap.get("stUserName");
-//			userSex = paramMap.get("stUserSex");
-//			userBritday = paramMap.get("stUserBirthday");
-//			// 법정대리인 파라미터
-//			paUserName = paramMap.get("paUserName");
-//			paUserTelNo1 = paramMap.get("paUserTelNo1");
-//			paUserTelNo2 = paramMap.get("paUserTelNo2");
-//			paUserTelNo3 = paramMap.get("paUserTelNo3");
-//			paUserTelNo = paUserTelNo1+"-"+paUserTelNo2+"-"+paUserTelNo3;
-//			// 학교 정보
-//			schoolCode = paramMap.get("schoolCode");
-//			classCode = paramMap.get("classCode1");
-//			
-//			// 기관 코드로 주소 조회 :: 피측정자 (학생) 주소 정보 입력 시 필요
-//			webOrganVO = webOrganService.selectOrganInfo(schoolCode);
-//			// 주소 정보 : 시도
-//			organSidoNm = webOrganVO.getOrganSidoNm();
-//			// 주소 정보 : 시군구
-//			organSigunguNm = webOrganVO.getOrganSigunguNm();
-//			// 주소 정보 : 읍면동
-//			organEupmyeondongNm = webOrganVO.getOrganEupmyeondongNm();
-//			// 상세 주소
-//			addressDetail = organSidoNm+" "+organSigunguNm+" "+organEupmyeondongNm;
-//			
-//			// 피측정자 (학생) 회원 주소 (유치원 주소 기준)
-//			countryCd = schoolCode.substring(0,2); 
-//			// 나라 코드로 국가명 조회
-//			webLocationVO = webLocationService.selectNationalInfo(countryCd);
-//			countryNm = webLocationVO.getNationalNameKor();
-//			// 기관 유형
-//			organType = schoolCode.substring(2,4);
-//			
-//			// 피측정자 (학생) 회원 시퀀스
-//			userSeqNo = webOrganVO.getUserSeqNo();
-//			// 피측정자 아이디 생성
-//			userId = countryCd+"ST"+schoolCode.substring(4, schoolCode.length())+String.format("%03d", userSeqNo);
-//			// 피측정자 (학생) 회원 시퀀스 증가
-//			userSeqNo++;
-//
-//			// 비밀번호 생성 규칙 2019-01-01 >> 190101 
-//			strBirthday = userBritday.substring(2, userBritday.length()).replaceAll("-", "");
-//
-//			// 피측정자 회원 비밀번호 :: 생년월일(190101) 
-//			userPwd = aes256Util.aesEncode(strBirthday);
-//			
-//			// 피측정자 회원 정보 VO
-//			webStUserVO.setUserId(userId);
-//			webStUserVO.setUserName(userName);
-//			webStUserVO.setUserPwd(userPwd);
-//			webStUserVO.setUserType("ST");
-//			webStUserVO.setUserBirthday(userBritday);
-//			webStUserVO.setUserCountry(countryCd);
-//			webStUserVO.setUserTelNo(paUserTelNo);
-// 			webStUserVO.setUserSex(userSex);
-//			webStUserVO.setCountryNm(countryNm);
-//			webStUserVO.setSidoNm(organSidoNm);
-//			webStUserVO.setSigunguNm(organSigunguNm);
-//			webStUserVO.setEupmyeondongNm(organEupmyeondongNm);
-//			webStUserVO.setAddrDetail(addressDetail);
-//			
-//			// 피측정자 회원 치아 상태 등록
-//			webTeethInfoVO.setUserId(userId);
-//			webTeethInfoVO.setTeethStatus(userTeethStatus);
-//			
-//			// 법정대리인 회원 아이디 :: 자녀이름+생년월일(190101 :: stTmpUserPwd)+전화번호 뒷자리4자리
-//			paUserId = userName+strBirthday+paUserTelNo3;
-//			
-//			// 법정대리인 회원 비밀번호 :: 휴대전화 번호 뒷자리 4자리 
-//			paUserPwd = aes256Util.aesEncode(paUserTelNo3);
-//			
-//			// 법정대리인 회원 정보 VO
-//			webPaUserVO.setUserId(paUserId);
-//			webPaUserVO.setUserName(paUserName);
-//			webPaUserVO.setUserPwd(paUserPwd);
-//			webPaUserVO.setUserType("PR");
-//			webPaUserVO.setUserTelNo(paUserTelNo);
-//			webPaUserVO.setUserCountry(countryCd);
-//			webPaUserVO.setCountryNm(countryNm);
-//			webPaUserVO.setSidoNm(organSidoNm);
-//			webPaUserVO.setSigunguNm(organSigunguNm);
-//			webPaUserVO.setEupmyeondongNm(organEupmyeondongNm);
-//			webPaUserVO.setAddrDetail(addressDetail);
-//			
-//			// 기관 정보 VO
-//			webOrganVO.setUserSeqNo(userSeqNo);
-//			webOrganVO.setSchoolCode(schoolCode);
-//			
-//			
-//			// 계정 등록 (피측정자 회원) - ST_USER
-//			webUserService.insertUserInfo(webStUserVO);
-//			// 계정 상세 정보 등록 (피측정자 - 학생) - ST_STUDENT_USER_DETAL
-//			webUserService.insertStUserDetail(userId, organType, classCode);
-//			// 계정 등록 (법정대리인 회원) - ST_USER
-//			webUserService.insertUserInfo(webPaUserVO);
-//			// 계정 상세 정보 등록 (법정대리인) - ST_PARENT_USER_DETAL
-//			webUserService.insertPaUserDetail(paUserId, userId);
-//			// 치아 상태
-//			webTeethService.insertUserTeethInfo(webTeethInfoVO);
-//			// 피측정자 회원 시퀀스 증가
-//			webOrganService.updateOrganUserSeqNo(webOrganVO);
-//			
-//		}else {
-//			
-//			// 만 14세 이상일 경우
-//			// 피측정자 파라미터
-//			userName = paramMap.get("userName");
-//			userSex = paramMap.get("userSex");
-//			userBritday = paramMap.get("userBirthday");
-//			userTelNo1 = paramMap.get("userTelNo1");
-//			userTelNo2 = paramMap.get("userTelNo2");
-//			userTelNo3 = paramMap.get("userTelNo3");
-//			userTelNo = userTelNo1+"-"+userTelNo2+"-"+userTelNo3;
-//			// 기관 정보
-//			schoolCode = paramMap.get("schoolCode");
-//			// 기관 부서 정보
-//			classCode = paramMap.get("classCode2");
-//			
-//			// 기관 코드로 주소 조회
-//			webOrganVO = webOrganService.selectOrganInfo(schoolCode);
-//			// 주소 정보 : 시도
-//			organSidoNm = webOrganVO.getOrganSidoNm();
-//			// 주소 정보 : 시군구
-//			organSigunguNm = webOrganVO.getOrganSigunguNm();
-//			// 주소 정보 : 읍면동
-//			organEupmyeondongNm = webOrganVO.getOrganEupmyeondongNm();
-//			// 상세 주소
-//			addressDetail = organSidoNm+" "+organSigunguNm+" "+organEupmyeondongNm;
-//			// 국가 코드
-//			countryCd = schoolCode.substring(0,2); 
-//			// 국가 코드로 국가명 조회
-//			webLocationVO = webLocationService.selectNationalInfo(countryCd);
-//			// 국가명
-//			countryNm = webLocationVO.getNationalNameKor();
-//			// 기관 유형
-//			organType = schoolCode.substring(2,4);
-//			
-//			// 피측정자 시퀀스
-//			userSeqNo = webOrganVO.getUserSeqNo();
-//			// 피측정자 아이디 생성
-//			userId = countryCd+"ST"+schoolCode.substring(4, schoolCode.length())+String.format("%03d", userSeqNo);
-//			// 피측정자 시퀀스 증가
-//			userSeqNo++;
-//
-//			// 비밀번호 생성 규칙 2019-01-01 >> 190101 
-//			strBirthday = userBritday.substring(2, userBritday.length()).replaceAll("-", "");
-//
-//			// 피측정자 비밀번호 :: 생년월일(190101) 
-//			userPwd = aes256Util.aesEncode(strBirthday);
-//			
-//			// 피측정자 정보 VO
-//			webStUserVO.setUserId(userId);
-//			webStUserVO.setUserName(userName);
-//			webStUserVO.setUserPwd(userPwd);
-//			webStUserVO.setUserType("PT");
-//			webStUserVO.setUserBirthday(userBritday);
-//			webStUserVO.setUserCountry(countryCd);
-//			webStUserVO.setUserTelNo(userTelNo);
-//			webStUserVO.setUserSex(userSex);
-//			webStUserVO.setCountryNm(countryNm);
-//			webStUserVO.setSidoNm(organSidoNm);
-//			webStUserVO.setSigunguNm(organSigunguNm);
-//			webStUserVO.setEupmyeondongNm(organEupmyeondongNm);
-//			webStUserVO.setAddrDetail(addressDetail);
-//			
-//			// 피측정자 치아 상태 등록
-//			webTeethInfoVO.setUserId(userId);
-//			webTeethInfoVO.setTeethStatus(userTeethStatus);
-//			
-//			// 기관 정보 VO
-//			webOrganVO.setUserSeqNo(userSeqNo);
-//			webOrganVO.setSchoolCode(schoolCode);
-//			
-//			// 계정 등록 (피측정자) - ST_USER
-//			webUserService.insertUserInfo(webStUserVO);
-//			// 계정 상세 정보 등록 (피측정자) - ST_STUDENT_USER_DETAL
-//			webUserService.insertStUserDetail(userId, organType, classCode);
-//			// 치아 상태
-//			webTeethService.insertUserTeethInfo(webTeethInfoVO);
-//			// 피측정자 회원 시퀀스 증가
-//			webOrganService.updateOrganUserSeqNo(webOrganVO);
-//		}
-//		
-//		
-//		
-//		// 리다이렉션 시 파라미터를 전달
-//		redirectAttributes.addFlashAttribute("msg", "제출이 완료 되었습니다. 감사합니다.");
-//		
-//		return "redirect:/web/user/agreement";
-//
-//	}
-//	
-//	
-//	
-//
 }

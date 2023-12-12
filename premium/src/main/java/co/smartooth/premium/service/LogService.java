@@ -14,6 +14,7 @@ import co.smartooth.premium.vo.AuthVO;
 public interface LogService {
 	
 	
+	/** 공통 기능 **/
 	// 로그인 기록 등록
 	public void insertUserLoginHistory(AuthVO authVO) throws Exception;
 	

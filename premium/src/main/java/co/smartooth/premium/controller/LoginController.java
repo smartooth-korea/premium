@@ -5,13 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -21,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import co.smartooth.premium.service.AuthService;
 import co.smartooth.premium.service.LogService;
 import co.smartooth.premium.service.MailAuthService;
@@ -35,7 +28,7 @@ import co.smartooth.utils.JwtTokenUtil;
 
 /**
  * 작성자 : 정주현
- * 작성일 : 2023. 11. 08
+ * 작성일 : 2023. 11. 09
  */
 @Controller
 @PropertySource({ "classpath:application.yml" })
@@ -61,7 +54,7 @@ public class LoginController {
 	
 	
 	/**
-	 * 기능   : 앱 로그인 API (공통 API)
+	 * 기능   : 로그인 API (공통 API)
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
 	 */
@@ -105,7 +98,19 @@ public class LoginController {
 		authVO.setUserPwd(userPwd);
 		authVO.setLoginDt(sysDate);
 		authVO.setLoginIp(loginIp);
-		authVO.setUserType("SCH-APP");
+		
+		// 사용자 접속 방식 확인
+		String userAgent = request.getHeader("User-Agent");		
+		String userConnectionType = null;
+		
+		if(userAgent.indexOf("Trident") > -1 || userAgent.indexOf("Edge") > -1 || userAgent.indexOf("Whale") > -1 ||
+				userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1 || userAgent.indexOf("Firefox") > -1 ||
+				userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1 || userAgent.indexOf("Chrome") > -1) {
+			userConnectionType = "WEB";
+		}else {
+			userConnectionType = "APP";
+		}
+		
 		
 		try {
 			// 아이디와 비밀번호로 유효성 검사
@@ -126,20 +131,33 @@ public class LoginController {
 				JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
 				userAuthToken = jwtTokenUtil.createToken(userId);
 				
-				// 로그인 일자 업데이트
-				logService.updateLoginDt(authVO);
-
+				
+				
+				
+				
+				
+				
 				/** 유치원, 어린이집 조회 앱 **/
 				if(serverPort == 8094) {
+					
+					
+					authVO.setUserType("SCH-"+userConnectionType);
 					// 법정대리인 계정 정보
 					parentUserVO = userService.selectUserInfo(userId);
 					// 자녀 계정 정보
 					studentUserInfoList = userService.selectStudentUserInfoByParentUserId(userId);
+					// 어디서 접속 시도를 하였는지 확인
 					// 데이터 RETURN
 					hm.put("userAuthToken", userAuthToken);
 					hm.put("parentUserInfo", parentUserVO);
 					hm.put("studentUserInfoList", studentUserInfoList);
+					
+					
 				}
+				
+				
+				
+				
 				
 				// 메시지 RETURN
 				hm.put("code", "000");
@@ -148,6 +166,8 @@ public class LoginController {
 				logService.insertUserLoginHistory(authVO);
 				// 로그인 횟수 증가
 				logService.updateLoginCount(userId);
+				// 로그인 일자 업데이트
+				logService.updateLoginDt(authVO);
 			}
 		} catch (Exception e) {
 			hm.put("code", "500");
@@ -160,6 +180,7 @@ public class LoginController {
 	
 	
 	/**
+	 * WEB
 	 * 기능   : 법정대리인 및 피측정자용 - 진단 결과지 로그인
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 30
@@ -167,7 +188,6 @@ public class LoginController {
 	 */
 	@PostMapping(value = {"/web/statistics/general/login.do"})
 	public String generalLogin(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-       
 		
 		// 로그인 후 조회시 필요한 것들
 		int loginChkByIdPwd = 0;
@@ -176,8 +196,8 @@ public class LoginController {
 		int isIdExist = 0;
 		String isEmailAuthEnabled = "N";
 		
-		HttpSession session = request.getSession(true);
 		// 세션 유지 시간 30분
+		HttpSession session = request.getSession(true);
 		session.setMaxInactiveInterval(60*30*1);
 		
 		String userId = request.getParameter("userId");
@@ -190,10 +210,6 @@ public class LoginController {
 		AuthVO authVO = new AuthVO();
 		UserVO userVO = new UserVO();
 		UserVO userInfo = new UserVO(); 
-		
-		// 비밀번호 암호화 
-		//AES256Util aes256Util = new AES256Util();
-		//userPwd = aes256Util.aesEncode(userPwd);
 		
 		// 오늘 일자 계산
 		Date tmpDate = new Date();
@@ -235,7 +251,6 @@ public class LoginController {
 				
 				if(userType.equals("PR")) {
 					// 법정대리인 아이디로 피측정자 아이디 조회
-					// stUserId = userService.selectChUserId(userId);
 					List<UserVO> studentInfo = userService.selectStudentUserInfoByParentUserId(userId);
 					studentUserId = studentInfo.get(0).getChildId();
 					// 피측정자 정보 및 상세정보 조회
@@ -299,6 +314,7 @@ public class LoginController {
 	
 	
 	/**
+	 * WEB
 	 * 기능   : 기관장용 - 진단 결과지 로그인 
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 12. 08
@@ -391,6 +407,7 @@ public class LoginController {
 				authVO.setUserNo(userInfo.getUserNo());
 				authVO.setLoginDt(userInfo.getLoginDt());
 				authVO.setLoginIp(request.getRemoteAddr());
+				authVO.setUserType("SCH-WEB");
 				
 				// 회원 로그인 기록 등록
 				logService.insertUserLoginHistory(authVO);

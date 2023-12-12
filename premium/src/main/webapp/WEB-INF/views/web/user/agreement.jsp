@@ -369,7 +369,7 @@
 	    	$('#td-schoolName').attr("value", ui.item.schoolName);
 	    	schoolName1
 			$.ajax({
-				url : "/organ/ajaxSelectDepartmentList.do",
+				url : "/organ/ajaxSelectClassList.do",
 				type : "POST",
 				dataType : "JSON",
 				data : {
@@ -431,7 +431,7 @@
 	    	$('#schoolCode').attr("value", ui.item.schoolCode);
 
 	    	$.ajax({
-				url : "/organ/ajaxSelectDepartmentList.do",
+				url : "/organ/ajaxSelectClassList.do",
 				type : "POST",
 				dataType : "JSON",
 				data : {

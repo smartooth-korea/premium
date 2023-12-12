@@ -17,7 +17,7 @@ import co.smartooth.premium.vo.UserVO;
 public interface UserMapper {
 	
 	
-	/** 공통 기능 **/
+	/** 공통 사용 **/
 	// 계정 정보 조회
 	public UserVO selectUserInfo(@Param("userId") String userId) throws Exception;
 	
@@ -42,10 +42,6 @@ public interface UserMapper {
 	
 	
 	
-	
-	
-	
-	
 	/** 유치원, 어린이집 **/
 	// 아이디 중복 체크
 	public int duplicateChkId(@Param("userId") String userId) throws Exception;
@@ -55,7 +51,7 @@ public interface UserMapper {
 	public void insertUserInfo(UserVO userVO) throws Exception;
 	
 	
-	//  계정(피측정자-원아) 상세 정보 등록 
+	// 계정(피측정자-원아) 상세 정보 등록 
 	public void insertStudentUserDetail(@Param("userId") String userId, @Param("schoolType") String schoolType, @Param("classCode") String classCode) throws Exception;
 		
 		

@@ -1,12 +1,9 @@
 package co.smartooth.premium.controller;
 
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +22,6 @@ import co.smartooth.premium.service.UserService;
 import co.smartooth.premium.vo.OrganVO;
 import co.smartooth.premium.vo.TeethMeasureVO;
 import co.smartooth.premium.vo.UserVO;
-import co.smartooth.utils.JwtTokenUtil;
 
 
 /**
@@ -35,8 +31,8 @@ import co.smartooth.utils.JwtTokenUtil;
 @Controller
 public class AdminStatisticsController {
 
-	Logger logger = LoggerFactory.getLogger(getClass());
 
+	
 	@Value("${loginUrl}")
 	private String loginUrl;
 
@@ -54,11 +50,12 @@ public class AdminStatisticsController {
 
 
 	
+	
+	
 	/**
-	 * 기능 : 관리자페이지 진단 결과지 조회 호출 API 
+	 * 기능 : 관리자페이지 - 진단 결과지 조회 호출 API (외부용)
 	 * 작성자 : 정주현
-	 * 작성일 : 2023. 11. 20
-	 *        
+	 * 작성일 : 2023. 11. 09
 	 * 파라미터 : teethType 은 Milk teeth(M)으로 하드코딩
 	 */
 	@GetMapping(value = { "/admin/school/statistics/diagnosis.do"})
@@ -93,9 +90,6 @@ public class AdminStatisticsController {
 		// 유치원, 어린이집 소속 반 이름
 		String className = organService.selectClassName(userId);
 		       
-//		 피측정자 치아 형태
-//		 String teethType = userVO.getTeethType();
-		
 		// 피측정자 이름
 		String userName = userVO.getUserName();
 		// 피측정자 유형
@@ -174,9 +168,6 @@ public class AdminStatisticsController {
 			
 			// 치아 측정 VO
 			teethMeasureVO.setUserId(userId);
-			
-//			 측정 값 보이는 개수
-//			 teethMeasureVO.setLimit(3);
 			
 			// 피측정자 최근 치아 측정 값 조회
 			teethMeasureVO = teethService.selectUserMeasureValue(userId, measureDt);
@@ -437,13 +428,12 @@ public class AdminStatisticsController {
 	
 	
 	/**
-	 * 기능 : 관리자페이지 그래프 조회 호출 API 
+	 * 기능 : 관리자페이지 - 그래프 조회 호출 API (외부용)
 	 * 작성자 : 정주현
-	 * 작성일 : 2022. 11. 28
+	 * 작성일 : 2023. 11. 09
 	 * 수정일 : 2023. 12. 05
 	 */
 	@GetMapping(value = { "/admin/school/statistics/graph.do" })
-	// location.href로 요청이 들어옴
 	public String adminGraph(HttpServletRequest request, HttpSession session, Model model) {
 
 		// 리턴 URL 주소
@@ -479,7 +469,6 @@ public class AdminStatisticsController {
 			// 유치원(기관) 정보 조회
 			OrganVO organVO = organService.selectSchoolInfo(schoolCode);
 			schoolName = organVO.getSchoolName();
-			
 			
 			// 악화지수
 			double deteriorateMaxScore = 0;
@@ -588,11 +577,7 @@ public class AdminStatisticsController {
 			// 기관 내 측정 두려움 인원 목록
 			model.addAttribute("userFearScoreList", userFearScoreList);
 			
-//			if(lang.equals("ko")) {
-				returnUrl =  "/web/statistics/school/graph_main_api";
-//			}else if(lang.equals("en")){
-//				returnUrl =  "/web/statistics/graph_main_en";
-//			}
+			returnUrl =  "/web/statistics/school/graph_main_api";
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -602,11 +587,12 @@ public class AdminStatisticsController {
 	}
 	
 	
+	
 	/**
+	 * 기능   : 관리자페이지 - 진단 결과지 호출 후 진단 내용 업데이트 (외부용)
 	 * 작성자 : 정주현 
-	 * 작성일 : 2023. 08. 31
-	 * 수정일 : 2023. 08. 31
-	 * 기능   : 진단 결과지 관리자 호출 시 진단 내용 업데이트
+	 * 작성일 : 2023. 11. 09
+	 * 수정일 : 2023. 12. 12
 	 */
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = {"/admin/school/statistics/updateDiagDescript.do"})
@@ -639,12 +625,11 @@ public class AdminStatisticsController {
 	
 	
 	
-	
 	/**
+	 * 기능   : 관리자페이지 - 진단 결과지 호출 후 진단 메모 업데이트 (외부용) 
 	 * 작성자 : 정주현 
-	 * 작성일 : 2023. 08. 31
-	 * 수정일 : 2023. 08. 31
-	 * 기능   : 진단 결과지 관리자 호출 시 메모 업데이트
+	 * 작성일 : 2023. 11. 09
+	 * 수정일 : 2023. 12. 12
 	 */
 	@SuppressWarnings("unchecked")
 	@PostMapping(value = {"/admin/school/statistics/updateMemo.do"})
@@ -655,13 +640,15 @@ public class AdminStatisticsController {
 		String measureDt = (String)paramMap.get("measureDt");
 		String memo = (String)paramMap.get("memo");
 		
-		// 타이틀 저장
-//		teethService.updateMemo(userId, measureDt, memo);
+		// 메모 저장
+		teethService.updateMemo(userId, measureDt, memo);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", "success");
 		return jsonObject.toJSONString(); 
 		
 	}
+	
+	
 	
 }

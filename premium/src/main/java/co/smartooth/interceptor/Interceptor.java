@@ -12,7 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 /**
  * 기능 : 전처리기 - interceptor
  * 작성자 : 정주현
- * 작성일 : 2023. 11. 08
+ * 작성일 : 2023. 11. 09
  */
 public class Interceptor extends HandlerInterceptorAdapter{
 	

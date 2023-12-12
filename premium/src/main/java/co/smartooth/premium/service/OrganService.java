@@ -36,18 +36,12 @@ public interface OrganService {
 	public List<HashMap<String, Object>> ajaxSelectSchoolList(@Param("searchType") String searchType, @Param("searchData") String searchData) throws Exception;
 
 	
-	// 유치원, 어린이집 반 목록 조회
-	// public List<HashMap<String, Object>> selectDepartmentList(@Param("searchType") String searchType, @Param("searchData") String searchData) throws Exception;
-		
-	
 	// 유치원, 어린이집 치아 측정일 목록 조회 (유치원,어린이집 코드)
 	public List<HashMap<String, Object>> selectOrganMeasureDtList(@Param("schoolCode") String schoolCode) throws Exception;
 	
 
 	// 유치원, 어린이집 소속 반 이름 조회
 	public String selectClassName(@Param("userId") String userId) throws Exception;
-
-
 
 
 }

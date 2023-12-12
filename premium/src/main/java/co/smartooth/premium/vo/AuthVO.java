@@ -3,15 +3,20 @@ package co.smartooth.premium.vo;
 
 public class AuthVO {
 	
-
+	// 번호
 	private String userNo;
+	// 아이디
 	private String userId;
+	// 비밀번호
 	private String userPwd;
+	// 유형
 	private String userType;
+	// 로그인 일자
 	private String loginDt;
+	// 로그인 성공 여부
 	private String loginResult;
+	// 로그인 IP
 	private String loginIp;
-//	private boolean rememberId;
 	
 	
 	public String getUserNo() {
@@ -57,10 +62,4 @@ public class AuthVO {
 		this.loginIp = loginIp;
 	}
 		
-//		public boolean isRememberId() {
-//			return rememberId;
-//		}
-//		public void setRememberId(boolean rememberId) {
-//			this.rememberId = rememberId;
-//		}
 }

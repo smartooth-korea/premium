@@ -1,18 +1,17 @@
-#DEV (개발) SERVER
-#스마투스 프리미엄 앱 (학교구독 서비스) 
+#스마투프 프리미엄 운영 서버 - 치과 조회 APP & WEB
+#지역 : KR (한국 - 서울)
 spring:
     profiles:
-        active: dev
+        active: web-school
 
-    #datasource (mariaDB)
     datasource:
-        #운영서버 Database - smartooth_premium
         driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-        db-url: jdbc:log4jdbc:mariadb://smartooth-premium-dev.cdx8q9adtw2b.ap-northeast-2.rds.amazonaws.com/smartooth_premium
+        #프리미엄 한국 서버 데이터베이스
+        db-url: jdbc:log4jdbc:mariadb://smartooth-premium-dev.cdx8q9adtw2b.ap-northeast-2.rds.amazonaws.com/smartooth_premium_encode
         db-username: smartooth
         db-password: smartooth509#
         
-    loginUrl: 13.209.156.47:8090
+    loginUrl: 13.209.156.47:8093
 
         
     mvc:
@@ -22,11 +21,9 @@ spring:
         static-path-pattern : /static/**
 
         
-    #메일 발송 부분은 로직은 동일, 메일 발송 HOST, ID, 비밀번호만 변경해주면 됨
     mailsendername: Smartooth KOREA
     mailusername: contact@smartooth.co
     mailpassword: lKX7ucWCMADB
-    #mailpassword: tkffla509
   
   
     mybatis:
@@ -43,9 +40,8 @@ spring:
             static-locations : classpath:/static-location/
 
 server:
-    #로컬 local
     ip: 13.209.156.47
-    port: 8090
+    port: 8091
 
             
 #---

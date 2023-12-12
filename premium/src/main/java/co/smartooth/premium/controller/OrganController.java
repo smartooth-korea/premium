@@ -86,24 +86,14 @@ public class OrganController {
 		}
 		return hm;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	/**
-	 * 기능   : 유치원, 어린이집 검색 (로그인 및 유치원, 어린이집 원아 등록 시 사용)
+	 * 기능   : 유치원, 어린이집 검색
+	 * 사용처 : '로그인' 및 '동의서'로 유치원, 어린이집 원아 등록 시 사용
 	 * 작성자 : 정주현 
 	 * 작성일 : 2022. 11. 10
-	 * @throws Exception 
 	 */
 	@PostMapping(value = {"/organ/ajaxSelectSchoolList.do"})
 	public @ResponseBody Map<String, Object> ajaxSelectOrganList(@RequestParam Map<String, Object> paramMap) throws Exception {
@@ -123,9 +113,8 @@ public class OrganController {
 	 * 기능   : 유치원, 어린이집 반 목록 조회 (파라미터로 넘어온 유치원, 어린이집의 반 목록 - 로그인 및 유치원, 어린이집 원아 등록 시 사용)
 	 * 작성자 : 정주현 
 	 * 작성일 : 2022. 11. 10
-	 * @throws Exception 
 	 */
-	@PostMapping(value = {"/organ/ajaxSelectDepartmentList.do"})
+	@PostMapping(value = {"/organ/ajaxSelectClassList.do"})
 	public @ResponseBody Map<String, Object> ajaxSelectDepartmentList(@RequestParam Map<String, Object> paramMap) throws Exception {
 		
 		String schoolCode = (String)paramMap.get("schoolCode");

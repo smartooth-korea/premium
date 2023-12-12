@@ -15,6 +15,7 @@ import co.smartooth.premium.vo.TeethMeasureVO;
 public interface TeethService {
 	
 	
+	/** 공통 기능 **/
 	// 피측정자 치아 상태 값 INSERT
 	public void insertUserTeethInfo(@Param("userId") String userId) throws Exception;
 	
@@ -39,6 +40,11 @@ public interface TeethService {
 	public void updateUserCavityCntByMeasureDt(TeethMeasureVO teethMeasureVO) throws Exception;
 	
  	
+	
+	
+	
+	
+	/** 유치원, 어린이집 **/
  	// 유치원,어린이집 소속 자녀(피측정자) 측정 값 목록
  	public List<HashMap<String, Object>> selectUserMeasureStatisticsList(@Param("schoolCode") String schoolCode, @Param("measureDt") String measureDt) throws Exception;
  	
@@ -53,7 +59,6 @@ public interface TeethService {
 	
  	// 비고 (memo) 업데이트
  	public void updateMemo(@Param("userId") String userId, @Param("measureDt") String measureDt, @Param("memo") String memo) throws Exception;
- 	
-	
-	
+
+
 }

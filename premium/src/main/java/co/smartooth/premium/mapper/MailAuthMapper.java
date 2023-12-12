@@ -12,13 +12,10 @@ import org.apache.ibatis.annotations.Param;
 public interface MailAuthMapper {
 
 	
-	// 비밀번호 변경 인증 메일 발송
-	public void sendAuthMail(@Param("userId") String userId) throws Exception;
-	
-	
+	/** 공통 기능 **/
 	// 인증 메일 클릭 시 인증 상태 'Y' 로 업데이트
 	public void updateAuthStatusY(@Param("userId") String userId) throws Exception;
-	
+
 	
 	// 인증 메일 요청 시 인증 상태 'N' 로 업데이트
 	public void updateAuthStatusN(@Param("userId") String userId) throws Exception;
@@ -38,20 +35,19 @@ public interface MailAuthMapper {
 	
 	
 	
-	// 비밀번호 변경 인증 메일 발송
+	
+	
+	/** 유치원, 어린이집 **/
+	// 비밀번호 변경 인증 메일 발송 (APP)
+	public void sendAuthMail(@Param("userId") String userId) throws Exception;
+	
+	
+	// 비밀번호 변경 인증 메일 발송 (WEB)
 	public void sendAuthMail(@Param("userId") String userId, @Param("email") String email) throws Exception;
 	
 	
-	// 메일 인증 키 검증
+	// 메일 인증 키 검증 (WEB)
 	public int isAuthKeyMatch(@Param("userId") String userId, @Param("authKey") String authKey) throws Exception;
-	
-	
-	
-	
-	
-	
-	
-//	// 비밀번호 변경 메일 발송
-//	public void sendResetPasswordMail(String userId, String emailAuthKey) throws Exception;
+
 	
 }
