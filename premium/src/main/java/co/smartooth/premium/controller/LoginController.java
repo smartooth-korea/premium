@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.smartooth.premium.service.AuthService;
 import co.smartooth.premium.service.LogService;
 import co.smartooth.premium.service.MailAuthService;
+import co.smartooth.premium.service.OrganService;
 import co.smartooth.premium.service.UserService;
 import co.smartooth.premium.vo.AuthVO;
 import co.smartooth.premium.vo.UserVO;
@@ -46,6 +47,12 @@ public class LoginController {
 	
 	@Autowired(required = false)
 	private LogService logService;
+
+	@Autowired(required = false)
+	private OrganService organService;
+	
+	
+	
 	
 	@Value("${loginUrl}")
     private String loginUrl;
@@ -58,12 +65,17 @@ public class LoginController {
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
 	 */
-	@PostMapping(value = {"/login.do"})
+	@PostMapping(value = {"/login.do", "/dentist/login.do"})
 	@ResponseBody
 	public HashMap<String,Object> appLogin(HttpServletRequest request, @RequestBody HashMap<String, Object> paramMap) {
 		
 	    // 서버포트
 	    int serverPort = request.getServerPort();
+	    
+	    // 오늘 일자 계산
+ 		Date tmpDate = new Date();
+ 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ 		String sysDate = sdf.format(tmpDate);
 	    
 	    // ID와 PWD 유효성 체크
 	    int loginChkByIdPwd = 0;
@@ -79,7 +91,11 @@ public class LoginController {
 		// 인증 토큰
 		String userAuthToken = null;
 		
-		HashMap<String,Object> hm = new HashMap<String,Object>();
+		// 치과 이름
+		String dentalHospitalNm = null;
+		// 치과 코드
+		String dentalHospitalCd = null;
+		
 		
 		// 로그인 인증 VO
 		AuthVO authVO = new AuthVO();
@@ -88,10 +104,21 @@ public class LoginController {
 		// 자녀 계정 정보 VO
 		List<UserVO> studentUserInfoList = new ArrayList<UserVO>();
 		
-		// 오늘 일자 계산
-		Date tmpDate = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String sysDate = sdf.format(tmpDate);
+		/** 공통 **/
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		/** 치과 **/
+		List<HashMap<String, Object>> measureOrganList = new ArrayList<HashMap<String, Object>>();
+		// 치과 부서 리스트
+		List<HashMap<String, Object>> departmentList = new  ArrayList<HashMap<String, Object>>();
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// 인증 VO
 		authVO.setUserId(userId);
@@ -110,7 +137,6 @@ public class LoginController {
 		}else {
 			userConnectionType = "APP";
 		}
-		
 		
 		try {
 			// 아이디와 비밀번호로 유효성 검사
@@ -133,14 +159,29 @@ public class LoginController {
 				
 				
 				
-				
-				
-				
-				
-				/** 유치원, 어린이집 조회 앱 **/
-				if(serverPort == 8094) {
+				if(serverPort == 8090) {
+					
+					/** 치과 측정 앱 **/
+					authVO.setUserType("DENT-"+userConnectionType);
+					
+					// 로그인 시 등록 되어 있는 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
+					measureOrganList = organService.selectMeasureOrganList(userId, "");
+					
+					// 치과 이름
+					dentalHospitalNm = (String)measureOrganList.get(0).get("SCHOOL_NAME");
+					// 치과 코드
+					dentalHospitalCd = (String) measureOrganList.get(0).get("SCHOOL_CODE");
+					
+					// 치과 부서 정보 조회 (1개밖에없음 : 여러개 추가될 것을 고려하여 List로 타입 설정)
+					departmentList = organService.selectDepartmentList(dentalHospitalCd);		
 					
 					
+					
+					hm.put("measureOrganList", measureOrganList);
+				
+				}else if(serverPort == 8094) {
+
+					/** 유치원, 어린이집 조회 앱 **/
 					authVO.setUserType("SCH-"+userConnectionType);
 					// 법정대리인 계정 정보
 					parentUserVO = userService.selectUserInfo(userId);

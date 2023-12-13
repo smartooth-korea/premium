@@ -2,7 +2,6 @@ package co.smartooth.premium.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 import co.smartooth.premium.vo.OrganVO;
 
@@ -13,6 +12,19 @@ import co.smartooth.premium.vo.OrganVO;
  * 수정일 : 2023. 12. 08
  */
 public interface OrganService {
+	
+	
+	/** 치과 서비스 측정 앱 **/
+	// 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
+	public List<HashMap<String, Object>> selectMeasureOrganList(@Param("userId") String userId, @Param("userType") String userType) throws Exception;
+	
+	
+	// 치과 소속 부서 목록 조회 (사실상 치과에 소속된 부서는 1개)
+	public List<HashMap<String, Object>> selectDepartmentList(@Param("organCode") String organCode) throws Exception;
+	
+	
+	
+	
 	
 	
 	/** 유치원, 어린이집 **/

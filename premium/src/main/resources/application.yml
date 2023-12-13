@@ -11,7 +11,7 @@ spring:
         db-username: smartooth
         db-password: smartooth509#
 
-    loginUrl: localhost:8091
+    loginUrl: localhost:8090
     #loginUrl: localhost:8094
     #loginUrl: localhost:90
         
@@ -51,7 +51,7 @@ spring:
 server:
     #로컬 local
     ip: 127.0.0.1
-    port: 8091
+    port: 8090
     #port: 8094
     servlet:
         session:

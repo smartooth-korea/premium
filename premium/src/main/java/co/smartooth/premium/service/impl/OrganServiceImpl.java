@@ -25,6 +25,29 @@ public class OrganServiceImpl implements OrganService{
 	
 	
 	
+	/** 치과 서비스 측정 앱 **/
+	// 등록 되어 있는 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
+	@Override
+	public List<HashMap<String, Object>> selectMeasureOrganList(@Param("userId")  String userId, @Param("userType")  String userType) throws Exception {
+		return organMapper.selectMeasureOrganList(userId, userType);
+	}
+	
+	
+	
+	// 치과 소속 부서 목록 조회 (사실상 치과에 소속된 부서는 1개)
+	@Override
+	public List<HashMap<String, Object>> selectDepartmentList(@Param("organCode") String organCode) throws Exception {
+		return organMapper.selectDepartmentList(organCode);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/** 유치원, 어린이집 **/
 	// 유치원, 어린이집 정보 조회
 	@Override
