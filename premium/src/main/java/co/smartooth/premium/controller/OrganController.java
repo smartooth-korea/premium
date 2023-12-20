@@ -28,10 +28,52 @@ public class OrganController {
 	private OrganService organService;
 	
 	
-
+	
 	/**
+	 * 유치원, 어린이집 서비스 측정 APP
+	 * 기능   : 반 목록 조회
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 12. 20
+	 * 비고 : 추후 organ으로 이름을 변경할 예정
+	 */
+	@PostMapping(value = {"/premium/user/selectTcUserList.do"})
+	@ResponseBody
+		public HashMap<String,Object> selectOrganList(@RequestBody HashMap<String, String> paramMap) {
+
+		String schoolCode = (String)paramMap.get("schoolCode");
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		int userCount = 0;
+		String userId = null;
+		List<HashMap<String, Object>> tcList = new ArrayList<HashMap<String, Object>>();
+		
+		try {
+			// 반 목록 조회
+			tcList = organService.selectTcUserList(schoolCode);
+			for(int i=0; i<tcList.size();i++) {
+				// 반 아이디로 반에 해당하는 피측정자 회원 수 조회
+				userId = (String)tcList.get(i).get("userId");
+				//userCount = organService.selectDepartmentUserCount(userId);
+				tcList.get(i).put("userCount", userCount);
+			}
+			
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "반(부서) 목록 조회를 하지 못했습니다.\n관리자에게 문의 해주시기 바랍니다.");
+			e.printStackTrace();
+		}
+		hm.put("tcList", tcList);
+		hm.put("code", "000");
+		hm.put("msg", "성공.");
+		return hm;
+	}
+	
+	
+	
+	/**
+	 * 유치원, 어린이집 서비스 조회 APP
 	 * 기능   : 유치원, 어린이집 목록 조회
-	 * 사용처 : 유치원, 어린이집 개인 조회 앱
 	 * 작성자 : 정주현 
 	 * 작성일 : 2022. 11. 10
 	 * 비고 : 유치원, 어린이집 검색어가 없을 경우 전체 리스트 반환
@@ -125,7 +167,7 @@ public class OrganController {
 		
 		return paramMap;
 	}
-
-
-
+	
+	
+	
 }

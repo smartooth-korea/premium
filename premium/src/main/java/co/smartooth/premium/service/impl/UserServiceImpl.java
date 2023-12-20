@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	/** 치과서비스 **/
+	/** 치과서비스 측정 앱 **/
 	// 부서ID로 해당 피측정자 목록 조회
 	@Override
 	public List<UserVO> selectMeasuredUserList(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception {
@@ -142,7 +142,22 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	/** 유치원, 어린이집 **/
+	/** 유치원, 어린이집 서비스 조회 앱 **/
+	// 측정자 목록 조회
+	@Override
+	public List<HashMap<String, Object>> selectMeasurerList() throws Exception {
+		return userMapper.selectMeasurerList();
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 서비스 조회 앱 **/
 	// 아이디 중복 체크
 	@Override
 	public int duplicateChkId(String userId) throws Exception {

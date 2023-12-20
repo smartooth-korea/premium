@@ -35,7 +35,24 @@ public interface OrganMapper {
 	
 	
 	
-	/** 유치원, 어린이집 **/
+	/** 유치원, 어린이집 측정 앱 **/
+	// 유치원, 어린이집 목록 전체 조회
+	public List<HashMap<String, Object>> selectAllSchoolList() throws Exception;
+	
+	
+	// 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
+	public List<HashMap<String, Object>> selectMeasureSchoolList(@Param("userId") String userId) throws Exception;
+	
+	
+	// 반 목록 조회
+	public List<HashMap<String, Object>> selectTcUserList(@Param("schoolCode") String schoolCode) throws Exception;
+	
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 조회 앱 **/
 	// 유치원, 어린이집 정보 조회
 	public OrganVO selectSchoolInfo(@Param("schoolCode") String schoolCode) throws Exception;
 	

@@ -56,7 +56,36 @@ public class OrganServiceImpl implements OrganService{
 	
 	
 	
-	/** 유치원, 어린이집 **/
+	/** 유치원, 어린이집 서비스 조회 앱 **/
+	// 유치원, 어린이집 목록 전체 조회
+	@Override
+	public List<HashMap<String, Object>> selectAllSchoolList() throws Exception {
+		return organMapper.selectAllSchoolList();
+	}
+
+
+
+	// 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
+	@Override
+	public List<HashMap<String, Object>> selectMeasureSchoolList(@Param("userId")  String userId) throws Exception {
+		return organMapper.selectMeasureSchoolList(userId);
+	}
+	
+	
+	
+	// 반 목록 조회
+	@Override
+	public List<HashMap<String, Object>> selectTcUserList(@Param("schoolCode") String schoolCode) throws Exception{
+		return organMapper.selectTcUserList(schoolCode);
+	}
+	
+	
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 서비스 조회 앱 **/
 	// 유치원, 어린이집 정보 조회
 	@Override
 	public OrganVO selectSchoolInfo(@Param("schoolCode") String schoolCode) throws Exception {

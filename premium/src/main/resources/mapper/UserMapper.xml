@@ -126,7 +126,7 @@
     
     
     
-    <!-- 치과서비스 -->
+    <!-- 치과서비스 측정 -->
     <!-- 부서ID로 해당 피측정자 목록 조회 --> 
     <select id="selectMeasuredUserList" parameterType="String" resultType="co.smartooth.premium.vo.UserVO">
     
@@ -347,8 +347,33 @@
     
     
 	
+	<!-- 유치원, 어린이집서비스 측정 -->
+    <!-- 측정자 목록 조회 -->
+    <select id="selectMeasurerList" resultType="hashmap">
+    
+		SELECT 
+			MEASURER_ID
+			,MEASURER_NM
+			,MEASURER_EMAIL
+			,MEASURER_TEL_NO
+		FROM ST_MEASURER_INFO
+		
+    </select>
 	
-	<!-- 유치원, 어린이집서비스  -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 유치원, 어린이집서비스 조회  -->
 	<!-- 아이디 중복 체크 -->
     <select id="duplicateChkId" resultType="Integer" parameterType="String">
         SELECT COUNT(*)

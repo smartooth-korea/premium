@@ -65,7 +65,7 @@ public class LoginController {
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 10
 	 */
-	@PostMapping(value = {"/login.do", "/dentist/login.do"})
+	@PostMapping(value = {"/login.do", "/dentist/login.do", "/premium/login.do"})
 	@ResponseBody
 	public HashMap<String,Object> appLogin(HttpServletRequest request, @RequestBody HashMap<String, Object> paramMap) {
 		
@@ -120,7 +120,7 @@ public class LoginController {
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
 		
-		/** 치과 **/
+		/** 치과 측정 앱 **/
 		List<HashMap<String, Object>> measureOrganList = new ArrayList<HashMap<String, Object>>();
 		// 치과 부서 리스트
 		List<HashMap<String, Object>> departmentList = new  ArrayList<HashMap<String, Object>>();
@@ -128,6 +128,12 @@ public class LoginController {
 		List<HashMap<String, Object>> dentistList = new ArrayList<HashMap<String, Object>>();
 		HashMap<String, Object> dentalHospitalInfo = new HashMap<String, Object>();
 		List<HashMap<String, Object>> infomationAgreeUserList = new ArrayList<HashMap<String, Object>>();
+		
+		
+		/** 유치원, 어린이집 측정 앱 **/
+		List<HashMap<String, Object>> measurerList = new ArrayList<HashMap<String, Object>>();
+		List<HashMap<String, Object>> measureOranList = new ArrayList<HashMap<String, Object>>();
+		
 		
 		// 인증 VO
 		authVO.setUserId(userId);
@@ -180,7 +186,7 @@ public class LoginController {
 					userEmail = userVO.getUserEmail();
 					
 					/** 치과 측정 앱 **/
-					authVO.setUserType("DENT-"+userConnectionType);
+					authVO.setUserType("DENT-MEASURE");
 					
 					// 로그인 시 등록 되어 있는 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
 					measureOrganList = organService.selectMeasureOrganList(userId, "");
@@ -211,6 +217,33 @@ public class LoginController {
 					hm.put("dentalHospitalInfo", dentalHospitalInfo);
 					hm.put("infomationAgreeUserList", infomationAgreeUserList);
 				
+				}else if(serverPort == 8091) {
+					
+					userVO = userService.selectUserInfo(userId);
+					userType = userVO.getUserType();
+
+					// 로그인 일자 업데이트
+					logService.updateLoginDt(authVO);
+					
+					// 측정자 목록 조회
+					measurerList = userService.selectMeasurerList();
+					
+					/* 로그인 시 등록 되어 있는 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준) 해당 메소드의 경우 측정자일 경우에만 사용을
+					 해야될 것으로 보이며 슈퍼관리자 및 매니저의 경우는 SCHOOL_INFO를 참조하여 조회해야할 것으로 보임 */
+					if(userType.equals("SU") || userType.equals("AD") || userType.equals("MA")) {
+						measureOranList = organService.selectAllSchoolList();
+					}else {
+						measureOranList = organService.selectMeasureSchoolList(userId);
+					}
+					
+					authVO.setUserType("SCH-MEASURE");
+					// 데이터 RETURN
+					hm.put("measurerList", measurerList);
+					hm.put("measureOranList", measureOranList);
+					// 메시지 RETURN
+					hm.put("code", "000");
+					hm.put("msg", "로그인 성공");
+					
 				}else if(serverPort == 8094) {
 
 					/** 유치원, 어린이집 조회 앱 **/
@@ -219,7 +252,6 @@ public class LoginController {
 					parentUserVO = userService.selectUserInfo(userId);
 					// 자녀 계정 정보
 					studentUserInfoList = userService.selectStudentUserInfoByParentUserId(userId);
-					// 어디서 접속 시도를 하였는지 확인
 					// 데이터 RETURN
 					hm.put("userAuthToken", userAuthToken);
 					hm.put("parentUserInfo", parentUserVO);
@@ -395,7 +427,6 @@ public class LoginController {
 		// 로그인 후 조회시 필요한 것들
 		int loginChkByIdPwd = 0;
 		// 회원아이디와 기관코드 대조
-		int loginchkByIdOrganCd = 0;
 		int isIdExist = 0;
 		String isEmailAuthEnabled = "N";
 		
@@ -403,7 +434,6 @@ public class LoginController {
 		// 세션 유지 시간 30분
 		session.setMaxInactiveInterval(60*30*1);
 		
-		String stUserId = null;
 		String userPwd = request.getParameter("userPwd");
 		String userType = null;
 		// 로그인 시 링크에 포함되어있는 schoolCode를 받아서 저장

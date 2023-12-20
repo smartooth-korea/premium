@@ -41,7 +41,7 @@ public interface UserService {
 	
 	
 	
-	/** 치과 서비스 **/
+	/** 치과 서비스 측정 **/
 	// 부서ID로 해당 피측정자 목록 조회
 	public List<UserVO> selectMeasuredUserList(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception;
 	
@@ -72,14 +72,26 @@ public interface UserService {
 	
 	// 치과 소속 의사 등록
 	public void insertDentistInfo(DentistInfoVO dentistInfoVO) throws Exception;
+	
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 측정 앱 **/
+	// 측정자 목록 조회
+	public List<HashMap<String, Object>> selectMeasurerList() throws Exception;
+	
+	
+	
+	
 
 	
 	
 	
 	
 	
-	
-	/** 유치원, 어린이집 **/
+	/** 유치원, 어린이집 조회 앱 **/
 	// 아이디 중복 체크
 	public int duplicateChkId(@Param("userId") String userId) throws Exception;
 
