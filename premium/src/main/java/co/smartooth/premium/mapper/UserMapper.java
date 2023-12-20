@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import co.smartooth.premium.vo.DentistInfoVO;
 import co.smartooth.premium.vo.UserVO;
 
 
@@ -17,13 +18,13 @@ import co.smartooth.premium.vo.UserVO;
 public interface UserMapper {
 	
 	
-	/** 공통 사용 **/
+	/** 공통 기능 **/
 	// 계정 정보 조회
 	public UserVO selectUserInfo(@Param("userId") String userId) throws Exception;
 	
 	
 	// 계정 비밀번호 변경
-	public void updateUserPwd(UserVO userVO) throws Exception;
+	public void updateUserPwd(@Param("userId") String userId, @Param("userPwd") String userPwd) throws Exception;
 	
 	
 	// 계정 정보 수정(업데이트)
@@ -36,6 +37,44 @@ public interface UserMapper {
 	
 	// 푸시토큰 업데이트(수정)
 	public void updatePushToken(@Param("userId") String userId, @Param("pushToken") String pushToken) throws Exception;
+	
+	
+	
+	
+	
+	
+	/** 치과 서비스 **/
+	// 부서ID로 해당 피측정자 목록 조회
+	public List<UserVO> selectMeasuredUserList(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception;
+	
+	
+	// 개인정보 제공을 동의한 환자 목록(SYSDATE)
+	public List<HashMap<String, Object>> selectInfomationAgreeUserList(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;	
+	
+	
+	// 치과 소속 의사 목록 조회
+	public List<HashMap<String, Object>> selectDentistList(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;
+	
+	
+	// 현재 측정된 자료가 없는 T00~T99 사이의 환자 할당
+	public UserVO selectNoMeasureValueUserId(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;
+	
+	
+	// 빠른등록으로 할당된 환자의 차이 형태 (유치,영구치) 업데이트
+	public void updateUserTeethType(@Param("userId") String userId, @Param("teethType") String teethType) throws Exception;
+	
+	
+	// 치과 회원 상세 정보 등록
+	public void insertUserDetail(UserVO dentalUserVO) throws Exception;
+	
+	
+	// 최근 등록한 의사 아이디 조회
+	public String selectDentistId(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;
+	
+	
+	// 치과 소속 의사 등록
+	public void insertDentistInfo(DentistInfoVO dentistInfoVO) throws Exception;
+
 	
 	
 	

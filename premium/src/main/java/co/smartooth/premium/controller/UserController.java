@@ -2,7 +2,10 @@ package co.smartooth.premium.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import co.smartooth.premium.service.LocationService;
@@ -21,8 +25,10 @@ import co.smartooth.premium.service.MailAuthService;
 import co.smartooth.premium.service.OrganService;
 import co.smartooth.premium.service.TeethService;
 import co.smartooth.premium.service.UserService;
+import co.smartooth.premium.vo.DentistInfoVO;
 import co.smartooth.premium.vo.LocationVO;
 import co.smartooth.premium.vo.OrganVO;
+import co.smartooth.premium.vo.TeethInfoVO;
 import co.smartooth.premium.vo.UserVO;
 import co.smartooth.utils.JwtTokenUtil;
 
@@ -68,7 +74,7 @@ public class UserController {
 	 * 작성자 : 정주현 
 	 * 작성일 : 2023. 11. 08
 	 */
-	@PostMapping(value = {"/user/duplicateChkId.do"})
+	@PostMapping(value = {"/user/duplicateChkId.do", "/dentist/user/duplicateChkId.do"})
 	@ResponseBody
 	public HashMap<String,Object> duplicateChkId(@RequestBody HashMap<String, String> paramMap){
 
@@ -207,7 +213,6 @@ public class UserController {
 		String userPwd = (String)paramMap.get("userPwd");
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
-		UserVO userVO = new UserVO();
 		
 		// Parameter :: userId 값 검증
 		if(userId == null || userId.equals("")) {
@@ -222,12 +227,10 @@ public class UserController {
 			return hm;
 		}
 		
-		userVO.setUserId(userId);
-		userVO.setUserPwd(userPwd);
-		
+
 		if(true) {
 			try {
-				userService.updateUserPwd(userVO);
+				userService.updateUserPwd(userId, userPwd);
 				// 메일 인증 초기화
 				mailAuthService.updateAuthStatusN(userId);
 				hm.put("code", "000");
@@ -494,7 +497,7 @@ public class UserController {
 	public HashMap<String,Object> insertStudentUserInfo(HttpServletRequest request, @RequestBody HashMap<String, Object> paramMap) throws Exception{
 		
 		// API 요청 port
-		int serverPort = request.getServerPort();
+		// int serverPort = request.getServerPort();
 		// 접속자의 지역 정보
 		Locale locale = request.getLocale();
 		
@@ -728,7 +731,291 @@ public class UserController {
 		return "redirect:/web/statistics/login/statisticsLoginForm";
 
 	}
+	
+	
+	
+	/**
+	 * WEB
+	 * 기능 : 기관장 첫 로그인 시 비밀번호 변경
+	 * 작성자 : 정주현
+	 * 작성일 : 2022. 11. 28
+	 */
+	@PostMapping(value = { "/web/user/directorChagePassword.do" })
+	public String passwordChage(@RequestParam Map<String, String> paramMap, HttpServletRequest request, HttpSession session, Model model) throws Exception {
 
+		// 회원 아이디
+		String userId = paramMap.get("userId");
+		// 회원 비밀번호
+		String userPwd = paramMap.get("userPwd");
+		
+		userService.updateUserPwd(userId, userPwd);
+		
+		model.addAttribute("userId", userId);
+		model.addAttribute("updatePwd", "Y");
+		
+		// PWD가 틀렸을 경우
+		model.addAttribute("msg", "비밀번호가 변경되었습니다.");
+		
+		// 하드코딩
+		 model.addAttribute("loginUrl", "premium.smartooth.co:8094/director/login");
+		// model.addAttribute("loginUrl", "localhost:8090/login");
+		return "/common/alertMessage";
 
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 기능   : 빠른 등록
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 12. 15
+	 */
+	@PostMapping(value = {"/dentist/user/quickResiter.do"})
+	@ResponseBody
+	public HashMap<String,Object> quickResiter(@RequestBody HashMap<String, Object> paramMap) throws Exception{
+		
+	    // 빠른 등록 - 환자 이름
+	    String userName = (String)paramMap.get("userName");
+	    // 빠른 등록 - 환자 생년월일
+	    String userBirthday = (String)paramMap.get("userBirthday");
+	    // 빠른 등록 - 환자 치아 형태 (유치잔존 : B, 영구치 - 구분해야함 : P)
+	    String teethType = (String)paramMap.get("teethType");
+	    
+	    
+	    String userId = null;
+	    // 치과코드
+	    String dentalHospitalCd = (String)paramMap.get("dentalHospitalCd"); 
+	    // 치과소속 부서 (하드코딩)
+	    String departmentCd = dentalHospitalCd+"01";
+	    
+	    HashMap<String,Object> hm = new HashMap<String,Object>();
+	    UserVO userVO = new UserVO();
+	    List<UserVO> measuredUserList = new ArrayList<UserVO>();
+			
+		 try {
+			
+			 // 현재 측정된 자료가 없는 T00~T99 사이의 회원 할당
+			 userVO = userService.selectNoMeasureValueUserId(dentalHospitalCd);
+			 userId = userVO.getUserId();
+			 // 할당된 환자의 치아 형태 업데이트
+			 userVO.setUserName(userName);
+			 userVO.setUserBirthday(userBirthday);
+			 // 할당된 환자의 정보 수정
+			 userService.updateUserInfo(userVO);
+			 // 할당된 환자의 치아 형태 (유치,영구치) 업데이트
+			 userService.updateUserTeethType(userId, teethType);
+			 
+			 try {
+				 measuredUserList= userService.selectMeasuredUserList(departmentCd, "ASC");
+			} catch (Exception e) {
+				hm.put("msg", "현재 빠른 등록으로 사용할 수 있는 인원 수를 초과하였습니다.\n빠른 등록으로 등록한 회원을 일반 등록으로 전환해주시기 바랍니다.");
+				e.printStackTrace();
+				return hm;
+			}
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "서버 에러가 발생했습니다.\n관리자에게 문의해주시기 바랍니다.");
+			e.printStackTrace();
+			return hm;
+		}
+		// 데이터 RETURN
+		hm.put("userId", userId);
+		hm.put("measuredUserList", measuredUserList);
+		
+		hm.put("code", "000");
+		hm.put("msg", "빠른 등록이 완료 되었습니다.");
+		return hm;
+	}
+	
+	
+	
+	/**
+	 * 기능   : 빠른 등록 >> 일반 등록 전환
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 12. 15
+	 */
+	@PostMapping(value = {"/dentist/user/switchUserRegister.do"})
+	@ResponseBody
+	public HashMap<String, Object> switchUserRegister(@RequestBody HashMap<String, Object> paramMap) throws Exception {
+
+		// 회원 아이디 :: 기존의 T00~T99의 아이디를 받는다
+		String testUserId = (String) paramMap.get("testUserId");
+		// KRDE3405037007-T01
+		// 회원 등록 번호
+		String userId = (String) paramMap.get("userId");
+		// 0000
+		// 회원 이름
+		String userName = (String) paramMap.get("userName");
+		// 회원 전화번호
+		String userTelNo = (String) paramMap.get("userTelNo");
+		// 회원 생년월일
+		String userBirthday = (String) paramMap.get("userBirthday");
+		// 회원 성별
+		String userSex = (String) paramMap.get("userSex");
+		// 법정대리인 동의 여부
+		String agreYn = (String) paramMap.get("agreYn");
+		// 법정대리인 이름
+		String paUserName = (String) paramMap.get("paUserName");
+		// 법정 대리인 전화번호
+		String paUserTelNo = (String) paramMap.get("paUserTelNo");
+		// 회원 종류
+		String userType = "PA";
+		// 회원 등록일
+		String userRgstDt = null;
+		// 회원 치아 형태
+		String teethType = (String) paramMap.get("teethType");
+		// 치과코드
+		String dentalHospitalCd = testUserId.substring(0, testUserId.lastIndexOf("-"));
+		// 부서 코드
+		String departmentCd = dentalHospitalCd + "01";
+		// T00~T99 시퀀스 번호
+		String testUserSeqNo = null;
+
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		List<UserVO> measuredUserList = new ArrayList<UserVO>();
+		UserVO userVO = new UserVO();
+		UserVO originalUserVO = new UserVO();
+
+		try {
+
+			// 치과 회원 아이디 = 치과코드 + userId 파라미터
+			userId = dentalHospitalCd + "-" + userId;
+			/** 회원 공통 정보 **/
+			userVO.setUserId(userId);
+			// userVO.setUserNo(userNo);
+			userVO.setUserPwd("0000");
+			userVO.setUserName(userName);
+			userVO.setUserType(userType);
+			userVO.setSchoolType(userType);
+			userVO.setUserBirthday(userBirthday);
+			userVO.setUserTelNo(userTelNo);
+			userVO.setUserSex(userSex);
+			userVO.setTeethType(teethType);
+
+			/** 법정대리인(보호자) 정보 **/
+			userVO.setPaUserName(paUserName);
+			userVO.setPaUserTelNo(paUserTelNo);
+
+			/** 동의 여부 **/
+			userVO.setAgreYn(agreYn);
+
+			/** 기관 및 부서 정보 **/
+			userVO.setClassCode(departmentCd);
+			userVO.setSchoolCode(dentalHospitalCd);
+
+			// 처음 측정 날짜를 가져온 후 아이디 생성일로 맞춰줌
+			userRgstDt = teethService.selectUserTeethMeasureDt(testUserId);
+			if(userRgstDt != null && !userRgstDt.equals("")) {
+				userVO.setUserRgstDt(userRgstDt);
+			}
+			
+			/** 빠른 등록 회원 일반 등록으로 전환 **/
+			// 치과 회원 등록
+			userService.insertUserInfo(userVO);
+			// 치과 회원 상세 정보 등록
+			userService.insertUserDetail(userVO);
+			// 치과 회원 치아 상태 등록
+			teethService.insertUserTeethInfo(userId);
+			// T00~T99의 측정 기록을 일반 회원의 측정 기록으로 전환
+			teethService.updateMeasureValueUserId(userId, testUserId);
+
+			/** 기존 T00~T99 계정의 정보 원복 **/
+			testUserSeqNo = testUserId.substring(testUserId.length() - 2, testUserId.length());
+			originalUserVO.setUserId(testUserId);
+			originalUserVO.setUserName("환자고객" + testUserSeqNo);
+			originalUserVO.setUserBirthday("2019-01-01");
+			originalUserVO.setUserSex("");
+			originalUserVO.setTeethType("");
+			userService.updateUserInfo(originalUserVO);
+			 // 치과에 소속되어 있는 모든 환자 목록(T00~T99도 포함)
+			measuredUserList= userService.selectMeasuredUserList(departmentCd, "ASC");
+
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "서버 에러가 발생했습니다.\n관리자에게 문의해주시기 바랍니다.");
+			e.printStackTrace();
+		}
+
+		// 데이터 RETURN
+		hm.put("measuredUserList", measuredUserList);
+		
+		hm.put("code", "000");
+		hm.put("msg", "일반 회원으로 전환 되었습니다.");
+		return hm;
+
+	}
+	
+	
+
+	/**
+	 * 기능   : 치과 소속 의사 등록
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 06. 30
+	 */
+	@PostMapping(value = {"/dentist/user/registDentistInfo.do"})
+	@ResponseBody
+	public HashMap<String,Object> registDentistInfo(@RequestBody HashMap<String, Object> paramMap) throws Exception{
+		
+	    // 치과 코드
+	    String dentalHospitalCd = (String)paramMap.get("schoolCode");
+		// 의사 아이디
+		String dentistId = null;
+		// 의사 시퀀스 번호
+		int dentistSeqNo = 1;
+		// 의사 이름
+		String dentistNm = (String)paramMap.get("dentistNm");
+		// 의사 이메일
+		String dentistEmail = (String)paramMap.get("dentistEmail");
+		// 의사 전화번호
+		String dentistTelNo = (String)paramMap.get("dentistTelNo");
+		// 전공 이름
+		String medicalMajorNm = (String)paramMap.get("medicalMajorNm");
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		List<HashMap<String, Object>> dentistUserList = new ArrayList<HashMap<String, Object>>();
+		DentistInfoVO dentalDentistInfoVO = new DentistInfoVO();
+			
+		 try {
+			
+			// 최근 등록한 의사 아이디 조회 후 seq_no (시퀀스 번호) 생성 후 의사 아이디 및 정보 등록
+			dentistId = userService.selectDentistId(dentalHospitalCd);
+			if(dentistId != null && !dentistId.equals("")) {
+				 dentistSeqNo = Integer.parseInt(dentistId.substring(dentistId.length()-2, dentistId.length()));
+				 dentistSeqNo++;
+			}
+
+			// 치과의사 아이디 생성 (가시적인 아이디 - 실제 사용하지 않음)
+			dentistId = dentalHospitalCd+String.format("%02d", dentistSeqNo);
+			// 치과의사 정보 VO
+			dentalDentistInfoVO.setDentalHospitalCd(dentalHospitalCd);
+			dentalDentistInfoVO.setDentistId(dentistId);
+			dentalDentistInfoVO.setDentistNm(dentistNm);
+			dentalDentistInfoVO.setDentistEmail(dentistEmail);
+			dentalDentistInfoVO.setDentistTelNo(dentistTelNo);
+			dentalDentistInfoVO.setMedicalMajorNm(medicalMajorNm);
+			// 치과의사 정보 등록
+			userService.insertDentistInfo(dentalDentistInfoVO);
+			// 치과 소속 의사 목록
+			dentistUserList = userService.selectDentistList(dentalHospitalCd);
+			
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "치과에 의사 등록에 실패하였습니다.\n관리자에게 문의해주시기 바랍니다.");
+			e.printStackTrace();
+		}
+		
+		// 피측정자 목록
+		hm.put("dentistUserList", dentistUserList);
+		hm.put("code", "000");
+		hm.put("msg", "검사자 추가가 완료되었습니다.");
+		return hm;
+		
+	}
 	
 }

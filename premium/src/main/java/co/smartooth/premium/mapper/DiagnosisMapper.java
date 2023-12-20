@@ -15,18 +15,17 @@ import co.smartooth.premium.vo.DiagnosisVO;
 public interface DiagnosisMapper {
 	
 
-	/** 유치원, 어린이집 **/
-	/** WEB **/
+	/** 공통 기능 **/
+	// 진단 키워드 제목 조회
+	public String selectDiagTitle(@Param("diagCd") String diagCd, @Param("teethType") String teethType) throws Exception;
+	
+	
 	// 중위 진단 정보 조회 
-	public List<DiagnosisVO> selectDiagDept2List() throws Exception;
-
+	public List<DiagnosisVO> selectDiagDept2List(@Param("teethType") String teethType) throws Exception;
+	
 	
 	// 진단 키워드 DESCRIPT 조회 - teethType : M, B, P
 	public String selectDiagDescript(@Param("descCd") String descCd, @Param("teethType") String teethType) throws Exception;
-	
-	
-	// 진단 키워드 제목 조회
-	public String selectDiagTitle(@Param("diagCd") String diagCd, @Param("teethType") String teethType) throws Exception;
 	
 	
 	// 진단 키워드 별 태그 변환

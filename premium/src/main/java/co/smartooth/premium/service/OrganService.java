@@ -23,6 +23,10 @@ public interface OrganService {
 	public List<HashMap<String, Object>> selectDepartmentList(@Param("organCode") String organCode) throws Exception;
 	
 	
+	// 치과 정보 조회
+	public HashMap<String, Object> selectDentalHospitalInfo(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;
+	
+	
 	
 	
 	

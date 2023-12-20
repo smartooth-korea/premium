@@ -115,7 +115,7 @@ public class OrganController {
 	 * 작성일 : 2022. 11. 10
 	 */
 	@PostMapping(value = {"/organ/ajaxSelectClassList.do"})
-	public @ResponseBody Map<String, Object> ajaxSelectDepartmentList(@RequestParam Map<String, Object> paramMap) throws Exception {
+	public @ResponseBody Map<String, Object> ajaxSelectClassList(@RequestParam Map<String, Object> paramMap) throws Exception {
 		
 		String schoolCode = (String)paramMap.get("schoolCode");
 		List<HashMap<String,Object>> departList = new ArrayList<HashMap<String,Object>>();

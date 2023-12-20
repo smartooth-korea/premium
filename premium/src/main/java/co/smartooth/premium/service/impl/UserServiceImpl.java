@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import co.smartooth.premium.mapper.UserMapper;
 import co.smartooth.premium.service.UserService;
+import co.smartooth.premium.vo.DentistInfoVO;
 import co.smartooth.premium.vo.UserVO;
 
 
@@ -35,8 +36,8 @@ public class UserServiceImpl implements UserService{
 	
 	// 계정 비밀번호 변경
 	@Override
-	public void updateUserPwd(UserVO userVO) throws Exception {
-		userMapper.updateUserPwd(userVO);
+	public void updateUserPwd(@Param("userId") String userId, @Param("userPwd") String userPwd) throws Exception {
+		userMapper.updateUserPwd(userId, userPwd);
 	}
 	
 	
@@ -60,6 +61,77 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void updatePushToken(@Param("userId") String userId, @Param("pushToken") String pushToken) throws Exception {
 		userMapper.updatePushToken(userId, pushToken);
+	}
+	
+	
+	
+	
+	
+
+	
+	
+	
+	/** 치과서비스 **/
+	// 부서ID로 해당 피측정자 목록 조회
+	@Override
+	public List<UserVO> selectMeasuredUserList(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception {
+		return userMapper.selectMeasuredUserList(userId, orderBy);
+	}
+	
+	
+	
+	// 개인정보 제공을 동의한 환자 목록(SYSDATE)
+	@Override
+	public List<HashMap<String, Object>> selectInfomationAgreeUserList(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception {
+		return userMapper.selectInfomationAgreeUserList(dentalHospitalCd);
+	}
+
+	
+	
+	// 치과 소속 의사 목록 조회
+	@Override
+	public List<HashMap<String, Object>>  selectDentistList(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception {
+		return userMapper.selectDentistList(dentalHospitalCd);
+	}
+	
+	
+	
+	// 현재 측정된 자료가 없는 T00~T99 사이의 환자 할당
+	@Override
+	public UserVO selectNoMeasureValueUserId(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception {
+		return userMapper.selectNoMeasureValueUserId(dentalHospitalCd);
+	}
+
+
+	
+	// 빠른등록으로 할당된 환자의 차이 형태 (유치,영구치) 업데이트
+	@Override
+	public void updateUserTeethType(@Param("userId") String userId, @Param("teethType") String teethType) throws Exception {
+		userMapper.updateUserTeethType(userId, teethType);
+	}
+	
+	
+	
+	// 치과 회원 상세 정보 등록
+	@Override
+	public void insertUserDetail(UserVO userVO) throws Exception {
+		userMapper.insertUserDetail(userVO);
+	}
+	
+	
+	
+	// 치과 소속 의사 목록 조회
+	@Override
+	public String selectDentistId(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception {
+		return userMapper.selectDentistId(dentalHospitalCd);
+	}
+
+
+	
+	// 치과 소속 의사 등록
+	@Override
+	public void insertDentistInfo(DentistInfoVO dentistInfoVO) throws Exception {
+		userMapper.insertDentistInfo(dentistInfoVO);
 	}
 	
 	

@@ -58,6 +58,10 @@ public class TeethMeasureVO implements Serializable {
     private double deteriorateScore;
 
     
+    private String schoolCode;
+	private String schoolName;
+
+    
 	public String getUserName() {
 		return userName;
 	}
@@ -520,4 +524,17 @@ public class TeethMeasureVO implements Serializable {
 	public void setDeteriorateScore(double deteriorateScore) {
 		this.deteriorateScore = deteriorateScore;
 	}
+	public String getSchoolCode() {
+		return schoolCode;
+	}
+	public void setSchoolCode(String schoolCode) {
+		this.schoolCode = schoolCode;
+	}
+	public String getSchoolName() {
+		return schoolName;
+	}
+	public void setSchoolName(String schoolName) {
+		this.schoolName = schoolName;
+	}
+	
 }

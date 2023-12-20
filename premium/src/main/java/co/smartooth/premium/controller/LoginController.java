@@ -84,18 +84,29 @@ public class LoginController {
 	    
 	    // 아이디
 	    String userId = (String)paramMap.get("userId");
+	    // 이름
+	    String userName = null;
 	    // 비밀번호
 		String userPwd = (String)paramMap.get("userPwd");
 		// 로그인 IP
 		String loginIp = request.getRemoteAddr();
 		// 인증 토큰
 		String userAuthToken = null;
+		// 회원 유형
+		String userType = null;
+		// 이메일
+		String userEmail = null; 
 		
 		// 치과 이름
 		String dentalHospitalNm = null;
 		// 치과 코드
 		String dentalHospitalCd = null;
+		// 부서 코드
+		String departmentCd = null;
 		
+		
+		
+		String orderBy = null;
 		
 		// 로그인 인증 VO
 		AuthVO authVO = new AuthVO();
@@ -105,20 +116,18 @@ public class LoginController {
 		List<UserVO> studentUserInfoList = new ArrayList<UserVO>();
 		
 		/** 공통 **/
+		UserVO userVO = new UserVO();
 		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
 		
 		/** 치과 **/
 		List<HashMap<String, Object>> measureOrganList = new ArrayList<HashMap<String, Object>>();
 		// 치과 부서 리스트
 		List<HashMap<String, Object>> departmentList = new  ArrayList<HashMap<String, Object>>();
-		
-		
-		
-		
-		
-		
-		
-		
+		List<UserVO> measuredUserList = new ArrayList<UserVO>();
+		List<HashMap<String, Object>> dentistList = new ArrayList<HashMap<String, Object>>();
+		HashMap<String, Object> dentalHospitalInfo = new HashMap<String, Object>();
+		List<HashMap<String, Object>> infomationAgreeUserList = new ArrayList<HashMap<String, Object>>();
 		
 		// 인증 VO
 		authVO.setUserId(userId);
@@ -160,24 +169,47 @@ public class LoginController {
 				
 				
 				if(serverPort == 8090) {
+					// 정렬
+					orderBy = (String)paramMap.get("order");
+					if(orderBy == null) {
+						orderBy = "ASC";
+					}
+					userVO = userService.selectUserInfo(userId);
+					userType = userVO.getUserType();
+					userName = userVO.getUserName();
+					userEmail = userVO.getUserEmail();
 					
 					/** 치과 측정 앱 **/
 					authVO.setUserType("DENT-"+userConnectionType);
 					
 					// 로그인 시 등록 되어 있는 측정 예정 혹은 측정 완료 기관 목록 조회 (SYSDATE 기준)
 					measureOrganList = organService.selectMeasureOrganList(userId, "");
-					
 					// 치과 이름
 					dentalHospitalNm = (String)measureOrganList.get(0).get("SCHOOL_NAME");
 					// 치과 코드
 					dentalHospitalCd = (String) measureOrganList.get(0).get("SCHOOL_CODE");
-					
 					// 치과 부서 정보 조회 (1개밖에없음 : 여러개 추가될 것을 고려하여 List로 타입 설정)
 					departmentList = organService.selectDepartmentList(dentalHospitalCd);		
+					// 치과 부서 코드
+					departmentCd = (String) departmentList.get(0).get("CLASS_CODE");
+					// 치과 소속 환자 목록
+					measuredUserList= userService.selectMeasuredUserList(departmentCd, orderBy);
+					// 개인정보 제공을 동의한 환자 목록(SYSDATE)
+					infomationAgreeUserList = userService.selectInfomationAgreeUserList(dentalHospitalNm);
+					// 치과 소속 의사 목록
+					dentistList = userService.selectDentistList(dentalHospitalCd);
+					// 치과 정보
+					dentalHospitalInfo = organService.selectDentalHospitalInfo(dentalHospitalCd);
 					
-					
-					
-					hm.put("measureOrganList", measureOrganList);
+					hm.put("userName", userName);
+					hm.put("userEmail", userEmail);
+					hm.put("schoolName", dentalHospitalNm);
+					hm.put("schoolCode", dentalHospitalCd);
+					hm.put("classCode", departmentCd);
+					hm.put("measuredUserList", measuredUserList);
+					hm.put("dentistList", dentistList);
+					hm.put("dentalHospitalInfo", dentalHospitalInfo);
+					hm.put("infomationAgreeUserList", infomationAgreeUserList);
 				
 				}else if(serverPort == 8094) {
 
@@ -193,12 +225,7 @@ public class LoginController {
 					hm.put("parentUserInfo", parentUserVO);
 					hm.put("studentUserInfoList", studentUserInfoList);
 					
-					
 				}
-				
-				
-				
-				
 				
 				// 메시지 RETURN
 				hm.put("code", "000");

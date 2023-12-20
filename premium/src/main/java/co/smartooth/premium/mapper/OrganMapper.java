@@ -27,6 +27,10 @@ public interface OrganMapper {
 	public List<HashMap<String, Object>> selectDepartmentList(@Param("organCode") String organCode) throws Exception;
 	
 	
+	// 치과 정보 조회
+	public HashMap<String, Object> selectDentalHospitalInfo(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception;
+	
+	
 	
 	
 	
@@ -36,7 +40,7 @@ public interface OrganMapper {
 	public OrganVO selectSchoolInfo(@Param("schoolCode") String schoolCode) throws Exception;
 	
 	
-	//  피측정자 증가에 따른 유치원, 어린이집 회원 시퀀스 증가 r
+	//  피측정자 증가에 따른 유치원, 어린이집 회원 시퀀스 증가 
 	public void updateSchoolUserSeqNo(OrganVO organVO) throws Exception;
 	
 	

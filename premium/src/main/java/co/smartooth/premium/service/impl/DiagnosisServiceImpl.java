@@ -22,30 +22,30 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	
 	@Autowired(required = false)
 	DiagnosisMapper diagnosisMapper;
-
 	
 	
-	// 중위 진단 정보 조회
+	
+	/** 공통 기능 **/
+	// 진단 키워드 제목 조회
 	@Override
-	public List<DiagnosisVO> selectDiagDept2List() throws Exception {
-		return diagnosisMapper.selectDiagDept2List();
+	public String selectDiagTitle(@Param("diagCd") String diagCd, @Param("teethType") String teethType) throws Exception {
+		return diagnosisMapper.selectDiagTitle(diagCd, teethType);
 	}
 
+	
+	
+	// 중위 진단 정보 조회 
+	@Override
+	public List<DiagnosisVO> selectDiagDept2List(String teethType) throws Exception {
+		return diagnosisMapper.selectDiagDept2List(teethType);
+	}
+	
 	
 	
 	// 진단 키워드 DESCRIPT 조회 - teethType : M, B, P
 	@Override
 	public String selectDiagDescript(@Param("descCd") String descCd, @Param("teethType") String teethType) throws Exception {
 		return diagnosisMapper.selectDiagDescript(descCd, teethType);
-	}
-	
-	
-	
-	
-	// 진단 키워드 제목 조회
-	@Override
-	public String selectDiagTitle(@Param("diagCd") String diagCd, @Param("teethType") String teethType) throws Exception {
-		return diagnosisMapper.selectDiagTitle(diagCd, teethType);
 	}
 
 
@@ -55,7 +55,6 @@ public class DiagnosisServiceImpl implements DiagnosisService {
 	public String changeSalesKewordHtmlTag(@Param("keyword") String keyword) throws Exception {
 		return diagnosisMapper.changeSalesKewordHtmlTag(keyword);
 	}
-
 
 	
 	

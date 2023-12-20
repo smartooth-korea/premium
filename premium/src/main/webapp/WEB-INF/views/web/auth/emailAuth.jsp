@@ -37,7 +37,7 @@
 </head>
 <body>
 	<div class="container">
-		<form method="post" id="emailAuthForm" action="/web/user/passwordChage.do">
+		<form method="post" id="emailAuthForm" action="/web/user/directorChagePassword.do">
 			<div id="login_logo_background">
 				<img id="logo_img" src="/imgs/login/login_logo_background.png" alt="㈜스마투스코리아 로고" style="width: 35vh;">
 			</div>

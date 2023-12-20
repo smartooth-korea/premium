@@ -42,6 +42,14 @@ public class OrganServiceImpl implements OrganService{
 	
 	
 	
+	// 치과 정보 조회
+	@Override
+	public HashMap<String, Object> selectDentalHospitalInfo(@Param("dentalHospitalCd") String dentalHospitalCd) throws Exception{
+		return organMapper.selectDentalHospitalInfo(dentalHospitalCd);
+	}
+	
+	
+	
 	
 	
 	
