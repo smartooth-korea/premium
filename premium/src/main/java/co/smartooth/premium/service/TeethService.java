@@ -3,8 +3,6 @@ package co.smartooth.premium.service;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-
-import co.smartooth.premium.vo.TeethInfoVO;
 import co.smartooth.premium.vo.TeethMeasureVO;
 import co.smartooth.premium.vo.ToothMeasureVO;
 
@@ -117,16 +115,25 @@ public interface TeethService {
 	
 	
 	
-	/** 치과서비스 **/
+	/** 치과서비스 측정 앱 **/
 	// 피측정자 치아 유형 조회
 	public String selectUserTeethType(@Param("userId") String userId) throws Exception;
 	
-
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 측정 앱 **/
+	// 피측정자 최근 측정일 조회
+	public String selectMeasureDt(@Param("userId") String userId) throws Exception;
+	
+	
 	
 	
 
 	
-	/** 유치원, 어린이집서비스 **/
+	/** 유치원, 어린이집서비스 조회 앱 **/
  	// 유치원,어린이집 소속 자녀(피측정자) 측정 값 목록
  	public List<HashMap<String, Object>> selectUserMeasureStatisticsList(@Param("schoolCode") String schoolCode, @Param("measureDt") String measureDt) throws Exception;
  	

@@ -365,6 +365,35 @@
 	
 	
 	
+	<!-- 반 소속 학생(측정예정) 목록 조회 --> 
+    <select id="selectStudentUserListByClassCode" parameterType="String" resultType="hashmap">
+    
+		SELECT
+				SSUD.USER_ID																AS userId
+				,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_NAME)), '${securityKey}' ) AS CHAR)				AS userName
+				,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_BIRTHDAY)), '${securityKey}' ) AS CHAR)			AS USER_BIRTHDAY
+				,CAST(AES_DECRYPT(UNHEX(FROM_BASE64(SU.USER_TEL_NO)), '${securityKey}' ) AS CHAR)			AS userTelNo
+		   	  	,SU.USER_SEX																AS userSex
+	       	   	,SSUD.SCHOOL_TYPE													AS schoolType
+	           	,SSUD.IS_MEASURING													AS isMeasuring
+		FROM ST_STUDENT_USER_DETAIL SSUD
+		LEFT OUTER JOIN ST_USER SU
+		ON SSUD.USER_ID = SU.USER_ID
+		WHERE 1=1
+	<if test="userId != null and userId != '' ">
+		AND SSUD.TEACHER_ID = #{userId}
+	</if> 
+		GROUP BY SU.USER_ID
+		ORDER BY SU.USER_NAME ASC
+		
+    </select >
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

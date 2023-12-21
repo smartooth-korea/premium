@@ -45,7 +45,7 @@ public class OrganController {
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
 		int userCount = 0;
-		String userId = null;
+		String classCode = null;
 		List<HashMap<String, Object>> tcList = new ArrayList<HashMap<String, Object>>();
 		
 		try {
@@ -53,8 +53,8 @@ public class OrganController {
 			tcList = organService.selectTcUserList(schoolCode);
 			for(int i=0; i<tcList.size();i++) {
 				// 반 아이디로 반에 해당하는 피측정자 회원 수 조회
-				userId = (String)tcList.get(i).get("userId");
-				//userCount = organService.selectDepartmentUserCount(userId);
+				classCode = (String)tcList.get(i).get("userId");
+				userCount = organService.selectClassUserCount(classCode);
 				tcList.get(i).put("userCount", userCount);
 			}
 			

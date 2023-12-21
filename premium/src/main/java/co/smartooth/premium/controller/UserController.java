@@ -1018,4 +1018,64 @@ public class UserController {
 		
 	}
 	
+	
+	
+	/**
+	 * 유치원, 어린이집 서비스 측정 APP
+	 * 기능   : 반 소속 학생 목록 조회
+	 * 작성자 : 정주현 
+	 * 작성일 : 2023. 12. 21
+	 */
+	@PostMapping(value = {"/premium/user/selectStUserListByTc.do"})
+	@ResponseBody
+		public HashMap<String,Object> selectOrganUserList(@RequestBody HashMap<String, String> paramMap) {
+
+		String userId = null;
+		String orderBy = null;
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		List<HashMap<String, Object>> stList = new ArrayList<HashMap<String, Object>>();
+		
+		// Parameter :: userId 값 검증
+		userId = (String)paramMap.get("userId");
+		// (Null 체크 및 공백 체크)
+		if(userId == null || userId.equals("")) {
+			hm.put("code", "401");
+			hm.put("msg", "파라미터(ID)가 없습니다.");
+			return hm;
+		}
+		orderBy = (String)paramMap.get("order");
+		if(orderBy == null) {
+			orderBy = "ASC";
+		}
+		
+		// JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
+		// tokenValidation = jwtTokenUtil.validateToken(userAuthToken);
+		
+		try {
+			// 반 소속 학생(측정예정) 목록 조회
+			stList = userService.selectStudentUserListByClassCode(userId, orderBy);
+			for(int i=0; i<stList.size();i++) {
+				// 자녀(피측정자) 아이디
+				String stUserId = (String)stList.get(i).get("userId");
+				// 피측정자 최근 측정일 조회
+				String measureDt = teethService.selectMeasureDt(stUserId);
+				if(measureDt == null) {
+					measureDt = "";
+				}
+				stList.get(i).put("measureDt", measureDt);
+			}
+			
+		} catch (Exception e) {
+			hm.put("code", "500");
+			hm.put("msg", "피측정자 목록 조회을 조회하지 못했습니다\n관리자에게 문의 해주시기 바랍니다.");
+			e.printStackTrace();
+		}
+		hm.put("stList", stList);
+		hm.put("code", "000");
+		hm.put("msg", "피측 정자 목록 조회 성공");
+		return hm;
+	}
+	
+	
 }

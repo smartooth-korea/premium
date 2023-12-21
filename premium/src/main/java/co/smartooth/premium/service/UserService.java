@@ -83,10 +83,10 @@ public interface UserService {
 	public List<HashMap<String, Object>> selectMeasurerList() throws Exception;
 	
 	
-	
+	// 반 소속 학생(측정예정) 목록 조회
+	public List<HashMap<String, Object>> selectStudentUserListByClassCode(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception;
 	
 
-	
 	
 	
 	

@@ -56,7 +56,7 @@ public class OrganServiceImpl implements OrganService{
 	
 	
 	
-	/** 유치원, 어린이집 서비스 조회 앱 **/
+	/** 유치원, 어린이집 서비스 측정 앱 **/
 	// 유치원, 어린이집 목록 전체 조회
 	@Override
 	public List<HashMap<String, Object>> selectAllSchoolList() throws Exception {
@@ -78,6 +78,16 @@ public class OrganServiceImpl implements OrganService{
 	public List<HashMap<String, Object>> selectTcUserList(@Param("schoolCode") String schoolCode) throws Exception{
 		return organMapper.selectTcUserList(schoolCode);
 	}
+	
+	
+	
+	// 반에 해당하는 피측정자 회원 수 조회 (파라미터 : 반 아이디 = 반 코드)
+	@Override
+	public int selectClassUserCount(@Param("classCode") String classCode) throws Exception {
+		return organMapper.selectClassUserCount(classCode);
+	}
+
+	
 	
 	
 	

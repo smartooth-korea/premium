@@ -121,7 +121,7 @@ public class TeethController {
 	 * 수정일 : 2023. 08. 07
  	 *	기간 조회 (startDt, endDt)
 	 */
-	  @PostMapping({"/dentist/user/selectUserToothMeasureValue.do"})
+	  @PostMapping({"/dentist/user/selectUserToothMeasureValue.do" , "/kindergarten/user/selectUserToothMeasureValue.do"})
 	  @ResponseBody
 		public HashMap<String, Object> selectUserToothMeasureValue(@RequestBody HashMap<String, Object> paramMap, HttpServletRequest request) throws Exception {
 
@@ -163,6 +163,10 @@ public class TeethController {
 			int[] babyTeethArray = null;
 			// 영구치 측정 수치 배열
 			int[] permTeethArray = null;
+			// 영구치 어금니 개수 4개
+			int[] permanentMolarsValueArray = null;
+			// 임시 유치 배열 20개
+			int[] tmpBabyTeethValueArray = null;
 
 			// 유치 정상 치아 개수
 			int babyCvNormalCnt = 0;
@@ -423,6 +427,77 @@ public class TeethController {
 						permTeethArray[29] = userTeethValues.get(0).getT20();
 						permTeethArray[30] = userTeethValues.get(0).getT31();
 						permTeethArray[31] = userTeethValues.get(0).getT32();
+					
+					} else {
+						// 유치 개수 20개
+						babyTeethArray = new int[20];
+						// 영구치 개수 12개
+						permTeethArray = new int[8];
+						// 영구치 어금니 4개
+						permanentMolarsValueArray = new int[4];
+						// 영구치 위치에 해당하는 임시 유치 배열
+						tmpBabyTeethValueArray = new int[8];
+
+						// 변경전 유치 배열 34~53까지 20개
+						babyTeethArray[0] = userTeethValues.get(0).getT34();
+						babyTeethArray[1] = userTeethValues.get(0).getT35();
+						babyTeethArray[2] = userTeethValues.get(0).getT36();
+						// 영구치 T07
+						babyTeethArray[3] = userTeethValues.get(0).getT37();
+						// 영구치 T08
+						babyTeethArray[4] = userTeethValues.get(0).getT38();
+						// 영구치 T09
+						babyTeethArray[5] = userTeethValues.get(0).getT39();
+						// 영구치 T10
+						babyTeethArray[6] = userTeethValues.get(0).getT40();
+
+						babyTeethArray[7] = userTeethValues.get(0).getT41();
+						babyTeethArray[8] = userTeethValues.get(0).getT42();
+						babyTeethArray[9] = userTeethValues.get(0).getT43();
+						
+						babyTeethArray[10] = userTeethValues.get(0).getT46();
+						babyTeethArray[11] = userTeethValues.get(0).getT47();
+						babyTeethArray[12] = userTeethValues.get(0).getT48();
+						// 영구치 T23
+						babyTeethArray[13] = userTeethValues.get(0).getT49();
+						// 영구치 T24
+						babyTeethArray[14] = userTeethValues.get(0).getT50();
+						// 영구치 T25
+						babyTeethArray[15] = userTeethValues.get(0).getT51();
+						// 영구치 T26
+						babyTeethArray[16] = userTeethValues.get(0).getT52();
+						
+						babyTeethArray[17] = userTeethValues.get(0).getT53();
+						babyTeethArray[18] = userTeethValues.get(0).getT54();
+						babyTeethArray[19] = userTeethValues.get(0).getT55();
+						
+						// 영구치 어금니 - 16, 26, 36, 46
+						permanentMolarsValueArray[0] = userTeethValues.get(0).getT33();
+						permanentMolarsValueArray[1] = userTeethValues.get(0).getT44();
+						permanentMolarsValueArray[2] = userTeethValues.get(0).getT45();
+						permanentMolarsValueArray[3] = userTeethValues.get(0).getT56();
+
+						// 영구치 상악
+						permTeethArray[0] = userTeethValues.get(0).getT07();
+						permTeethArray[1] = userTeethValues.get(0).getT08();
+						permTeethArray[2] = userTeethValues.get(0).getT09();
+						permTeethArray[3] = userTeethValues.get(0).getT10();
+
+						// 영구치 하악
+						permTeethArray[4] = userTeethValues.get(0).getT23();
+						permTeethArray[5] = userTeethValues.get(0).getT24();
+						permTeethArray[6] = userTeethValues.get(0).getT25();
+						permTeethArray[7] = userTeethValues.get(0).getT26();
+						
+						// 갯수 카운팅을 위한 임시 배열
+						tmpBabyTeethValueArray[0] = userTeethValues.get(0).getT37();
+						tmpBabyTeethValueArray[1] = userTeethValues.get(0).getT38();
+						tmpBabyTeethValueArray[2] = userTeethValues.get(0).getT39();
+						tmpBabyTeethValueArray[3] = userTeethValues.get(0).getT40();
+						tmpBabyTeethValueArray[4] = userTeethValues.get(0).getT49();
+						tmpBabyTeethValueArray[5] = userTeethValues.get(0).getT50();
+						tmpBabyTeethValueArray[6] = userTeethValues.get(0).getT51();
+						tmpBabyTeethValueArray[7] = userTeethValues.get(0).getT52();
 					}
 
 					// 영구치 정상, 주의, 충치 개수 저장
@@ -480,17 +555,11 @@ public class TeethController {
 	     * 작성일 : 2022. 11. 25
 	     * 수정일 : 2023. 08. 07
 	     */
-	  	@PostMapping(value = {"/dentist/user/updateDiagCd.do"})
+	  	@PostMapping(value = {"/dentist/user/updateDiagCd.do" , "/premium/user/updateDiagCd.do"})
 		@ResponseBody
 		public HashMap<String, Object> updateDiagCdForDentist(@RequestBody HashMap<String, Object> paramMap, HttpServletRequest request) throws Exception {
 
 	  		
-	  		logger.debug("========== dentist.TeethController ========== /dentist/user/updateDiagCd.do ==========");
-	  		logger.debug("========== dentist.TeethController ========== /dentist/user/updateDiagCd.do ==========");
-	  		logger.debug("========== dentist.TeethController ========== /dentist/user/updateDiagCd.do ==========");
-	  		logger.debug("========== dentist.TeethController ========== /dentist/user/updateDiagCd.do ==========");
-	  		
-			
 			// SYSDATE 기준 측정 여부 확인
 			int isExistSysdateRow = 0;
 			// 기존 측정 값 여부 확인

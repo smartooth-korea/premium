@@ -556,7 +556,7 @@
 
 
 
-    <!-- 치과서비스 -->
+    <!-- 치과서비스 측정 앱 -->
    	<!-- 피측정자 치아 유형 조회 -->
     <select id="selectUserTeethType" parameterType="String" resultType="String">
     
@@ -584,7 +584,40 @@
     
     
     
-    <!-- 유치원 서비스 -->
+    <!-- 유치원, 어린이집 서비스 조회 앱 -->
+	<!-- 피측정자 최근 측정일 조회 -->
+	<select id="selectMeasureDt" parameterType="String" resultType="String">
+
+		SELECT 
+			DATE_FORMAT(MEASURE_DT, '%Y-%m-%d') AS measureDt
+		FROM ST_TEETH_MEASURE
+		WHERE 1=1
+		AND USER_ID = #{userId}
+		ORDER BY MEASURE_DT DESC
+		LIMIT 1
+		
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- 유치원, 어린이집 서비스 조회 앱 -->
    	<!-- 유치원,어린이집 소속 자녀(피측정자) 측정 값 목록 -->
 	<select id="selectUserMeasureStatisticsList" parameterType="String" resultType="Hashmap">
 	

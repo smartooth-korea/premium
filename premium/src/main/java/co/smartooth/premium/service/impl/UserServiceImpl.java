@@ -142,11 +142,19 @@ public class UserServiceImpl implements UserService{
 	
 	
 	
-	/** 유치원, 어린이집 서비스 조회 앱 **/
+	/** 유치원, 어린이집 서비스 측정 앱 **/
 	// 측정자 목록 조회
 	@Override
 	public List<HashMap<String, Object>> selectMeasurerList() throws Exception {
 		return userMapper.selectMeasurerList();
+	}
+
+	
+	
+	// 반 소속 학생(측정예정) 목록 조회
+	@Override
+	public List<HashMap<String, Object>> selectStudentUserListByClassCode(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception {
+		return userMapper.selectStudentUserListByClassCode(userId, orderBy);
 	}
 
 	

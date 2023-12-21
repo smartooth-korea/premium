@@ -157,6 +157,20 @@
     
     
     
+    
+    
+   	<!-- 반에 해당하는 피측정자 회원 수 조회 (파라미터 : 반 아이디 = 반 코드) -->
+    <select id="selectClassUserCount" parameterType="String" resultType="Integer">
+    
+		SELECT COUNT(*)
+		FROM ST_STUDENT_USER_DETAIL
+		WHERE 1=1
+		AND TEACHER_ID = #{classCode}
+		
+    </select>
+    
+    
+    
         
     
     

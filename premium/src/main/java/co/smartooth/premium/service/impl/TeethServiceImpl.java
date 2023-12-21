@@ -222,7 +222,7 @@ public class TeethServiceImpl implements TeethService{
 	
 	
 	
-	/** 치과서비스 **/
+	/** 치과서비스 측정 앱 **/
 	@Override
 	public String selectUserTeethType(@Param("userId") String userId) throws Exception{
 		return teethMapper.selectUserTeethType(userId);
@@ -236,7 +236,21 @@ public class TeethServiceImpl implements TeethService{
 	
 	
 	
-	/** 유치원서비스 **/
+	
+	/** 유치원, 어린이집 서비스 측정 앱 **/
+	// 피측정자 최근 측정일 조회
+	@Override
+	public String selectMeasureDt(@Param("userId") String userId) throws Exception {
+		return teethMapper.selectMeasureDt(userId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	/** 유치원, 어린이집 서비스 조회 앱 **/
 	// 유치원,어린이집 소속 자녀(피측정자) 측정 값 목록
 	@Override
 	public List<HashMap<String, Object>> selectUserMeasureStatisticsList(@Param("schoolCode") String schoolCode, @Param("measureDt") String measureDt) throws Exception{
@@ -261,8 +275,4 @@ public class TeethServiceImpl implements TeethService{
 
 
 
-
-	
-	
-	
 }

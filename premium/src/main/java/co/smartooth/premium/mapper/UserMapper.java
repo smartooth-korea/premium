@@ -80,20 +80,20 @@ public interface UserMapper {
 	
 	
 	
-	/** 유치원, 어린이집 측정 **/
+	/** 유치원, 어린이집 측정 앱 **/
 	// 측정자 목록 조회
 	public List<HashMap<String, Object>> selectMeasurerList() throws Exception;
 	
 	
-	
+	// 반 소속 학생(측정예정) 목록 조회
+	public List<HashMap<String, Object>> selectStudentUserListByClassCode(@Param("userId") String userId, @Param("orderBy") String orderBy) throws Exception;
 	
 
 	
 	
 	
 	
-	
-	/** 유치원, 어린이집 조회 **/
+	/** 유치원, 어린이집 조회 앱 **/
 	// 아이디 중복 체크
 	public int duplicateChkId(@Param("userId") String userId) throws Exception;
 

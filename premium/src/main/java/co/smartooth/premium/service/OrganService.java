@@ -44,6 +44,10 @@ public interface OrganService {
 	public List<HashMap<String, Object>> selectTcUserList(@Param("schoolCode") String schoolCode) throws Exception;
 	
 	
+	// 반에 해당하는 피측정자 회원 수 조회 (파라미터 : 반 아이디 = 반 코드)
+	public int selectClassUserCount(@Param("classCode") String classCode) throws Exception;
+	
+	
 	
 	
 	
